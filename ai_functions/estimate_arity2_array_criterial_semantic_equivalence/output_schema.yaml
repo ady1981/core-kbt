@@ -1,0 +1,70 @@
+type: object
+properties:
+  comparable_equal:
+    type: array
+    items:
+    - type: object
+      properties:
+        _1:
+          type: array
+          items:
+          - type: integer
+          - type: object
+        _2:
+          type: array
+          items:
+          - type: integer
+          - type: object
+      required:
+      - _1
+      - _2
+  comparable_not_equal_1:
+    type: array
+    items:
+    - type: array
+      items:
+      - type: integer
+      - type: object
+    - type: array
+      items:
+      - type: integer
+      - type: object
+  comparable_not_equal_2:
+    type: array
+    items:
+    - type: array
+      items:
+      - type: integer
+      - type: object
+    - type: array
+      items:
+      - type: integer
+      - type: object
+  not_comparable_1:
+    type: array
+    items:
+    - type: array
+      items:
+      - type: integer
+      - type: object
+    - type: array
+      items:
+      - type: integer
+      - type: object
+  not_comparable_2:
+    type: array
+    items:
+    - type: array
+      items:
+      - type: integer
+      - type: object
+    - type: array
+      items:
+      - type: integer
+      - type: object
+required:
+- comparable_equal
+- comparable_not_equal_1
+- comparable_not_equal_2
+- not_comparable_1
+- not_comparable_2

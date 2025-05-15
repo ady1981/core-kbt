@@ -1,0 +1,38 @@
+type: object
+properties:
+  tasks:
+    type: array
+    items:
+      reasoning:
+        type: string
+      task name:
+        type: string
+        description: |
+          ```yaml
+          semantic_type: item_semantic_representation
+          ```
+      how LLMs help:
+        type: string
+      maximal effect:
+        type: string
+      references:
+        type: array
+        items:
+          type: string
+          description: |
+            ```yaml
+            examples:
+            - `[Example link](http://example.com)`
+            - `<Authors> (<Year>). <Title>. <Other details>. <DOI> (if available)`
+            ```
+      proof of validity:
+        type: string
+      other notes:
+        type: string
+    required:
+    - reasoning
+    - task name
+    - how LLMs help
+    - maximal effect
+    - proof of validity
+    additionalProperties: false

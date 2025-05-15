@@ -1,0 +1,43 @@
+type: object
+properties:
+  comparison:
+    type: array
+    items:
+      type: object
+      properties:
+        aspect:
+          type: string
+        comparison reasoning:
+          type: string
+        equal parts:
+          type: array
+          items:
+            type: string
+            description: |
+              ```yaml
+              semantic_type: term
+              ```
+        different parts:
+          _1:
+            type: array
+            items:
+              type: string
+              description: |
+                ```yaml
+                semantic_type: term
+                ```
+          _2:
+            type: array
+            items:
+              type: string
+              description: |
+                ```yaml
+                semantic_type: term
+                ```
+      required:
+        - aspect
+        - comparison reasoning
+  notes:
+    type: string
+required:
+  - comparison
