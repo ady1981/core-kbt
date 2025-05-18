@@ -9,35 +9,98 @@ properties:
           type: string
         comparison reasoning:
           type: string
-        equal parts:
-          type: array
+        comparable?:
+          type: boolean
+          description: |
+            ```yaml            
+            description: are the texts comparable with respect to the aspect? 
+            ```
+        refined aspect:
+          type: [ "string", "null" ]
+          description: |
+            ```yaml            
+            description: |
+              If the texts are not comparable with respect to the context aspect, specify the `refined aspect` property and set `equality` and `difference` properties to `null`.   
+              Optionally specify `other notes` properties. 
+            ```
+          default: null
+        equal?:
+          type: boolean
+          description: |
+            ```yaml            
+            description: are the texts equal with respect to the aspect? 
+            ```
+        equality:
+          type: [ "array", "null" ]
           items:
-            type: string
+            type: object
+            properties:
+              reasoning:
+                type: string
+              equality term:
+                type: string
+                description: |
+                  ```yaml
+                  description: |
+                    A specific equality item as a term. 
+                    If the item is a requirement then it means that you cannot compare the items and therefore set `comparable?` property to `false`, specify `refined aspect` and recalculate the comparison item properties.                                      
+                  semantic_type: term
+                  ```
+              is a term?:
+                type: boolean
+                description: |
+                  ```yaml
+                  description: Is the `equality term` a term?   
+                  ```
+        difference:
+          type: [ "array", "null" ]
+          items:
+            type: object
             description: |
               ```yaml
-              semantic_type: term
+              description: Pair difference items for each of the texts   
               ```
-        different parts:
-          _1:
-            type: array
-            items:
-              type: string
-              description: |
-                ```yaml
-                semantic_type: term
-                ```
-          _2:
-            type: array
-            items:
-              type: string
-              description: |
-                ```yaml
-                semantic_type: term
-                ```
+            properties:
+              _1:
+                type: [ "object", "null" ]
+                description: |
+                  ```yaml                  
+                  description: A specific difference item of `text_1`   
+                  ```
+                properties:
+                  reasoning:
+                    type: string
+                  difference term:
+                    type: string
+                    description: |
+                      ```yaml
+                      description: A specific difference item of `text_1` against `text_2` as a term. Set `null` if there is no pair item in the `text_2`.
+                      semantic_type: term
+                      ```
+              _2:
+                type: [ "object", "null" ]
+                description: |
+                  ```yaml
+                  description: A specific difference item of `text_2`   
+                  ```
+                properties:
+                  reasoning:
+                    type: string
+                  difference term:
+                    type: string
+                    description: |
+                      ```yaml
+                      description: A specific difference item of `text_2` against `text_1` as a term. Set `null` if there is no pair item in the `text_1`.
+                      semantic_type: term
+                      ```
+        other notes:
+          type: string
       required:
         - aspect
         - comparison reasoning
-  notes:
+        - comparable?
+        - equal?
+  other notes:
     type: string
 required:
   - comparison

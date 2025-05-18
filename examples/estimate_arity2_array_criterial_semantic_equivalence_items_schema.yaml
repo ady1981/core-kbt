@@ -1,0 +1,5 @@
+type: array
+properties:
+  task name:
+    type: string
+    description: a task in SRE context

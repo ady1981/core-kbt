@@ -1,26 +1,28 @@
 import json
+import os
 
 from ai_function import evaluate
 from common import read_string, read_yaml, render_template, write_json
 
-AI_FUN_NAME = 'estimate_objects_LCA'
+AI_FUN_NAME = 'estimate_texts_LCA'
 
 
 def calc_instruction():
     template_string = read_string(f'ai_functions/{AI_FUN_NAME}/prompt.md.j2')
-    context = 'Programming'
-    a_text = 'Python'
-    b_text = 'Node.js'
+    context = 'Site Reliability Engineering (SRE)'
+    a_text = "Automated Runbook Generation and Maintenance"
+    b_text = "Documentation and Report Generation"
     data = {'context': context,
             'a_text': a_text,
             'b_text': b_text}
     return render_template(template_string, data)
 
-
+model = os.environ["OPENAI_MODEL"]
+formatted_model_name = model.strip().replace("/", "-").replace(".", "-")
 instruction = calc_instruction()
 # print(f'instruction:\n{instruction}')
 response_schema = read_yaml(f'ai_functions/{AI_FUN_NAME}/output_schema.yaml')
 response = evaluate(instruction, response_schema)
 json_response = response['json']
 print('Response:\n' + json.dumps(json_response, indent=2))
-write_json(response, f'temp/estimate_objects_LCA_response.json')
+write_json(json_response, f'temp/{AI_FUN_NAME}.{formatted_model_name}.response.json')

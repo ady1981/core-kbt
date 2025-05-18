@@ -1,0 +1,23 @@
+type: object
+properties:
+  reasoning:
+    type: string
+  expertness of information sources for the reasoning:
+    type: ["number", "null"]
+    description: |
+      ```yaml
+      description: Estimate the value as a likelihood value. Set `null` if it's undefined.
+      semantic_type: likelihood value
+      ```
+    minimum: 0.0
+    maximum: 1.0
+    default: null
+  lowest common ancestor (LCA) in semantic hierarchy:
+    type: string
+    description: |
+      ```yaml
+      description: Estimate the value as a term
+      semantic_type: likelihood value
+      ```
+  other notes:
+    type: string
