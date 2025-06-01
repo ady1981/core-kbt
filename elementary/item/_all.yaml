@@ -8,11 +8,12 @@
     - rule_type: hasAttribute
       rule_parameters: `ID`
   ID: 1
+  comment: The most fundamental concept in the knowledge base, representing anything that can be described or related.
 - name: `term`
   definition: Represents a general idea, category, type, or concept.
   subclassOf:
     - `term`
-  comment: The `term` is the only `term` which is a subclass of itself.
+  comment: The `term` is a subclass of itself. It serves as the root of the conceptual hierarchy.
   item_schema_rules:
     - rule_type: hasAttribute
       rule_parameters: `definition`
@@ -20,8 +21,8 @@
       rule_parameters: `subclassOf`
   ID: 2
 - name: `entity`
-  definition: Represents a specific classified entity that exists or existed in a world. The `entity` should be an instance for a `term`.
-  comment: `entity` not necessarily represents a concrete "physical" thing but rather a class of this kind of things.
+  definition: Represents a specific classified named set of instances that exists or existed in a world. The `entity` should be an instance for a `term`.
+  comment: `entity` not necessarily represents a concrete "physical" thing but rather a set of things.
   subclassOf:
     - `term`
   item_schema_rules:
@@ -35,10 +36,33 @@
   subclassOf:
     - `term`
   description: Fundamental building block used to describe the characteristics and relationships of items.
+  comment: Properties define the attributes and connections between items in the knowledge base.
+  item_schema_rules:
+    - rule_type: hasAttribute
+      rule_parameters: `domain`
+    - rule_type: hasAttribute
+      rule_parameters: `range`
+    - rule_type: hasAttribute
+      rule_parameters: `is_transitive`
+    - rule_type: hasAttribute
+      rule_parameters: `is_symmetric`
+    - rule_type: hasAttribute
+      rule_parameters: `is_functional`
 - name: `subclassOf`
   subclassOf:
     - `property`
   description: Describes a relationship of classification or kind.
+  comment: Indicates that one term is a more specific type of another term. This is a core relationship for building taxonomies and ontologies.
+  domain: `term`
+  range: `term`
+  is_transitive: true
+  standard_examples:
+    - subject: `dog`
+      property: `subclassOf`
+      object: `mammal`
+    - subject: `mammal`
+      property: `subclassOf`
+      object: `animal`
 - name: `partOf`
   subclassOf:
     - `property`
@@ -54,3 +78,6 @@
         - subject: `finger`
           property: `partOf`
           object: `hand`
+  comment: A fundamental relationship for describing the structure and composition of items. The different types of `partOf` (composition, containment, membership) highlight the nuances of this relationship.
+  domain: `item`
+  range: `item`
