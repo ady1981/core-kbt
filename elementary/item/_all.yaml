@@ -2,11 +2,11 @@
   description: Can be `term` or `entity` instance.
   item_schema_rules:
     - rule_type: hasAttribute
-      rule_object: `name`
+      rule_parameters: `name`
     - rule_type: hasAttribute
-      rule_object: `item_schema_rules`
+      rule_parameters: `item_schema_rules`
     - rule_type: hasAttribute
-      rule_object: `ID`
+      rule_parameters: `ID`
   ID: 1
 - name: `term`
   definition: Represents a general idea, category, type, or concept.
@@ -15,18 +15,21 @@
   comment: The `term` is the only `term` which is a subclass of itself.
   item_schema_rules:
     - rule_type: hasAttribute
-      rule_object: `definition`
+      rule_parameters: `definition`
     - rule_type: hasAttribute
-      rule_object: `subclassOf`
+      rule_parameters: `subclassOf`
   ID: 2
 - name: `entity`
-  definition: Represents a specific, unique entity that exists or existed in a world. The `entity` should be an instance for a `term`.
-  comment: `entity` represents not a concrete physical thing but rather a class of this kind of things.
+  definition: Represents a specific classified entity that exists or existed in a world. The `entity` should be an instance for a `term`.
+  comment: `entity` not necessarily represents a concrete "physical" thing but rather a class of this kind of things.
   subclassOf:
     - `term`
   item_schema_rules:
     - rule_type: hasAttribute
-      rule_object: instanceOf
+      rule_parameters: instanceOf
+    - condition: if the `entity` is unique
+      rule_type: hasAttribute
+      rule_parameters: `is_unique`
   ID: 3
 - name: `property`
   subclassOf:
