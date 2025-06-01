@@ -1,0 +1,53 @@
+- name: `item`
+  description: Can be `term` or `entity` instance.
+  item_schema_rules:
+    - rule_type: hasAttribute
+      rule_object: `name`
+    - rule_type: hasAttribute
+      rule_object: `item_schema_rules`
+    - rule_type: hasAttribute
+      rule_object: `ID`
+  ID: 1
+- name: `term`
+  definition: Represents a general idea, category, type, or concept.
+  subclassOf:
+    - `term`
+  comment: The `term` is the only `term` which is a subclass of itself.
+  item_schema_rules:
+    - rule_type: hasAttribute
+      rule_object: `definition`
+    - rule_type: hasAttribute
+      rule_object: `subclassOf`
+  ID: 2
+- name: `entity`
+  definition: Represents a specific, unique entity that exists or existed in a world. The `entity` should be an instance for a `term`.
+  comment: `entity` represents not a concrete physical thing but rather a class of this kind of things.
+  subclassOf:
+    - `term`
+  item_schema_rules:
+    - rule_type: hasAttribute
+      rule_object: instanceOf
+  ID: 3
+- name: `property`
+  subclassOf:
+    - `term`
+  description: Fundamental building block used to describe the characteristics and relationships of items.
+- name: `subclassOf`
+  subclassOf:
+    - `property`
+  description: Describes a relationship of classification or kind.
+- name: `partOf`
+  subclassOf:
+    - `property`
+  description: Describes a relationship of composition or containment
+  property_check_rules:
+    - one_true:
+        - '`composition`': Describes how things are put together.
+        - '`containment`': Describes what is inside something else.
+        - '`membership`': Describes an item belonging to a larger group or organization.
+    - optional_indicators:
+        - 'Not necessarily transitive in the same way as `subclassOf`: While a finger is part of a hand, and a hand is part of a body, a finger is not necessarily a "part of" the body in the same direct sense as it is a part of the hand. The relationship is mediated.'
+    - standard_examples:
+        - subject: `finger`
+          property: `partOf`
+          object: `hand`
