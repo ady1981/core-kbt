@@ -1,0 +1,33 @@
+- name: `comparison`
+  description: A `thing` that highlights the similarities and differences values between two or more `thing`s.
+  subclassOf:
+    - `class`
+
+- name: `aspect`
+  description: A `class` to highlight the similarities and differences values between two or more `thing`s.
+  subclassOf:
+    - `class`
+
+- name: `comparesAspect`
+  subclassOf:
+    - `property`
+  domain: `aspect comparison`
+  range: `aspect`
+
+- name: `aspect comparison`
+  subclassOf:
+    - `comparison`
+  item_schema_rules:
+    - rule_type: hasAttribute
+      rule_parameters: `comparesAspect`
+    - rule_type: hasAttribute
+      rule_parameters: `thing_and_value`
+  instance_examples:
+    - name: 'things: [`сar`, `motorcycle`], comparesAspect: `number of wheels`, instanceOf: `aspect comparison`'
+      instanceOf: `aspect comparison`
+      comparesAspect: `number of wheels`
+      thing_and_value:
+        - name: `сar`
+          value: 4
+        - name: `motorcycle`
+          value: 2

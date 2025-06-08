@@ -20,7 +20,7 @@
     - rule_type: hasAttribute
       rule_parameters: `subclassOf`
     - rule_type: hasNoAttribute
-      rule_parameters: instanceOf
+      rule_parameters: `instanceOf`
 
 - name: `property`
   subclassOf:
@@ -42,7 +42,7 @@
     - rule_type: hasAttribute
       rule_parameters: `is_functional`
     - rule_type: hasNoAttribute
-      rule_parameters: instanceOf
+      rule_parameters: `instanceOf`
 
 - name: `subclassOf`
   subclassOf:
@@ -52,7 +52,7 @@
   domain: `class`
   range: `class`
   is_transitive: true
-  standard_examples:
+  statement_examples:
     - subject: `human`
       property: `subclassOf`
       object: `mammal`
@@ -75,7 +75,7 @@
     - `partOf`
   domain: `thing`
   range: `thing`
-  standard_examples:
+  statement_examples:
     - subject: `finger`
       property: `structuralPartOf`
       object: `hand`
@@ -86,7 +86,7 @@
     - `partOf`
   domain: `thing`
   range: `thing`
-  standard_examples:
+  statement_examples:
     - subject: `Capital City`
       property: `locatedIn`
       object: `Country`
@@ -107,9 +107,11 @@
     - `property`
   item_schema_rules:
     - rule_type: hasAttribute
-      rule_parameters: instanceOf
+      rule_parameters: `instanceOf`
     - rule_type: hasNoAttribute
-      rule_parameters: subclassOf
+      rule_parameters: `subclassOf`
+    - rule_type: hasNoAttribute
+      rule_parameters: `definition`
   comment: Every `instance` thing should be instance of a specific `class`.
 
 - name: `disjointWith`
@@ -136,7 +138,7 @@
   description: Specifies that a `class` is equivalent to the union of several other `classes`, and that these constituent `classes` are pairwise disjoint.
   domain: `class`
   range: `class`
-  standard_examples:
+  statement_examples:
     - subject: `parent`
       property: `disjointUnionOf`
       object: `father`
