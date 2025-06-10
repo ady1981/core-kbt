@@ -23,9 +23,9 @@
     - rule_type: hasAttribute
       rule_parameters: `thing_and_value`
   instance_examples:
-    - name: 'things: [`сar`, `motorcycle`], comparesAspect: `number of wheels`, instanceOf: `aspect comparison`'
-      instanceOf: `aspect comparison`
+    - instanceOf: `aspect comparison`
       comparesAspect: `number of wheels`
+      derived_name: 'things: [`сar`, `motorcycle`], comparesAspect: `number of wheels`, instanceOf: `aspect comparison`'
       thing_and_value:
         - name: `сar`
           value: 4
