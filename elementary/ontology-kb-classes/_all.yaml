@@ -29,7 +29,7 @@
     - `class`
     - `instance`
   description: Fundamental building block used to describe the characteristics and relationships of classes.
-  comment: Properties define the attributes as connections between classes in the knowledge base.
+  comment: Properties define the attributes as connections between classes in the knowledge base. A string or numeric attribute does not require a property definition.
   item_schema_rules:
     - rule_type: hasAttribute
       rule_parameters: `domain`
@@ -66,7 +66,7 @@
     - `property`
   domain: `thing`
   range: `thing`
-  comment: A fundamental relationship for describing the structure and composition of items. The different types of `partOf` (composition, containment, membership) highlight the nuances of this relationship.
+  comment: A relationship for describing the structure and composition of items.
   note: The `property` is not necessarily transitive in the same way as `subclassOf`.
 
 - name: `structuralPartOf`
