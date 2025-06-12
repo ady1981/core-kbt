@@ -229,7 +229,6 @@ def index_by(index_f, alist):
 def clear_code_markdown(code):
     r = code.strip()
     r = re.sub(r'^```([^\n]*)?\n', '', r)
-    r = re.sub(r'\n```([^\n]*)?\n', '', r)
     r = re.sub(r'\n```([^\n]*)?$', '', r)
     return r
 
