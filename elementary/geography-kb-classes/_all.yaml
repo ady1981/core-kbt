@@ -1,0 +1,6 @@
+- name: '`Country`'
+  subclassOf:
+    - '`class`'
+- name: '`Capital`'
+  subclassOf:
+    - '`class`'
