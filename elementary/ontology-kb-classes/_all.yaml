@@ -6,7 +6,6 @@
     - rule_type: hasAttribute
       rule_parameters: '`item_schema_rules`'
   comment: The most fundamental concept in the knowledge base, representing anything that can be described or related.
-  ID: 1
 
 - name: '`class`'
   description: Represents a concept, type, or category.
@@ -46,10 +45,10 @@
       rule_parameters: '`instanceOf`'
 
 - name: '`subclassOf`'
-  subclassOf:
+  subpropertyOf:
     - '`property`'
-  description: Describes a relationship of classification or kind.
-  comment: Indicates that one `thing` is a more specific type of another `thing`. This is a core relationship for building taxonomies and ontologies.
+  description: Describes a relationship of classification or kind for `class`es.
+  comment: Indicates that one `class` is a more specific type of another `class`. This is a core relationship for building `class` taxonomies.
   domain: '`class`'
   range: '`class`'
   is_transitive: true
@@ -61,17 +60,26 @@
       property: '`subclassOf`'
       object: '`animal`'
 
+- name: '`subpropertyOf`'
+  subpropertyOf:
+    - '`property`'
+  description: Describes a relationship of classification or kind for `property`s.
+  comment: Indicates that one `property` is a more specific type of another `property`. This is a core relationship for building `property` taxonomies.
+  domain: '`property`'
+  range: '`property`'
+  is_transitive: true
+
 - name: '`partOf`'
   description: Describes a relationship of composition or containment
-  subclassOf:
+  subpropertyOf:
     - '`property`'
   domain: '`thing`'
   range: '`thing`'
-  comment: A relationship for describing the structure and composition of items. The `property` is not necessarily transitive in the same way as `subclassOf`.
+  comment: A relationship for describing the structure and composition of items. The `property` is not necessarily transitive in the same way as `subpropertyOf`.
 
 - name: '`structuralPartOf`'
   description: This property describes a relationship where the parts are essential constituents that make up the whole, and the whole cannot exist or function as intended without these specific parts.
-  subclassOf:
+  subpropertyOf:
     - '`partOf`'
   domain: '`thing`'
   range: '`thing`'
@@ -82,7 +90,7 @@
 
 - name: '`locatedIn`'
   description: This property describes a relationship where the part is physically or spatially located within the boundaries of the whole.
-  subclassOf:
+  subpropertyOf:
     - '`partOf`'
   domain: '`thing`'
   range: '`thing`'
@@ -92,7 +100,7 @@
       object: '`Country`'
 
 - name: '`instanceOf`'
-  subclassOf:
+  subpropertyOf:
     - '`property`'
   description: Specifies that this `instance` is an instance of a `class`.
   domain: '`instance`'
@@ -115,26 +123,26 @@
   comment: Every `instance` thing should be instance of a specific `class`.
 
 - name: '`disjointWith`'
-  subclassOf: '`property`'
+  subpropertyOf: '`property`'
   domain: '`class`'
   range: '`class`'
   is_symmetric: true
 
 - name: '`equivalentClass`'
-  subclassOf: '`property`'
+  subpropertyOf: '`property`'
   domain: '`class`'
   range: '`class`'
   is_symmetric: true
   is_transitive: true
 
 - name: '`unionOf`'
-  subclassOf: '`property`'
+  subpropertyOf: '`property`'
   description: Specifies that a `class` is equivalent to the union of several other `class`es.
   domain: '`class`'
   range: '`class`'
 
 - name: '`disjointUnionOf`'
-  subclassOf: '`unionOf`'
+  subpropertyOf: '`unionOf`'
   description: Specifies that a `class` is equivalent to the union of several other `classes`, and that these constituent `classes` are pairwise disjoint.
   domain: '`class`'
   range: '`class`'
