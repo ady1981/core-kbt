@@ -1,147 +1,147 @@
-- name: `thing`
+- name: '`thing`'
   description: Can be only a `class`, `property` or an `instance`.
   item_schema_rules:
     - rule_type: hasAttribute
-      rule_parameters: `name`
+      rule_parameters: '`name`'
     - rule_type: hasAttribute
-      rule_parameters: `item_schema_rules`
+      rule_parameters: '`item_schema_rules`'
   comment: The most fundamental concept in the knowledge base, representing anything that can be described or related.
+  ID: 1
 
-- name: `class`
+- name: '`class`'
   description: Represents a concept, type, or category.
   subclassOf:
-    - `thing`
+    - '`thing`'
   disjointWith:
-    - `property`
-    - `instance`
+    - '`property`'
+    - '`instance`'
   item_schema_rules:
     - rule_type: hasAttribute
-      rule_parameters: `definition`
+      rule_parameters: '`definition`'
     - rule_type: hasAttribute
-      rule_parameters: `subclassOf`
+      rule_parameters: '`subclassOf`'
     - rule_type: hasNoAttribute
-      rule_parameters: `instanceOf`
+      rule_parameters: '`instanceOf`'
 
-- name: `property`
+- name: '`property`'
   subclassOf:
-    - `thing`
+    - '`thing`'
   disjointWith:
-    - `class`
-    - `instance`
+    - '`class`'
+    - '`instance`'
   description: Fundamental building block used to describe the characteristics and relationships of classes.
   comment: Properties define the attributes as connections between classes in the knowledge base. A string or numeric attribute does not require a property definition.
   item_schema_rules:
     - rule_type: hasAttribute
-      rule_parameters: `domain`
+      rule_parameters: '`domain`'
     - rule_type: hasAttribute
-      rule_parameters: `range`
+      rule_parameters: '`range`'
     - rule_type: hasAttribute
-      rule_parameters: `is_transitive`
+      rule_parameters: '`is_transitive`'
     - rule_type: hasAttribute
-      rule_parameters: `is_symmetric`
+      rule_parameters: '`is_symmetric`'
     - rule_type: hasAttribute
-      rule_parameters: `is_functional`
+      rule_parameters: '`is_functional`'
     - rule_type: hasNoAttribute
-      rule_parameters: `instanceOf`
+      rule_parameters: '`instanceOf`'
 
-- name: `subclassOf`
+- name: '`subclassOf`'
   subclassOf:
-    - `property`
+    - '`property`'
   description: Describes a relationship of classification or kind.
   comment: Indicates that one `thing` is a more specific type of another `thing`. This is a core relationship for building taxonomies and ontologies.
-  domain: `class`
-  range: `class`
+  domain: '`class`'
+  range: '`class`'
   is_transitive: true
   statement_examples:
-    - subject: `human`
-      property: `subclassOf`
-      object: `mammal`
-    - subject: `mammal`
-      property: `subclassOf`
-      object: `animal`
+    - subject: '`human`'
+      property: '`subclassOf`'
+      object: '`mammal`'
+    - subject: '`mammal`'
+      property: '`subclassOf`'
+      object: '`animal`'
 
-- name: `partOf`
+- name: '`partOf`'
   description: Describes a relationship of composition or containment
   subclassOf:
-    - `property`
-  domain: `thing`
-  range: `thing`
-  comment: A relationship for describing the structure and composition of items.
-  note: The `property` is not necessarily transitive in the same way as `subclassOf`.
+    - '`property`'
+  domain: '`thing`'
+  range: '`thing`'
+  comment: A relationship for describing the structure and composition of items. The `property` is not necessarily transitive in the same way as `subclassOf`.
 
-- name: `structuralPartOf`
+- name: '`structuralPartOf`'
   description: This property describes a relationship where the parts are essential constituents that make up the whole, and the whole cannot exist or function as intended without these specific parts.
   subclassOf:
-    - `partOf`
-  domain: `thing`
-  range: `thing`
+    - '`partOf`'
+  domain: '`thing`'
+  range: '`thing`'
   statement_examples:
-    - subject: `finger`
-      property: `structuralPartOf`
-      object: `hand`
+    - subject: '`finger`'
+      property: '`structuralPartOf`'
+      object: '`hand`'
 
-- name: `locatedIn`
+- name: '`locatedIn`'
   description: This property describes a relationship where the part is physically or spatially located within the boundaries of the whole.
   subclassOf:
-    - `partOf`
-  domain: `thing`
-  range: `thing`
+    - '`partOf`'
+  domain: '`thing`'
+  range: '`thing`'
   statement_examples:
-    - subject: `Capital City`
-      property: `locatedIn`
-      object: `Country`
+    - subject: '`Capital City`'
+      property: '`locatedIn`'
+      object: '`Country`'
 
-- name: `instanceOf`
+- name: '`instanceOf`'
   subclassOf:
-    - `property`
+    - '`property`'
   description: Specifies that this `instance` is an instance of a `class`.
-  domain: `instance`
-  range: `class`
+  domain: '`instance`'
+  range: '`class`'
 
-- name: `instance`
+- name: '`instance`'
   definition: Represents a specific unique instance that exists or existed in a world.
   subclassOf:
-    - `thing`
+    - '`thing`'
   disjointWith:
-    - `class`
-    - `property`
+    - '`class`'
+    - '`property`'
   item_schema_rules:
     - rule_type: hasAttribute
-      rule_parameters: `instanceOf`
+      rule_parameters: '`instanceOf`'
     - rule_type: hasNoAttribute
-      rule_parameters: `subclassOf`
+      rule_parameters: '`subclassOf`'
     - rule_type: hasNoAttribute
-      rule_parameters: `definition`
+      rule_parameters: '`definition`'
   comment: Every `instance` thing should be instance of a specific `class`.
 
-- name: `disjointWith`
-  subclassOf: `property`
-  domain: `class`
-  range: `class`
+- name: '`disjointWith`'
+  subclassOf: '`property`'
+  domain: '`class`'
+  range: '`class`'
   is_symmetric: true
 
-- name: `equivalentClass`
-  subclassOf: `property`
-  domain: `class`
-  range: `class`
+- name: '`equivalentClass`'
+  subclassOf: '`property`'
+  domain: '`class`'
+  range: '`class`'
   is_symmetric: true
   is_transitive: true
 
-- name: `unionOf`
-  subclassOf: `property`
+- name: '`unionOf`'
+  subclassOf: '`property`'
   description: Specifies that a `class` is equivalent to the union of several other `class`es.
-  domain: `class`
-  range: `class`
+  domain: '`class`'
+  range: '`class`'
 
-- name: `disjointUnionOf`
-  subclassOf: `unionOf`
+- name: '`disjointUnionOf`'
+  subclassOf: '`unionOf`'
   description: Specifies that a `class` is equivalent to the union of several other `classes`, and that these constituent `classes` are pairwise disjoint.
-  domain: `class`
-  range: `class`
+  domain: '`class`'
+  range: '`class`'
   statement_examples:
-    - subject: `parent`
-      property: `disjointUnionOf`
-      object: `father`
-    - subject: `parent`
-      property: `disjointUnionOf`
-      object: `mother`
+    - subject: '`parent`'
+      property: '`disjointUnionOf`'
+      object: '`father`'
+    - subject: '`parent`'
+      property: '`disjointUnionOf`'
+      object: '`mother`'

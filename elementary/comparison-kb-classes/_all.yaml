@@ -1,33 +1,33 @@
-- name: `comparison`
+- name: '`comparison`'
   description: A `thing` that highlights the similarities and differences values between two or more `thing`s.
   subclassOf:
-    - `class`
+    - '`class`'
 
-- name: `aspect`
+- name: '`aspect`'
   description: A `class` to highlight the similarities and differences values between two or more `thing`s.
   subclassOf:
-    - `class`
+    - '`class`'
 
-- name: `comparesAspect`
+- name: '`comparesAspect`'
   subclassOf:
-    - `property`
-  domain: `aspect comparison`
-  range: `aspect`
+    - '`property`'
+  domain: '`aspect comparison`'
+  range: '`aspect`'
 
-- name: `aspect comparison`
+- name: '`aspect comparison`'
   subclassOf:
-    - `comparison`
+    - '`comparison`'
   item_schema_rules:
     - rule_type: hasAttribute
-      rule_parameters: `comparesAspect`
+      rule_parameters: '`comparesAspect`'
     - rule_type: hasAttribute
-      rule_parameters: `thing_and_value`
+      rule_parameters: '`thing_and_value`'
   instance_examples:
-    - instanceOf: `aspect comparison`
-      comparesAspect: `number of wheels`
-      derived_name: 'things: [`сar`, `motorcycle`], comparesAspect: `number of wheels`, instanceOf: `aspect comparison`'
+    - instanceOf: '`aspect comparison`'
+      comparesAspect: '`number of wheels`'
+      derived_name: 'things: [`сar`, `motorcycle`], comparesAspect: '`number of wheels`', instanceOf: '`aspect comparison`''
       thing_and_value:
-        - name: `сar`
+        - name: '`сar`'
           value: 4
-        - name: `motorcycle`
+        - name: '`motorcycle`'
           value: 2
