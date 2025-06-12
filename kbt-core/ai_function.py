@@ -7,22 +7,28 @@ from openai import OpenAI
 from common import deep_dict_compare, clear_code_markdown
 
 client = OpenAI()
-MODEL = os.getenv("OPENAI_MODEL")
 OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL")
+MODEL = os.getenv("OPENAI_MODEL")
 
 
-def evaluate(instruction, response_schema, model=MODEL):
+def evaluate(instruction, response_schema, model=MODEL, temperature=0, **chat_completions_args):
     prompt = instruction + f'''
-## RESPONSE FORMAT
+# RESPONSE FORMAT
 Respond only in JSON format strictly using the provided JSON Schema specification for your response: 
 ```json
 {json.dumps(response_schema)}
 ```
 '''
-    # print(f'Prompt:\n{prompt}') ## TODO: remove
+# '''
+# If you cannot respond with a complete response, respond with:
+# ```json
+# null
+# ```
+# '''
     response = client.chat.completions.create(
+        **chat_completions_args,
         model=model,
-        temperature=0,
+        temperature=temperature,
         messages=[
             {
                 "role": "user",
@@ -35,7 +41,6 @@ Respond only in JSON format strictly using the provided JSON Schema specificatio
     )
 
     raw_answer = response.choices[0].message.content
-    # print(f'Response:\n{raw_answer}')
     answer2 = {}
     try:
         answer = json.loads(clear_code_markdown(raw_answer))
