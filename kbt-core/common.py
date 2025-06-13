@@ -335,7 +335,14 @@ def format_markdown_code(lang, code):
     return f'```{lang}\n{code}\n```\n'
 
 
-def remove_markdown_code(text, lang = ''):
+def remove_markdown_code(text, lang=''):
     prefix_to_remove = f'```{lang}\n'
     suffix_to_remove = f'```'
     return text.strip().removeprefix(prefix_to_remove).removesuffix(suffix_to_remove)
+
+
+def escape_yaml_in_markdown(yaml_object):
+    return f'''```yaml
+{dump_yaml(yaml_object)}
+```    
+'''
