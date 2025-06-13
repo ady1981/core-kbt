@@ -4,13 +4,13 @@ import os
 from ai_function import evaluate
 from common import read_string, read_yaml, render_template, write_json
 
-AI_FUN_NAME = 'estimate_term_aspects'
+AI_FUN_NAME = 'estimate_thing_comparison_aspects'
 
 
 def calc_instruction():
     template_string = read_string(f'ai_functions/{AI_FUN_NAME}/prompt.md.j2')
-    context = 'Site Reliability Engineering (SRE)'
-    term = "Technical Documentation Processes"
+    context = 'knowledge representation'
+    term = 'thesaurus'
     data = {'context': context,
             'term': term}
     return render_template(template_string, data)
@@ -23,5 +23,5 @@ print(f'instruction:\n{instruction}')
 response_schema = read_yaml(f'ai_functions/{AI_FUN_NAME}/output_schema.yaml')
 response = evaluate(instruction, response_schema)
 json_response = response['json']
-print('Response:\n' + json.dumps(json_response, indent=2))
+print('=== Response:\n' + json.dumps(json_response, indent=2))
 write_json(json_response, f'temp/{AI_FUN_NAME}.{formatted_model_name}.response.json')

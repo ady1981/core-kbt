@@ -2,7 +2,7 @@ type: object
 properties:
   reasoning:
     type: string
-  expertness of information sources for the reasoning:
+  expertness likelihood of information sources for the reasoning:
     type: ["number", "null"]
     description: |
       ```yaml

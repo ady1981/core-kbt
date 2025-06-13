@@ -4,22 +4,21 @@ import os
 from ai_function import evaluate
 from common import read_string, read_yaml, render_template, write_json, dump_yaml
 
-AI_FUN_NAME = 'estimate_things_aspect_comparison'
+AI_FUN_NAME = 'compare_things_by_aspects'
 
 
 def calc_instruction():
     template_string = read_string(f'ai_functions/{AI_FUN_NAME}/prompt.md.j2')
-    context = 'General sense'
-    text_1 = "CPU"
-    text_2 = "Computer Desktop"
+    context = 'knowledge representation'
+    text_1 = "thesaurus"
+    text_2 = "taxonomy"
     aspects = [
-        "Feature",
-        "Role",
-        "Function",
-        "Size",
-        "Material",
-        "Analogy",
-        "Can it run?"
+      "Primary Purpose",
+      "Structural Representation",
+      "Organizational Principle",
+      "Domain of Application",
+      "Nature of Relationships",
+      "Information Retrieval"
     ]
     data = {'context': context,
             'text_1': text_1,
@@ -35,5 +34,5 @@ print(f'instruction:\n{instruction}')
 response_schema = read_yaml(f'ai_functions/{AI_FUN_NAME}/output_schema.yaml')
 response = evaluate(instruction, response_schema, model=model)
 json_response = response['json']
-print('Response:\n' + json.dumps(json_response, indent=2))
+print('=== Response:\n' + json.dumps(json_response, indent=2))
 write_json(json_response, f'temp/{AI_FUN_NAME}.{formatted_model_name}.response.json')

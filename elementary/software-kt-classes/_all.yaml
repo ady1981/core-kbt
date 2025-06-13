@@ -13,7 +13,9 @@
   subclassOf:
     - '`software`'
 
-- name: '`large language model (LLM)`'
+- name: '`large language model`'
+  abbreviations:
+    - LLM
   description: A type of artificial intelligence program that can generate human-like text, translate languages, write different kinds of creative content, and answer your questions in an informative way.
   subclassOf:
     - '`class`'

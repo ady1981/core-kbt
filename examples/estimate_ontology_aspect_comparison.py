@@ -2,7 +2,8 @@ import json
 import os
 
 from ai_function import evaluate
-from common import read_string, read_yaml, render_template, write_json, dump_yaml, escape_yaml_in_markdown
+from common import read_string, read_yaml, render_template, write_json, dump_yaml, escape_yaml_in_markdown, \
+    format_markdown_code
 
 AI_FUN_NAME = 'estimate_ontology_aspect_comparison'
 
@@ -13,7 +14,7 @@ def calc_instruction():
                                + read_yaml('elementary/comparison-kb-classes/_all.yaml'))
     text_1 = 'CPU'
     text_2 = 'computer hardware case'
-    data = {'knowledge_base_ontology': escape_yaml_in_markdown(knowledge_base_ontology),
+    data = {'knowledge_base_ontology': format_markdown_code('yaml', knowledge_base_ontology),
             'texts_context': 'General sense',
             'text_1': text_1,
             'text_2': text_2}

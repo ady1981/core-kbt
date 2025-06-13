@@ -13,9 +13,10 @@ def calc_instruction():
     a_text = "Automated Runbook Generation and Maintenance"
     b_text = "Documentation and Report Generation"
     data = {'context': context,
-            'a_text': a_text,
-            'b_text': b_text}
+            'text_1': a_text,
+            'text_2': b_text}
     return render_template(template_string, data)
+
 
 model = os.environ["OPENAI_MODEL"]
 formatted_model_name = model.strip().replace("/", "-").replace(".", "-")
@@ -24,5 +25,5 @@ instruction = calc_instruction()
 response_schema = read_yaml(f'ai_functions/{AI_FUN_NAME}/output_schema.yaml')
 response = evaluate(instruction, response_schema)
 json_response = response['json']
-print('Response:\n' + json.dumps(json_response, indent=2))
+print('=== Response:\n' + json.dumps(json_response, indent=2))
 write_json(json_response, f'temp/{AI_FUN_NAME}.{formatted_model_name}.response.json')

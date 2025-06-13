@@ -2,7 +2,7 @@ import json
 import os
 
 from ai_function import evaluate
-from common import read_string, read_yaml, render_template, write_json, dump_yaml
+from common import read_string, read_yaml, render_template, write_json, dump_yaml, format_markdown_code
 
 AI_FUN_NAME = 'estimate_high_order_ontology_classes'
 
@@ -10,12 +10,8 @@ AI_FUN_NAME = 'estimate_high_order_ontology_classes'
 def calc_instruction():
     template_string = read_string(f'ai_functions/{AI_FUN_NAME}/prompt.md.j2')
     knowledge_base_ontology = read_yaml('elementary/ontology-kb-classes/_all.yaml')
-    knowledge_base_ontology_str = f'''```yaml
-{dump_yaml(knowledge_base_ontology)}
-```    
-'''
     text = 'Moscow is a Capital of Russia.'
-    data = {'knowledge_base_ontology': knowledge_base_ontology_str,
+    data = {'knowledge_base_ontology': format_markdown_code('yaml', knowledge_base_ontology),
             'text': text}
     return render_template(template_string, data)
 

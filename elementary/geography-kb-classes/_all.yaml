@@ -1,9 +1,11 @@
 - name: '`Country`'
   subclassOf:
     - '`class`'
+
 - name: '`City`'
   subclassOf:
     - '`class`'
+
 - name: '`Capital City`'
   subclassOf:
     - '`City`'
