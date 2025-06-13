@@ -1,0 +1,18 @@
+type: array
+items:
+  - type:
+      object
+    properties:
+      reasoning:
+        type: string
+      aspect:
+        type: string
+        description: |
+          ```yaml            
+          description: A specific comparison aspect as a term.
+          ```
+      notes:
+        type: string
+    required:
+      - reasoning
+      - aspect
