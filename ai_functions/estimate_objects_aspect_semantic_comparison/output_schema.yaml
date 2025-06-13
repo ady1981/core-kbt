@@ -53,46 +53,48 @@ properties:
                   description: Is the `equality term` a term?   
                   ```
         difference:
-          type: [ "array", "null" ]
-          items:
-            type: object
-            description: |
-              ```yaml
-              description: Pair difference items for each of the texts   
-              ```
-            properties:
-              _1:
-                type: [ "object", "null" ]
-                description: |
-                  ```yaml                  
-                  description: A specific difference item of `text_1`   
-                  ```
-                properties:
-                  reasoning:
-                    type: string
-                  difference term:
-                    type: string
-                    description: |
-                      ```yaml
-                      description: A specific difference item of `text_1` against `text_2` as a term. Set `null` if there is no pair item in the `text_2`.
-                      semantic_type: term
-                      ```
-              _2:
-                type: [ "object", "null" ]
-                description: |
-                  ```yaml
-                  description: A specific difference item of `text_2`   
-                  ```
-                properties:
-                  reasoning:
-                    type: string
-                  difference term:
-                    type: string
-                    description: |
-                      ```yaml
-                      description: A specific difference item of `text_2` against `text_1` as a term. Set `null` if there is no pair item in the `text_1`.
-                      semantic_type: term
-                      ```
+          type: [ "object", "null" ]
+          description: |
+            ```yaml
+            description: A difference as a list of terms   
+            ```
+          properties:
+            _1:
+              type: [ "array", "null" ]
+              description: |
+                ```yaml
+                description: A specific aspect difference item of `text_1` against `text_2`  
+                ```
+              items:
+                - type: "object"
+                  properties:
+                    reasoning:
+                      type: string
+                    difference term:
+                      type: string
+                      description: |
+                        ```yaml
+                        description: A specific difference item of `text_1` against `text_2` as a term.
+                        semantic_type: term
+                        ```
+            _2:
+              type: [ "array", "null" ]
+              description: |
+                ```yaml                  
+                description: A specific aspect difference item of `text_2` against `text_1`   
+                ```
+              items:
+                - type: "object"
+                  properties:
+                    reasoning:
+                      type: string
+                    difference term:
+                      type: string
+                      description: |
+                        ```yaml
+                        description: A specific difference item of `text_2` against `text_1` as a term.
+                        semantic_type: term
+                        ```
         other notes:
           type: string
       required:
