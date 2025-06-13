@@ -1,6 +1,12 @@
 - name: '`Country`'
   subclassOf:
     - '`class`'
-- name: '`Capital`'
+- name: '`City`'
   subclassOf:
     - '`class`'
+- name: '`Capital City`'
+  subclassOf:
+    - '`City`'
+  item_schema_rules:
+    - rule_type: hasAttribute
+      rule_parameters: '`locatedIn`'
