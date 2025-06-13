@@ -9,18 +9,17 @@ AI_FUN_NAME = 'estimate_objects_aspect_semantic_comparison'
 
 def calc_instruction():
     template_string = read_string(f'ai_functions/{AI_FUN_NAME}/prompt.md.j2')
-    context = 'Site Reliability Engineering (SRE)'
-    text_1 = "Automated Runbook Generation"
-    text_2 = "Documentation and Report Automated Generation"
+    context = 'General sense'
+    text_1 = "CPU"
+    text_2 = "Computer Hardware Case"
     aspects = [
-        "Accuracy",
-        "Clarity",
-        "Scope of Generation",
-        "Consistency",
-        "Access Method",
-        "Timeliness",
-        "Structured Format",
-        "Collaboration Features"
+        "Feature",
+        "Role",
+        "Function",
+        "Size",
+        "Material",
+        "Analogy",
+        "Can it run?"
     ]
     data = {'context': context,
             'text_1': text_1,
