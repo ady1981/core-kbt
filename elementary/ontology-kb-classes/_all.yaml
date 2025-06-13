@@ -83,10 +83,11 @@
     - '`partOf`'
   domain: '`thing`'
   range: '`thing`'
-  statement_examples:
-    - subject: '`finger`'
-      property: '`structuralPartOf`'
-      object: '`hand`'
+  instance_examples:
+    - name: '`finger`'
+      instanceOf:
+        - '`thing`'
+      structuralPartOf: '`hand`'
 
 - name: '`locatedIn`'
   description: This property describes a relationship where the part is physically or spatially located within the boundaries of the whole.
@@ -94,10 +95,11 @@
     - '`partOf`'
   domain: '`thing`'
   range: '`thing`'
-  statement_examples:
-    - subject: '`Capital City`'
-      property: '`locatedIn`'
-      object: '`Country`'
+  instance_examples:
+    - name: '`Moscow`'
+      instanceOf:
+        - '`Capital City`'
+      locatedIn: '`Russia`'
 
 - name: '`instanceOf`'
   subpropertyOf:
