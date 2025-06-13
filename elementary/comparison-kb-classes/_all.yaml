@@ -4,15 +4,9 @@
     - '`class`'
 
 - name: '`aspect`'
-  description: A `class` to highlight the similarities and differences values between two or more `thing`s.
+  description: An aspect `class` to highlight the similarities and differences values between two or more `thing`s.
   subclassOf:
     - '`class`'
-
-- name: '`comparesAspect`'
-  subclassOf:
-    - '`property`'
-  domain: '`aspect comparison`'
-  range: '`aspect`'
 
 - name: '`aspect comparison`'
   subclassOf:
@@ -25,9 +19,15 @@
   instance_examples:
     - instanceOf: '`aspect comparison`'
       comparesAspect: '`number of wheels`'
-      derived_name: 'things: [`сar`, `motorcycle`], comparesAspect: '`number of wheels`', instanceOf: '`aspect comparison`''
+      derived_name: 'things: [`сar`, `motorcycle`], comparesAspect: `number of wheels`, instanceOf: `aspect comparison`'
       thing_and_value:
-        - name: '`сar`'
+        - thing_name: '`сar`'
           value: 4
-        - name: '`motorcycle`'
+        - thing_name: '`motorcycle`'
           value: 2
+
+- name: '`comparesAspect`'
+  subpropertyOf:
+    - '`property`'
+  domain: '`aspect comparison`'
+  range: '`aspect`'
