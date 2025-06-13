@@ -1,0 +1,36 @@
+{
+  "type": "array",
+  "items": [
+    {
+      "type": "object",
+      "properties": {
+        "reasoning": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "subclassOf": {
+          "type": "array",
+          "items": [
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "is_lowest_common_ancestor": {
+          "type": "boolean"
+        },
+        "comment": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "subclassOf",
+        "is_lowest_common_ancestor"
+      ],
+      "additionalProperties": true
+    }
+  ]
+}
