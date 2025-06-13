@@ -10,9 +10,9 @@ AI_FUN_NAME = 'estimate_thing_comparison_aspects'
 def calc_instruction():
     template_string = read_string(f'ai_functions/{AI_FUN_NAME}/prompt.md.j2')
     context = 'knowledge representation'
-    term = 'thesaurus'
+    thing = 'thesaurus'
     data = {'context': context,
-            'term': term}
+            'thing': thing}
     return render_template(template_string, data)
 
 
