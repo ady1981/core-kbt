@@ -4,14 +4,14 @@ import os
 from ai_function import evaluate
 from common import read_string, read_yaml, render_template, write_json, dump_yaml
 
-AI_FUN_NAME = 'estimate_objects_aspect_semantic_comparison'
+AI_FUN_NAME = 'estimate_things_aspect_comparison'
 
 
 def calc_instruction():
     template_string = read_string(f'ai_functions/{AI_FUN_NAME}/prompt.md.j2')
     context = 'General sense'
     text_1 = "CPU"
-    text_2 = "Computer Hardware Case"
+    text_2 = "Computer Desktop"
     aspects = [
         "Feature",
         "Role",
