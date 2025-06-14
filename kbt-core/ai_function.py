@@ -19,12 +19,6 @@ Respond only in JSON format strictly using the provided JSON Schema specificatio
 {json.dumps(response_schema)}
 ```
 '''
-# '''
-# If you cannot respond with a complete response, respond with:
-# ```json
-# null
-# ```
-# '''
     response = client.chat.completions.create(
         **chat_completions_args,
         model=model,
