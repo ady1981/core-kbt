@@ -1,4 +1,4 @@
-from common import convert_to_dict, parse_yaml, remove_markdown_code, vfilter, with_key
+from common import convert_to_dict, parse_yaml, remove_markdown_code, vfilter
 
 
 def is_item_semantic_representation(description):

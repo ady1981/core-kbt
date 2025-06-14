@@ -3,7 +3,7 @@ import importlib
 import os
 import traceback
 
-from common import write_json, log_error, read_json, list_files, async_map
+from common import write_json, log_error, read_json, list_files
 
 STATUSES = ['initial', 'running', 'error', 'terminated']
 

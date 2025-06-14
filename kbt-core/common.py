@@ -1,20 +1,19 @@
+import asyncio
 import copy
 import glob
+import hashlib
+import io
 import json
 import os
 import pathlib
 import re
 import sys
-import hashlib
 import time
-import asyncio
-from concurrent.futures import ThreadPoolExecutor
+from functools import reduce
 from typing import TypeVar, List, Callable, Any, Coroutine
 
-from ruamel.yaml import YAML
-from functools import reduce
-import io
 from jinja2 import Environment
+from ruamel.yaml import YAML
 
 
 def read_string(filepath):
