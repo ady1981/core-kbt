@@ -2,7 +2,6 @@ import json
 import os
 import sys
 import traceback
-
 from openai import OpenAI
 
 from common import deep_dict_compare, clear_code_markdown
@@ -10,6 +9,7 @@ from common import deep_dict_compare, clear_code_markdown
 client = OpenAI()
 OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL")
 MODEL = os.getenv("OPENAI_MODEL")
+DEFAULT_TIMEOUT = float(os.getenv("DEFAULT_TIMEOUT", "300.0"))
 
 
 def evaluate(instruction, response_schema, model=MODEL, temperature=0, **chat_completions_args):
@@ -32,7 +32,8 @@ Respond only in JSON format strictly using the provided JSON Schema specificatio
         ],
         response_format={
             "type": "json_object"
-        }
+        },
+        timeout=DEFAULT_TIMEOUT
     )
 
     raw_answer = response.choices[0].message.content
