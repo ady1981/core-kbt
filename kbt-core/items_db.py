@@ -2,6 +2,7 @@ from common import read_yaml, list_files, calc_string_with_zeros, read_string, p
 
 ID_WIDTH = 4
 
+
 def calc_item_directory(name):
     return f'elementary/{name}'
 
