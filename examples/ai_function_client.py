@@ -4,13 +4,15 @@ import os
 import requests
 
 AI_SERVER_BASE_URL = os.getenv('AI_SERVER_BASE_URL', 'http://127.0.0.1:5000')
+API_TOKEN = os.getenv('AI_FUNC_API_TOKEN')
 
 
 def eval_ai_func(func_name, input_data):
     try:
         headers = {
             "Content-Type": "application/json",
-            "Accept": "application/json"
+            "Accept": "application/json",
+            'Api-Token': API_TOKEN
         }
         response = requests.put(f"{AI_SERVER_BASE_URL}/ai-func/{func_name}", headers=headers, json=input_data)
         response.raise_for_status()
@@ -30,17 +32,22 @@ def eval_ai_func(func_name, input_data):
     return None
 
 
-# print(json.dumps(eval_ai_func('generate_what_is', {
-#     'context': 'Geography',
-#     'qualifier': 'capital (in a shortest form)',
-#     'description': 'of Russia'
+print(json.dumps(eval_ai_func('generate_what_is', {
+    'context': 'Geography',
+    'qualifier': 'capital (in a shortest form)',
+    'description': 'of Russia'
+})['json'], indent=2))
+
+# print(json.dumps(eval_ai_func('generate_which_is', {
+#     'meta': {'model': 'deepseek-chat'},
+#     'context': 'LLM prompting',
+#     'qualifier': 'better prompt beginning for LLM',
+#     'options': '''
+# 1. `In a context of "{{context}}".`
+# 2. `In a field of "{{field}}".`
+# '''
 # })['json'], indent=2))
 
-print(json.dumps(eval_ai_func('generate_which_is', {
-    'context': 'LLM prompting',
-    'qualifier': 'better prompt beginning for LLM',
-    'options': '''
-1. `In a context of "{{context}}".`
-2. `In a field of "{{field}}".`
-'''
-})['json'], indent=2))
+# response = requests.put(f"{AI_SERVER_BASE_URL}/state/list-ai-functions", headers={'Api-Token': API_TOKEN, 'accept': 'application/json'})
+# response.raise_for_status()
+# print(json.dumps(response.json(), indent=2))

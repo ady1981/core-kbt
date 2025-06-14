@@ -10,24 +10,38 @@ app = Flask(__name__)
 
 
 MAX_LOGGING_LEN = 512
+API_TOKEN = os.getenv('AI_FUNC_API_TOKEN')
 
 
 def eval_ai_func(func_name, input_data):
     input_data2 = json.dumps(input_data, indent=2)
     print(f'--- eval_ai_func: {func_name}\n{input_data2[0:MAX_LOGGING_LEN] + ('...' if len(input_data2) >= MAX_LOGGING_LEN else '')}\n')
     meta = input_data.get('meta', {})
-    model = meta.get('model', os.environ["OPENAI_MODEL"])
     template_string = read_string(f'ai_functions/{func_name}/prompt.md.j2')
     instruction = render_template(template_string, input_data)
     print(f'--- instruction:\n{instruction[0:MAX_LOGGING_LEN] + ('...' if len(instruction) >= MAX_LOGGING_LEN else '')}\n')
     response_schema = read_yaml(f'ai_functions/{func_name}/output_schema.yaml')
-    response = evaluate(instruction, response_schema, model=model)
+    response = evaluate(instruction, response_schema, **meta)
     json_response = response['json']
     return json_response
 
 
+def is_authorized(request):
+    return request.headers.get('api-token') == API_TOKEN
+
+
+@app.route('/state/list-ai-functions', methods=['PUT'])
+def execute():
+    if not is_authorized(request):
+        return jsonify({"error": "Not authorized"}), 403
+    return jsonify({'result': os.listdir('ai_functions')}), 200
+
+
 @app.route('/ai-func/<function_name>', methods=['PUT'])
 def execute_function(function_name):
+    if not is_authorized(request):
+        return jsonify({"error": "Not authorized"}), 403
+
     if not request.is_json:
         return jsonify({"error": "Request must be JSON"}), 400
 
@@ -42,7 +56,7 @@ def execute_function(function_name):
     # Execute the function with the provided data
     try:
         result = eval_ai_func(function_name, input_data)
-        return jsonify(result), 200
+        return jsonify({'result': result}), 200
     except Exception as e:
         # Catch any other unexpected errors during function execution
         return jsonify({"error": f"{e}"}), 500
@@ -55,4 +69,7 @@ if __name__ == '__main__':
     HOST = os.getenv('HOST', '0.0.0.0')
     DEBUG = bool(os.getenv('DEVELOPMENT', ''))
     PORT = int(os.getenv('PORT', ''))
+    if not API_TOKEN:
+        print('invalid-api-token')
+        exit(1)
     app.run(host=HOST, debug=DEBUG, port=PORT)
