@@ -1,0 +1,58 @@
+import json
+import os
+
+from flask import Flask, request, jsonify
+
+from ai_function import evaluate
+from common import read_string, render_template, read_yaml
+
+app = Flask(__name__)
+
+
+MAX_LOGGING_LEN = 512
+
+
+def eval_ai_func(func_name, input_data):
+    input_data2 = json.dumps(input_data, indent=2)
+    print(f'--- eval_ai_func: {func_name}\n{input_data2[0:MAX_LOGGING_LEN] + ('...' if len(input_data2) >= MAX_LOGGING_LEN else '')}\n')
+    meta = input_data.get('meta', {})
+    model = meta.get('model', os.environ["OPENAI_MODEL"])
+    template_string = read_string(f'ai_functions/{func_name}/prompt.md.j2')
+    instruction = render_template(template_string, input_data)
+    print(f'--- instruction:\n{instruction[0:MAX_LOGGING_LEN] + ('...' if len(instruction) >= MAX_LOGGING_LEN else '')}\n')
+    response_schema = read_yaml(f'ai_functions/{func_name}/output_schema.yaml')
+    response = evaluate(instruction, response_schema, model=model)
+    json_response = response['json']
+    return json_response
+
+
+@app.route('/ai-func/<function_name>', methods=['PUT'])
+def execute_function(function_name):
+    if not request.is_json:
+        return jsonify({"error": "Request must be JSON"}), 400
+
+    try:
+        input_data = request.json
+    except Exception as e:
+        return jsonify({"error": f"Invalid JSON format: {e}"}), 400
+
+    if not isinstance(input_data, dict):
+        return jsonify({"error": "JSON input must be a dictionary of arguments."}), 400
+
+    # Execute the function with the provided data
+    try:
+        result = eval_ai_func(function_name, input_data)
+        return jsonify(result), 200
+    except Exception as e:
+        # Catch any other unexpected errors during function execution
+        return jsonify({"error": f"{e}"}), 500
+
+
+# --- Run the Flask app ---
+if __name__ == '__main__':
+    # For development, set debug=True to get detailed error messages
+    # In production, you'd use a production-ready WSGI server like Gunicorn or uWSGI
+    HOST = os.getenv('HOST', '0.0.0.0')
+    DEBUG = bool(os.getenv('DEVELOPMENT', ''))
+    PORT = int(os.getenv('PORT', ''))
+    app.run(host=HOST, debug=DEBUG, port=PORT)
