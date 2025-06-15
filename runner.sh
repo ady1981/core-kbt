@@ -70,12 +70,10 @@ if [ ! -d "$POETRY_PROJECT_DIR" ]; then
 fi
 
 # Navigate to the Poetry project directory
-echo "Changing directory to $POETRY_PROJECT_DIR..."
 cd "$POETRY_PROJECT_DIR" || { echo "Error: Could not change to directory $POETRY_PROJECT_DIR"; exit 1; }
 
 # --- Dependency Management ---
 
-echo "Checking for Poetry installation..."
 if ! command -v poetry &> /dev/null; then
     echo "Error: Poetry is not installed or not in your PATH."
     echo "Please install Poetry: https://python-poetry.org/docs/#installation"
