@@ -72,3 +72,45 @@ By gradually formulating tasks in the entities of the knowledge base and solving
 * examples of prompt optimization through the trajectory of domain knowledge bases
 * development of tools for conducting research in a specified field based on domain ontology
 * addition of core AI functions.
+
+## Getting started
+
+1. set the values of environment variables, for example for DeepSeek:
+```shell
+DEVELOPMENT=1
+HOST=127.0.0.1
+PORT=5000
+PYTHONUTF8=1
+PYTHONIOENCODING=utf8
+OPENAI_BASE_URL=https://api.deepseek.com
+OPENAI_MODEL=deepseek-chat
+OPENAI_API_KEY=<API_TOKEN>
+AI_FUNC_API_TOKEN=<API_TOKEN>
+```
+2. launch the AI function server:
+```shell
+./runner.sh -s kbt-core/ai_function_server.py
+```
+3. call the AI function [generate_what_is](ai_functions%2Fgenerate_what_is):
+```shell
+source .env
+curl -X PUT "http://127.0.0.1:5000/ai-func/generate_what_is" \
+  -H "Api-Token: $AI_FUNC_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d "{
+  \"context\": \"Geography\",
+  \"qualifier\": \"capital (in a shortest form)\",
+  \"description\": \"of Russia\"
+}"
+```
+Result:
+```
+{
+  "result": {
+    "final_answer": "Moscow",
+    "notes": "Moscow has been the capital since the 15th century, with a brief interruption during the time of the Russian Empire when the capital was moved to Saint Petersburg.",
+    "proof": "Moscow is the capital of Russia as recognized by the Constitution of the Russian Federation and is the political, economic, and cultural center of the country."
+  }
+}
+```

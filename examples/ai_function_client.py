@@ -10,8 +10,8 @@ API_TOKEN = os.getenv('AI_FUNC_API_TOKEN')
 def eval_ai_func(func_name, input_data):
     try:
         headers = {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
             'Api-Token': API_TOKEN
         }
         response = requests.put(f"{AI_SERVER_BASE_URL}/ai-func/{func_name}", headers=headers, json=input_data)

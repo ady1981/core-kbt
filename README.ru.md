@@ -44,12 +44,12 @@ LLM модели пропустили через универсальные ал
 
 ## Фичи фреймворка
 
-* AI-функций со структурированными ответами (см. [ai_functions](ai_functions)):
+* AI-функция со структурированным ответом (см. [ai_functions](ai_functions)):
   * каждой AI-функции соответствует папка c теймплейтом промпта и JSON-схема для ответа:  
     * j2 теймплей для промпта (например: [prompt.md.j2](ai_functions/list_best_tasks_for_llm_effectivess/prompt.md.j2))
     * требуемая JSON схема для ответа (например: [output_schema.yaml](ai_functions/list_best_tasks_for_llm_effectivess/output_schema.yaml))
   * есть `evaluate` метод для вызова AI-функции: [ai_function.py](kbt-core/ai_function.py)
-  * есть серверное приложение для динамического API для вызова любой AI-функции:
+  * есть серверное приложение для динамического web API для вызова любой AI-функции:
     * сервер: [ai_function_server.py](kbt-core%2Fai_function_server.py)
     * сервер авторизует все запросы по API-токену (секрету)
     * пример клиента: [ai_function_client.py](examples%2Fai_function_client.py)
@@ -72,3 +72,45 @@ LLM модели пропустили через универсальные ал
 * примеры оптимизации промптов через траекторию доменных баз знаний
 * разработка инструментов для проведения исследования в выбранной области на основе доменной онтологии
 * дополнение core AI-функций.
+
+## Начало работы
+
+1. задать значения переменных среды, например для DeepSeek:
+```shell
+DEVELOPMENT=1
+HOST=127.0.0.1
+PORT=5000
+PYTHONUTF8=1
+PYTHONIOENCODING=utf8
+OPENAI_BASE_URL=https://api.deepseek.com
+OPENAI_MODEL=deepseek-chat
+OPENAI_API_KEY=<API_TOKEN>
+AI_FUNC_API_TOKEN=<API_TOKEN>
+```
+2. запустить сервер AI-функций:
+```shell
+./runner.sh -s kbt-core/ai_function_server.py
+```
+3. вызвать AI-функцию [generate_what_is](ai_functions%2Fgenerate_what_is):
+```shell
+source .env
+curl -X PUT "http://127.0.0.1:5000/ai-func/generate_what_is" \
+  -H "Api-Token: $AI_FUNC_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d "{
+  \"context\": \"Geography\",
+  \"qualifier\": \"capital (in a shortest form)\",
+  \"description\": \"of Russia\"
+}"
+```
+Результат:
+```
+{
+  "result": {
+    "final_answer": "Moscow",
+    "notes": "Moscow has been the capital since the 15th century, with a brief interruption during the time of the Russian Empire when the capital was moved to Saint Petersburg.",
+    "proof": "Moscow is the capital of Russia as recognized by the Constitution of the Russian Federation and is the political, economic, and cultural center of the country."
+  }
+}
+```
