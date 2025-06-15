@@ -75,7 +75,7 @@ By gradually formulating tasks in the entities of the knowledge base and solving
 
 ## Getting started
 
-1. set the values of environment variables, for example for DeepSeek:
+1. set the values of environment variables in `.env` file, for example for DeepSeek:
 ```shell
 DEVELOPMENT=1
 HOST=127.0.0.1

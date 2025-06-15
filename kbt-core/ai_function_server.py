@@ -18,11 +18,11 @@ API_TOKEN = os.getenv('AI_FUNC_API_TOKEN')
 
 def eval_ai_func(func_name, input_data):
     input_data2 = json.dumps(input_data, indent=2)
-    print(f'--- eval_ai_func: {func_name}\n{input_data2[0:MAX_LOGGING_LEN] + ('...' if len(input_data2) >= MAX_LOGGING_LEN else '')}\n')
+    print(f'--- eval_ai_func: {func_name}\n{input_data2[0:MAX_LOGGING_LEN] + '...' if len(input_data2) >= MAX_LOGGING_LEN else ''}\n')
     meta = input_data.get('meta', {})
     template_string = read_string(f'ai_functions/{func_name}/prompt.md.j2')
     instruction = render_template(template_string, input_data)
-    print(f'--- instruction:\n{instruction[0:MAX_LOGGING_LEN] + ('...' if len(instruction) >= MAX_LOGGING_LEN else '')}\n')
+    print(f'--- instruction:\n{instruction[0:MAX_LOGGING_LEN] + '...' if len(instruction) >= MAX_LOGGING_LEN else ''}\n')
     response_schema = read_yaml(f'ai_functions/{func_name}/output_schema.yaml')
     response = evaluate(instruction, response_schema, **meta)
     json_response = response['json']
