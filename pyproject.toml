@@ -1,7 +1,7 @@
 [project]
-name = "llm-kbt"
+name = "core-kbt"
 version = "0.1.0"
-description = "LLMs Knowledge Base Trajectory"
+description = "Core Knowledge Base Trajectory"
 authors = [
     { name = "andrey.siver", email = "andrey.siver@gmail.com" }
 ]
