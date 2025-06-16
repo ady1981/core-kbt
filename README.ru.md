@@ -75,7 +75,12 @@ LLM модели пропустили через универсальные ал
 
 ## Начало работы
 
-1. задать значения переменных среды в `.env` файле, например для DeepSeek:
+1. Клонируем репо:
+```
+git clone https://github.com/ady1981/core-kbt.git
+cd core-kbt
+```
+2. Задаем значения переменных среды в `.env` файле, например для DeepSeek:
 ```shell
 DEVELOPMENT=1
 HOST=127.0.0.1
@@ -84,14 +89,15 @@ PYTHONUTF8=1
 PYTHONIOENCODING=utf8
 OPENAI_BASE_URL=https://api.deepseek.com
 OPENAI_MODEL=deepseek-chat
-OPENAI_API_KEY=<API_TOKEN>
-AI_FUNC_API_TOKEN=<API_TOKEN>
+OPENAI_API_KEY=<DEEPSEEK_API_TOKEN>
+AI_FUNC_API_TOKEN=<A_SECRET>
 ```
-2. запустить сервер AI-функций:
+2. Запускаем сервер AI-функций:
 ```shell
 ./runner.sh -s kbt-core/ai_function_server.py
 ```
-3. вызвать AI-функцию [generate_what_is](ai_functions%2Fgenerate_what_is):
+3. Допустим мы хотим узнать столицу России. Будем использовать готовую AI-функцию `generate_what_is` с [промптом](ai_functions/generate_what_is/prompt.md.j2) и [JSON-схемой ответа](ai_functions/generate_what_is/output_schema.yaml).
+Вызываем AI-функцию с соответствующими входными параметрами `context`, `qualifier` и `description`:
 ```shell
 source .env
 curl -X PUT "http://127.0.0.1:5000/ai-func/generate_what_is" \
@@ -104,7 +110,7 @@ curl -X PUT "http://127.0.0.1:5000/ai-func/generate_what_is" \
   \"description\": \"of Russia\"
 }"
 ```
-Результат:
+Ответ:
 ```
 {
   "result": {

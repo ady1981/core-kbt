@@ -75,7 +75,12 @@ By gradually formulating tasks in the entities of the knowledge base and solving
 
 ## Getting started
 
-1. set the values of environment variables in `.env` file, for example for DeepSeek:
+1. clone repo:
+```
+git clone https://github.com/ady1981/core-kbt.git
+cd core-kbt
+```
+2. set the values of environment variables in `.env` file, for example for DeepSeek:
 ```shell
 DEVELOPMENT=1
 HOST=127.0.0.1
@@ -84,14 +89,14 @@ PYTHONUTF8=1
 PYTHONIOENCODING=utf8
 OPENAI_BASE_URL=https://api.deepseek.com
 OPENAI_MODEL=deepseek-chat
-OPENAI_API_KEY=<API_TOKEN>
-AI_FUNC_API_TOKEN=<API_TOKEN>
+OPENAI_API_KEY=<DEEPSEEK_API_TOKEN>
+AI_FUNC_API_TOKEN=<A_SECRET>
 ```
 2. launch the AI function server:
 ```shell
 ./runner.sh -s kbt-core/ai_function_server.py
 ```
-3. call the AI function [generate_what_is](ai_functions%2Fgenerate_what_is):
+3. For example, we want to find out the capital of Russia. We will use the ready-made AI function `generate_what_is` with [prompt](ai_functions/generate_what_is/prompt.md.j2) and [JSON response scheme](ai_functions/generate_what_is/output_schema.yaml). Call the AI function with the corresponding input parameters `context`, `qualifier` and `description`:
 ```shell
 source .env
 curl -X PUT "http://127.0.0.1:5000/ai-func/generate_what_is" \
@@ -104,7 +109,7 @@ curl -X PUT "http://127.0.0.1:5000/ai-func/generate_what_is" \
   \"description\": \"of Russia\"
 }"
 ```
-Result:
+Response:
 ```
 {
   "result": {
