@@ -11,9 +11,6 @@
   description: Represents a concept, type, or category.
   subclassOf:
     - '`thing`'
-  disjointWith:
-    - '`property`'
-    - '`instance`'
   item_schema_rules:
     - rule_type: hasAttribute
       rule_parameters: '`definition`'
@@ -25,9 +22,6 @@
 - name: '`property`'
   subclassOf:
     - '`thing`'
-  disjointWith:
-    - '`class`'
-    - '`instance`'
   description: Fundamental building block used to describe the characteristics and relationships of classes.
   comment: Properties define the attributes as connections between classes in the knowledge base. A string or numeric attribute does not require a property definition.
   item_schema_rules:
@@ -115,9 +109,6 @@
   definition: Represents a specific unique instance that exists or existed in a world.
   subclassOf:
     - '`thing`'
-  disjointWith:
-    - '`class`'
-    - '`property`'
   item_schema_rules:
     - rule_type: hasAttribute
       rule_parameters: '`instanceOf`'
