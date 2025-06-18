@@ -49,56 +49,59 @@
     - '`property`'
   description: Describes a relationship of classification or kind for `class`es.
   comment: Indicates that one `class` is a more specific type of another `class`. This is a core relationship for building `class` taxonomies.
-  domain: '`class`'
-  range: '`class`'
+  domainSubclassOf: '`class`'
+  rangeSubclassOf: '`class`'
   is_transitive: true
-  statement_examples:
-    - subject: '`human`'
-      property: '`subclassOf`'
-      object: '`mammal`'
-    - subject: '`mammal`'
-      property: '`subclassOf`'
-      object: '`animal`'
+  subclassOf_examples:
+    - name: '`human`'
+      subclassOf: '`mammal`'
+    - name: '`mammal`'
+      subclassOf: '`animal`'
 
 - name: '`subpropertyOf`'
   subpropertyOf:
     - '`property`'
   description: Describes a relationship of classification or kind for `property`s.
   comment: Indicates that one `property` is a more specific type of another `property`. This is a core relationship for building `property` taxonomies.
-  domain: '`property`'
-  range: '`property`'
+  domainSubclassOf: '`property`'
+  rangeSubclassOf: '`property`'
   is_transitive: true
 
 - name: '`partOf`'
   description: Describes a relationship of composition or containment
   subpropertyOf:
     - '`property`'
-  domain: '`thing`'
-  range: '`thing`'
+  domainSubclassOf: '`thing`'
+  rangeSubclassOf: '`thing`'
   comment: A relationship for describing the structure and composition of items. The `property` is not necessarily transitive in the same way as `subpropertyOf`.
 
 - name: '`structuralPartOf`'
   description: This property describes a relationship where the parts are essential constituents that make up the whole, and the whole cannot exist or function as intended without these specific parts.
   subpropertyOf:
     - '`partOf`'
-  domain: '`thing`'
-  range: '`thing`'
-  instance_examples:
-    - name: '`finger`'
-      instanceOf:
-        - '`thing`'
-      structuralPartOf: '`hand`'
+  domainSubclassOf: '`class`'
+  rangeSubclassOf: '`class`'
+  structuralPartOf_examples:
+    - subpropertyOf: '`structuralPartOf`'
+      domain: '`finger`'
+      range: '`hand`'
+      derived_name: '`finger` `structuralPartOf` `hand`'
 
 - name: '`locatedIn`'
   description: This property describes a relationship where the part is physically or spatially located within the boundaries of the whole.
   subpropertyOf:
     - '`partOf`'
-  domain: '`thing`'
-  range: '`thing`'
+  domainSubclassOf: '`class`'
+  rangeSubclassOf: '`class`'
+  locatedIn_examples:
+    - subpropertyOf: '`locatedIn`'
+      domain: '`capital city`'
+      range: '`country`'
+      derived_name: '`capital city` `locatedIn` `country`'
   instance_examples:
     - name: '`Moscow`'
       instanceOf:
-        - '`Capital City`'
+        - '`capital city`'
       locatedIn: '`Russia`'
 
 - name: '`instanceOf`'
@@ -106,7 +109,7 @@
     - '`property`'
   description: Specifies that this `instance` is an instance of a `class`.
   domain: '`instance`'
-  range: '`class`'
+  rangeSubclassOf: '`class`'
 
 - name: '`instance`'
   definition: Represents a specific unique instance that exists or existed in a world.
@@ -126,32 +129,34 @@
 
 - name: '`disjointWith`'
   subpropertyOf: '`property`'
-  domain: '`class`'
-  range: '`class`'
+  domainSubclassOf: '`class`'
+  rangeSubclassOf: '`class`'
   is_symmetric: true
 
 - name: '`equivalentClass`'
   subpropertyOf: '`property`'
-  domain: '`class`'
-  range: '`class`'
+  domainSubclassOf: '`class`'
+  rangeSubclassOf: '`class`'
   is_symmetric: true
   is_transitive: true
 
 - name: '`unionOf`'
   subpropertyOf: '`property`'
   description: Specifies that a `class` is equivalent to the union of several other `class`es.
-  domain: '`class`'
-  range: '`class`'
+  domainSubclassOf: '`class`'
+  rangeSubclassOf: '`class`'
 
 - name: '`disjointUnionOf`'
   subpropertyOf: '`unionOf`'
-  description: Specifies that a `class` is equivalent to the union of several other `classes`, and that these constituent `classes` are pairwise disjoint.
-  domain: '`class`'
-  range: '`class`'
-  statement_examples:
-    - subject: '`parent`'
-      property: '`disjointUnionOf`'
-      object: '`father`'
-    - subject: '`parent`'
-      property: '`disjointUnionOf`'
-      object: '`mother`'
+  description: Specifies that a `class` is equivalent to the union of several other `class`es, and that these constituent `class`es are pairwise disjoint.
+  domainSubclassOf: '`class`'
+  rangeSubclassOf: '`class`'
+  disjointUnionOf_examples:
+    - subpropertyOf: '`disjointUnionOf`'
+      domain: '`father`'
+      range: '`parent`'
+      derived_name: '`father` `disjointUnionOf` `parent`'
+    - subpropertyOf: '`disjointUnionOf`'
+      domain: '`mother`'
+      range: '`parent`'
+      derived_name: '`mother` `disjointUnionOf` `parent`'
