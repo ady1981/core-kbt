@@ -65,8 +65,8 @@
   description: Describes a relationship of composition or containment
   subpropertyOf:
     - '`property`'
-  domainSubclassOf: '`thing`'
-  rangeSubclassOf: '`thing`'
+  domainSubclassOf: '`class`'
+  rangeSubclassOf: '`class`'
   comment: A relationship for describing the structure and composition of items. The `property` is not necessarily transitive in the same way as `subpropertyOf`.
 
 - name: '`structuralPartOf`'
