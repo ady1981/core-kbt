@@ -69,6 +69,8 @@ By gradually formulating tasks in the entities of the knowledge base and solving
 ## Directions for the further development
 
 * integration with Langfuse for traceability and quality assessment of prompts
+* integration with Wikidata (search and download Wikidata items as entities in the elementary database)
+* calculation of an AI function through the custom python `evaluate` method and calculating the value of an AI function  through other AI functions 
 * examples of prompt optimization through the trajectory of domain knowledge bases
 * development of tools for conducting research in a specified field based on domain ontology
 * addition of core AI functions.
