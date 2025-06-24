@@ -34,14 +34,14 @@ def eval_ai_func(func_name, input_data):
 
 print(json.dumps(eval_ai_func('generate_what_is', {
     'context': 'Geography',
-    'qualifier': 'capital (in a shortest form)',
+    'attribute': 'capital (in a shortest form)',
     'description': 'of Russia'
 })['json'], indent=2))
 
 # print(json.dumps(eval_ai_func('generate_which_is', {
 #     'meta': {'model': 'deepseek-chat'},
 #     'context': 'LLM prompting',
-#     'qualifier': 'better prompt beginning for LLM',
+#     'attribute': 'better prompt beginning for LLM',
 #     'options': '''
 # 1. `In a context of "{{context}}".`
 # 2. `In a field of "{{field}}".`
