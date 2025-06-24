@@ -98,7 +98,7 @@ AI_FUNC_API_TOKEN=<A_SECRET>
 ```shell
 ./runner.sh -s kbt-core/ai_function_server.py
 ```
-3. For example, we want to find out the capital of Russia. We will use the ready-made AI function `generate_what_is` with [prompt](ai_functions/generate_what_is/prompt.md.j2) and [JSON response scheme](ai_functions/generate_what_is/output_schema.yaml). Call the AI function with the corresponding input parameters `context`, `qualifier` and `description`:
+3. For example, we want to find out the capital of Russia. We will use the ready-made AI function `generate_what_is` with [prompt](ai_functions/generate_what_is/prompt.md.j2) and [JSON response scheme](ai_functions/generate_what_is/output_schema.yaml). Call the AI function with the corresponding input parameters `context`, `attribute` and `description`:
 ```shell
 source .env
 curl -X PUT "http://127.0.0.1:5000/ai-func/generate_what_is" \
@@ -107,7 +107,7 @@ curl -X PUT "http://127.0.0.1:5000/ai-func/generate_what_is" \
   -H "Accept: application/json" \
   -d "{
   \"context\": \"Geography\",
-  \"qualifier\": \"capital (in a shortest form)\",
+  \"attribute\": \"capital (in a shortest form)\",
   \"description\": \"of Russia\"
 }"
 ```

@@ -4,6 +4,6 @@ curl -X PUT "http://127.0.0.1:5000/ai-func/generate_what_is" \
   -H "Accept: application/json" \
   -d "{
   \"context\": \"Geography\",
-  \"qualifier\": \"capital (in a shortest form)\",
+  \"attribute\": \"capital (in a shortest form)\",
   \"description\": \"of Russia\"
 }"
