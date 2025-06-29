@@ -1,0 +1,32 @@
+{
+  "type": "array",
+  "items": [
+    {
+      "type": "object",
+      "properties": {
+        "reasoning": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "subclassOf": {
+          "type": "array",
+          "items": [
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "comment": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "subclassOf"
+      ],
+      "additionalProperties": true
+    }
+  ]
+}
