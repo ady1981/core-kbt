@@ -3,6 +3,8 @@ import os
 
 import requests
 
+from common import read_yaml
+
 AI_SERVER_BASE_URL = os.getenv('AI_SERVER_BASE_URL', 'http://127.0.0.1:5000')
 API_TOKEN = os.getenv('AI_FUNC_API_TOKEN')
 
@@ -32,11 +34,16 @@ def eval_ai_func(func_name, input_data):
     return None
 
 
-print(json.dumps(eval_ai_func('generate_what_is', {
-    'context': 'Geography',
-    'attribute': 'capital (in a shortest form)',
-    'description': 'of Russia'
-})['json'], indent=2))
+# response = requests.put(f"{AI_SERVER_BASE_URL}/state/list-ai-functions", headers={'Api-Token': API_TOKEN, 'accept': 'application/json'})
+# response.raise_for_status()
+# print(json.dumps(response.json(), indent=2))
+
+
+# print(json.dumps(eval_ai_func('generate_what_is', {
+#     'context': 'Geography',
+#     'attribute': 'capital (in a shortest form)',
+#     'description': 'of Russia'
+# })['json'], indent=2))
 
 # print(json.dumps(eval_ai_func('generate_which_is', {
 #     'meta': {'model': 'deepseek-chat'},
@@ -48,6 +55,8 @@ print(json.dumps(eval_ai_func('generate_what_is', {
 # '''
 # })['json'], indent=2))
 
-# response = requests.put(f"{AI_SERVER_BASE_URL}/state/list-ai-functions", headers={'Api-Token': API_TOKEN, 'accept': 'application/json'})
-# response.raise_for_status()
-# print(json.dumps(response.json(), indent=2))
+result = eval_ai_func('rewrite_thing_by_examples', {
+    'item': 'TextRewritingTask',
+    'examples': ['codeGeneration', 'conversationalAgent', 'questionAnswering']
+})['json']
+print(json.dumps(result, indent=2))
