@@ -338,3 +338,6 @@ def remove_markdown_code(text, lang=''):
     prefix_to_remove = f'```{lang}\n'
     suffix_to_remove = f'```'
     return text.strip().removeprefix(prefix_to_remove).removesuffix(suffix_to_remove)
+
+def log_str(s):
+    sys.stderr.write(s + '\n')

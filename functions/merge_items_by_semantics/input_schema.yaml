@@ -1,0 +1,17 @@
+type: object
+properties:
+  meta:
+    type: object
+  item_json_schema:
+    type: object
+  arrays:
+    type: array
+    items:
+      type: object
+  merge_strategy:
+    type: string
+required:
+  - item_json_schema
+  - arrays
+  - merge_strategy
+additionalProperties: false

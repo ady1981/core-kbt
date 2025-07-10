@@ -3,6 +3,7 @@ import os
 
 import requests
 
+import ai_function
 from common import read_yaml
 
 AI_SERVER_BASE_URL = os.getenv('AI_SERVER_BASE_URL', 'http://127.0.0.1:5000')
@@ -55,8 +56,9 @@ def eval_ai_func(func_name, input_data):
 # '''
 # })['json'], indent=2))
 
-result = eval_ai_func('rewrite_thing_by_examples', {
+result = ai_function.evaluate('rewrite_thing_by_examples', {
+    'context': 'Task types for LLM', 
     'item': 'TextRewritingTask',
     'examples': ['codeGeneration', 'conversationalAgent', 'questionAnswering']
-})['json']
+})
 print(json.dumps(result, indent=2))

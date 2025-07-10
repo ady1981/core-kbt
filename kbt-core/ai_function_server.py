@@ -5,36 +5,18 @@ from dotenv import load_dotenv
 import os
 import json
 
+from common import log_str
+
 load_dotenv()
 
 from flask import Flask, request, jsonify
 
 from ai_function import evaluate
-from common import read_string, render_template, read_yaml
 
 app = Flask(__name__)
 
 MAX_LOGGING_LEN = 512
 API_TOKEN = os.getenv('AI_FUNC_API_TOKEN')
-
-
-def log_str(s):
-    sys.stderr.write(s + '\n')
-
-
-def eval_ai_func(func_name, input_data):
-    input_data2 = json.dumps(input_data, indent=2)
-    log_str(
-        f'--- eval_ai_func: {func_name}\n{input_data2[0:MAX_LOGGING_LEN] + ' ...'}\n')
-    meta = input_data.get('meta', {})
-    template_string = read_string(f'ai_functions/{func_name}/prompt.md.j2')
-    instruction = render_template(template_string, input_data)
-    log_str(
-        f'--- instruction:\n{instruction[0:MAX_LOGGING_LEN] + ' ...'}\n')
-    response_schema = read_yaml(f'ai_functions/{func_name}/output_schema.yaml')
-    response = evaluate(instruction, response_schema, **meta)
-    json_response = response['json']
-    return json_response
 
 
 def is_authorized(request):
@@ -68,7 +50,7 @@ def execute_function(function_name):
 
     # Execute the function with the provided data
     try:
-        result = eval_ai_func(function_name, input_data)
+        result = evaluate(function_name, input_data)
         return jsonify({'result': result}), 200
     except Exception as e:
         log_str('--- Unknown error:')

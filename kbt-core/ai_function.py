@@ -4,15 +4,16 @@ import sys
 import traceback
 from openai import OpenAI
 
-from common import deep_dict_compare, clear_code_markdown
+from common import deep_dict_compare, clear_code_markdown, read_string, render_template, read_yaml, log_str
 
 client = OpenAI()
 OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL")
 MODEL = os.getenv("OPENAI_MODEL")
 DEFAULT_TIMEOUT = float(os.getenv("DEFAULT_TIMEOUT", "300.0"))
+MAX_LOGGING_LEN = int(os.getenv('MAX_LOGGING_LEN'))
 
 
-def evaluate(instruction, response_schema, model=MODEL, temperature=0, **chat_completions_args):
+def evaluate2(instruction, response_schema, model=MODEL, temperature=0, **chat_completions_args):
     prompt = instruction + f'''
 # RESPONSE FORMAT
 Respond only in JSON format strictly using the provided JSON Schema specification for your response: 
@@ -55,3 +56,18 @@ Respond only in JSON format strictly using the provided JSON Schema specificatio
         answer2['model_base_url'] = OPENAI_BASE_URL
         answer2['model_name'] = model
         return answer2
+
+
+def evaluate(func_name, input_data):
+    input_data2 = json.dumps(input_data, indent=2)
+    log_str(
+        f'--- evaluate: {func_name}\n{input_data2[0:MAX_LOGGING_LEN] + ' ...'}\n')
+    meta = input_data.get('meta', {})
+    template_string = read_string(f'ai_functions/{func_name}/prompt.md.j2')
+    instruction = render_template(template_string, input_data)
+    log_str(
+        f'--- instruction:\n{instruction[0:MAX_LOGGING_LEN] + ' ...'}\n')
+    response_schema = read_yaml(f'ai_functions/{func_name}/output_schema.yaml')
+    response = evaluate2(instruction, response_schema, **meta)
+    json_response = response['json']
+    return json_response

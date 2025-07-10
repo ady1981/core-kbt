@@ -1,6 +1,6 @@
 import json
 
-from ai_function import evaluate
+from ai_function import evaluate2
 from common import read_string, read_yaml, render_template, format_markdown_code
 
 TEXT = 'Moscow is a Capital City of Russia.'
@@ -18,6 +18,6 @@ def calc_instruction(text):
 instruction = calc_instruction(TEXT)
 print(f'--- instruction:\n{instruction}')
 response_schema = read_yaml(f'ai_functions/{AI_FUN_NAME}/output_schema.yaml')
-response = evaluate(instruction, response_schema)
+response = evaluate2(instruction, response_schema)
 json_response = response['json']
 print('=== Response:\n' + json.dumps(json_response, indent=2))
