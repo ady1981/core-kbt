@@ -23,7 +23,7 @@ The new opportunities provided by GenAI technologies require new approaches to t
 LLM models have passed large amounts of textual information through generalized algorithms, and it should be expected that the LLM model's internal representation of the world will correspond to how people represent knowledge. The closest way to the human way of representing knowledge is the ontological representation. Therefore, it should be expected that the ontological representation will be the bridge between the "world of LLM representations" and the human representation of knowledge, which is necessary for the effective solution of practical problems.
 
 It is proposed to use the following upper-level, more or less universal approach to solving the problem using LLM:
-  * develop an upper-level ontology that should be convenient and understandable to LM and humans: [ontology-kb-classes/_all.yaml](elementary%2Fontology-kb-classes%2F_all.yaml)
+  * develop a top level ontology that should be convenient and understandable to LM and humans: [ontology-kb-classes/_all.yaml](elementary%2Fontology-kb-classes%2F_all.yaml)
   * develop typical domain ontologies that can be used for specific tasks (example: [comparison-kb-classes/_all.yaml](elementary%2Fcomparison-kb-classes%2F_all.yaml))
   * solve the problem in the following formulation:
     divide the information on the problem into the following blocks (`<I, as an LLM researcher, describe ...>`):
@@ -37,7 +37,7 @@ By gradually formulating tasks in the entities of the knowledge base and solving
 
 * AI functions for fast creation and use of information processing functions via LLM, with a structured response
 * database for YAML/JSON entities in file representation: fast and convenient data entry for AI processing, convenient editing of entities before and after AI processing
-* if the JSON schema for YAML/JSON entities is not enough, to deepen knowledge to solve the problem, a consistent development of a domain ontology is needed for this task: you can use a ready-made top-level ontology as a base for creating a domain ontology: see [ontology-kb-classes/_all.yaml](elementary%2Fontology-kb-classes%2F_all.yaml)
+* if the JSON schema for YAML/JSON entities is not enough, to deepen knowledge to solve the problem, a consistent development of a domain ontology is needed for this task: you can use a ready-made top level ontology as a base for creating a domain ontology: see [ontology-kb-classes/_all.yaml](elementary%2Fontology-kb-classes%2F_all.yaml)
 * development of domain knowledge base trajectories: YAML/JSON entities and the state of the knowledge base are stored as files in git, which makes it convenient to mutate the values of knowledge base entities through git branching for further optimization and search for the best state of the knowledge base
 * you can configure the CI pipeline for the git repository with the launch of the AI function server: as a result, you will get a convenient cycle of AI function development and domain knowledge base support
 * persistent processes for convenient implementation of processing logic, processing planning, caching responses from external services and debugging.
@@ -57,7 +57,7 @@ By gradually formulating tasks in the entities of the knowledge base and solving
   * each entity has a folder with entity elements represented as files
   * for ease of editing, the value for the entity field can be loaded from a file.
   * there is an API for working with entities: see [items_db.py](kbt-core/items_db.py)
-* a ready-made version of a small upper-level basic ontology that is understandable to LLM and humans: [ontology-kb-classes/_all.yaml](elementary%2Fontology-kb-classes%2F_all.yaml)
+* a ready-made version of a small top level basic ontology that is understandable to LLM and humans: [ontology-kb-classes/_all.yaml](elementary%2Fontology-kb-classes%2F_all.yaml)
 * persistent processes for convenient implementation of processing logic, processing scheduling, caching responses from external services, and debugging (see  [processes](processes)):
   * a persistent process has input (input data for the process), state (current state of the process) and `status`: `initial` -> `running` -> (`terminated` | `error`)
   * processes can be started asynchronously in a set number of threads 
@@ -71,7 +71,7 @@ By gradually formulating tasks in the entities of the knowledge base and solving
 * integration with Langfuse for traceability and quality assessment of prompts
 * integration with Wikidata (search and download Wikidata items as entities in the elementary database)
 * calculation of an AI function through the custom python `evaluate` method and calculating the value of an AI function  through other AI functions 
-* examples of prompt optimization through the trajectory of domain knowledge bases
+* examples of prompt optimization through the trajectory of domain knowledge bases using AI agents
 * development of tools for conducting research in a specified field based on domain ontology
 * addition of core AI functions.
 
