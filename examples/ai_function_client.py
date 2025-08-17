@@ -3,8 +3,7 @@ import os
 
 import requests
 
-import ai_function
-from common import read_yaml
+from common import parse_yaml
 
 AI_SERVER_BASE_URL = os.getenv('AI_SERVER_BASE_URL', 'http://127.0.0.1:5000')
 API_TOKEN = os.getenv('AI_FUNC_API_TOKEN')
@@ -56,9 +55,21 @@ def eval_ai_func(func_name, input_data):
 # '''
 # })['json'], indent=2))
 
-result = ai_function.evaluate('rewrite_thing_by_examples', {
-    'context': 'Task types for LLM', 
-    'item': 'TextRewritingTask',
-    'examples': ['codeGeneration', 'conversationalAgent', 'questionAnswering']
-})
+# result = ai_function_template.evaluate('rewrite_thing_by_examples', {
+#     'context': 'Task types for LLM',
+#     'item': 'TextRewritingTask',
+#     'examples': ['codeGeneration', 'conversationalAgent', 'questionAnswering']
+# })
+
+left = ["codeGeneration","conversationalAgent","informationExtraction","textSummarization","languageTranslation","questionAnswering","textGeneration","textClassification"]
+right = ["TextRewritingTask","LanguageTranslationTask","InformationExtractionTask","TextClassificationTask","TextGenerationTask","SummarizationTask"]
+array_item_json_schema = parse_yaml('''
+type: array
+items:
+  - type: string
+    description: a task type for LLM
+''')
+merge_strategy = {'not_comparable': 'merge', 'comparable_not_equal': 'merge'}
+result = eval_ai_func('merge_items_by_semantics',
+                      {'array_item_json_schema': array_item_json_schema, 'arrays': [left, right], 'merge_strategy': merge_strategy})
 print(json.dumps(result, indent=2))

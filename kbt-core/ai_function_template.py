@@ -3,8 +3,11 @@ import os
 import sys
 import traceback
 from openai import OpenAI
+from dotenv import load_dotenv
 
 from common import deep_dict_compare, clear_code_markdown, read_string, render_template, read_yaml, log_str
+
+load_dotenv()
 
 client = OpenAI()
 OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL")
@@ -60,6 +63,7 @@ Respond only in JSON format strictly using the provided JSON Schema specificatio
 
 def calc_module_name(func_name):
     return f'ai_function_templates/{func_name}'
+
 
 def evaluate(func_name, input_data):
     #input_data2 = json.dumps(input_data, indent=2)

@@ -47,7 +47,3 @@ def rewrite_items_by_examples(items, example_items, array_item_json_schema):
         'examples': example_items
     })['rewritten_item'] for c in items]
     return r
-
-
-def merge_equivalence_items(equivalence_items2, merge_strategy):
-    raise NotImplementedError()

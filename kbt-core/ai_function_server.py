@@ -1,17 +1,16 @@
-import sys
+import os
 import traceback
 
 from dotenv import load_dotenv
-import os
-import json
 
+import ai_function
+import ai_function_template
+from ai_function import calc_function_type, PY_IMPL_FUN_TYPE, J2_FUN_TYPE
 from common import log_str
 
 load_dotenv()
 
 from flask import Flask, request, jsonify
-
-from ai_function_template import evaluate
 
 app = Flask(__name__)
 
@@ -31,7 +30,7 @@ def execute():
 
 
 @app.route('/ai-func/<function_name>', methods=['PUT'])
-def execute_function(function_name):
+async def execute_function(function_name):
     if not is_authorized(request):
         return jsonify({"error": "Not authorized"}), 403
 
@@ -48,10 +47,19 @@ def execute_function(function_name):
     if not isinstance(input_data, dict):
         return jsonify({"error": "JSON input must be a dictionary of arguments."}), 400
 
-    # Execute the function with the provided data
     try:
-        result = evaluate(function_name, input_data)
-        return jsonify({'result': result}), 200
+        # Execute the function with the provided data
+        ai_func_type = calc_function_type(function_name)
+        if ai_func_type == PY_IMPL_FUN_TYPE:
+            result = await ai_function.evaluate_function(function_name, input_data)
+        elif ai_func_type == J2_FUN_TYPE:
+            result = ai_function_template.evaluate(function_name, input_data)
+        else:
+            result = None
+        if result is not None:
+            return jsonify({'result': result}), 200
+        else:
+            return jsonify({"error": f"Invalid AI-function"}), 400
     except Exception as e:
         log_str('--- Unknown error:')
         log_str(traceback.format_exc())
