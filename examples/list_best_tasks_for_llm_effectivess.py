@@ -1,7 +1,7 @@
 import json
 import os
 
-from ai_function import evaluate2
+from ai_function_template import evaluate2
 from common import read_string, read_yaml, render_template, write_json
 
 AI_FUN_NAME = 'list_best_tasks_for_llm_effectivess'
