@@ -92,6 +92,10 @@ def dump_yaml(data):
     return yaml_string
 
 
+def dump_json(data, indent=2):
+    return json.dumps(data, indent=indent)
+
+
 def setvalue(adict, key, value):
     adict[key] = value
     return adict
@@ -339,5 +343,14 @@ def remove_markdown_code(text, lang=''):
     suffix_to_remove = f'```'
     return text.strip().removeprefix(prefix_to_remove).removesuffix(suffix_to_remove)
 
+
 def log_str(s):
     sys.stderr.write(s + '\n')
+
+
+def first(arr):
+    return arr[0]
+
+
+def rest(arr):
+    return arr[1:]
