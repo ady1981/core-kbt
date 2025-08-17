@@ -44,10 +44,10 @@ LLM модели пропустили через универсальные ал
 
 ## Фичи фреймворка
 
-* AI-функция со структурированным ответом (см. [ai_functions](ai_functions)):
+* AI-функция со структурированным ответом (см. [ai_functions](ai_function_templates)):
   * каждой AI-функции соответствует папка c теймплейтом промпта и JSON-схема для ответа:  
-    * j2 теймплей для промпта (например: [prompt.md.j2](ai_functions/list_best_tasks_for_llm_effectivess/prompt.md.j2))
-    * требуемая JSON схема для ответа (например: [output_schema.yaml](ai_functions/list_best_tasks_for_llm_effectivess/output_schema.yaml))
+    * j2 теймплей для промпта (например: [prompt.md.j2](ai_function_templates/list_best_tasks_for_llm_effectivess/prompt.md.j2))
+    * требуемая JSON схема для ответа (например: [output_schema.yaml](ai_function_templates/list_best_tasks_for_llm_effectivess/output_schema.yaml))
   * есть `evaluate` метод для вызова AI-функции: [ai_function.py](kbt-core/ai_function.py)
   * есть серверное приложение для динамического web API для вызова любой AI-функции:
     * сервер: [ai_function_server.py](kbt-core%2Fai_function_server.py)
@@ -98,7 +98,7 @@ AI_FUNC_API_TOKEN=<A_SECRET>
 ```shell
 ./runner.sh -s kbt-core/ai_function_server.py
 ```
-3. Допустим мы хотим узнать столицу России. Будем использовать готовую AI-функцию `generate_what_is` с [промптом](ai_functions/generate_what_is/prompt.md.j2) и [JSON-схемой ответа](ai_functions/generate_what_is/output_schema.yaml).
+3. Допустим мы хотим узнать столицу России. Будем использовать готовую AI-функцию `generate_what_is` с [промптом](ai_function_templates/generate_what_is/prompt.md.j2) и [JSON-схемой ответа](ai_function_templates/generate_what_is/output_schema.yaml).
 Вызываем AI-функцию с соответствующими входными параметрами `context`, `attribute` и `description`:
 ```shell
 source .env

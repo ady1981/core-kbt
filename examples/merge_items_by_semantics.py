@@ -1,5 +1,5 @@
 from common import parse_yaml, dump_json
-from function import evaluate_function
+from ai_function import evaluate_function
 from asyncio import run
 
 FUN_NAME = 'merge_items_by_semantics'

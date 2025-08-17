@@ -44,10 +44,10 @@ By gradually formulating tasks in the entities of the knowledge base and solving
 
 ## The framework features
 
-* AI functions with structured responses (see [ai_functions](ai_functions)):
+* AI functions with structured responses (see [ai_functions](ai_function_templates)):
   * each AI function has a folder with a sample of the prompt and a JSON schema for the response:
-    * j2 sample for the prompt (for example: [prompt.md.j2](ai_functions/list_best_tasks_for_llm_effectivess/prompt.md.j2))
-    * the required JSON schema for the response (for example: [output_schema.yaml](ai_functions/list_best_tasks_for_llm_effectivess/output_schema.yaml))
+    * j2 sample for the prompt (for example: [prompt.md.j2](ai_function_templates/list_best_tasks_for_llm_effectivess/prompt.md.j2))
+    * the required JSON schema for the response (for example: [output_schema.yaml](ai_function_templates/list_best_tasks_for_llm_effectivess/output_schema.yaml))
   * there is an `evaluate` method for calling AI function: [ai_function.py](kbt-core/ai_function.py)
   * there is a server application for a dynamic API for calling any AI function:
     * server: [ai_function_server.py](kbt-core%2Fai_function_server.py)
@@ -98,7 +98,7 @@ AI_FUNC_API_TOKEN=<A_SECRET>
 ```shell
 ./runner.sh -s kbt-core/ai_function_server.py
 ```
-3. For example, we want to find out the capital of Russia. We will use the ready-made AI function `generate_what_is` with [prompt](ai_functions/generate_what_is/prompt.md.j2) and [JSON response scheme](ai_functions/generate_what_is/output_schema.yaml). Call the AI function with the corresponding input parameters `context`, `attribute` and `description`:
+3. For example, we want to find out the capital of Russia. We will use the ready-made AI function `generate_what_is` with [prompt](ai_function_templates/generate_what_is/prompt.md.j2) and [JSON response scheme](ai_function_templates/generate_what_is/output_schema.yaml). Call the AI function with the corresponding input parameters `context`, `attribute` and `description`:
 ```shell
 source .env
 curl -X PUT "http://127.0.0.1:5000/ai-func/generate_what_is" \

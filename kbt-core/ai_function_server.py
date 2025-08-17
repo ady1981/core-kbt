@@ -11,7 +11,7 @@ load_dotenv()
 
 from flask import Flask, request, jsonify
 
-from ai_function import evaluate
+from ai_function_template import evaluate
 
 app = Flask(__name__)
 

@@ -1,11 +1,11 @@
 from functools import reduce
 
-import ai_function
+import ai_function_template
 from common import first, rest
 
 
 def merge_arrays(left, right, array_item_json_schema, merge_strategy):
-    equivalence_items = ai_function.evaluate('estimate_arity2_array_criterial_semantic_equivalence', {'array_1': left, 'array_2': right, 'item_json_schema': array_item_json_schema})
+    equivalence_items = ai_function_template.evaluate('estimate_arity2_array_criterial_semantic_equivalence', {'array_1': left, 'array_2': right, 'item_json_schema': array_item_json_schema})
 
     upd_items = []
 
@@ -41,7 +41,7 @@ async def evaluate(input_data):
 
 def rewrite_items_by_examples(items, example_items, array_item_json_schema):
     context = array_item_json_schema['items'][0]['description']
-    r = [ai_function.evaluate('rewrite_thing_by_examples', {
+    r = [ai_function_template.evaluate('rewrite_thing_by_examples', {
         'context': context,
         'item': c,
         'examples': example_items
