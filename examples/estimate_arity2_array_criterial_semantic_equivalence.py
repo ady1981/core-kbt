@@ -16,7 +16,7 @@ def calc_instruction():
     template_string = read_string(f'ai_functions/{AI_FUN_NAME}/prompt.md.j2')
     array_1 = ["codeGeneration","conversationalAgent","informationExtraction","textSummarization","languageTranslation","questionAnswering","textGeneration","textClassification"]
     array_2 = ["TextRewritingTask","LanguageTranslationTask","InformationExtractionTask","TextClassificationTask","TextGenerationTask","SummarizationTask"]
-    item_json_schema = parse_yaml('''
+    array_item_json_schema = parse_yaml('''
 type: array
 items:
   - type: string
@@ -24,7 +24,7 @@ items:
 ''')
     data = {'array_1': format_markdown_code('json', json.dumps(array_1, indent=2)),
             'array_2': format_markdown_code('json', json.dumps(array_2, indent=2)),
-            'item_json_schema': item_json_schema}
+            'item_json_schema': array_item_json_schema}
     return render_template(template_string, data)
 
 
