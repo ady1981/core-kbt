@@ -1,0 +1,8 @@
+type: object
+properties:
+  reasoning:
+    type: string
+  final_rebuilt_list:
+    type: array
+    items:
+      type: string

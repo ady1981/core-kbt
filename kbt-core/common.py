@@ -354,3 +354,7 @@ def first(arr):
 
 def rest(arr):
     return arr[1:]
+
+
+def get_first_key(adict):
+    return next(iter(adict))

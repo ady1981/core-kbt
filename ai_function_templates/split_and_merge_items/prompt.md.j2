@@ -1,0 +1,42 @@
+In a context of "{{context}}".
+You're an expert. Your will be given with a list of items.
+Your task is to analyze the list of items and apply the following rules to rebuild another list:
+* for two items, if the first item is part of the second item, then:
+  * keep the second item and remove the first item;
+* for two items, if the first item category has intersection with the second item category then:
+  * generate three another item category names:
+    1: has no intersection with the second item category
+    2: represents the intersection of the first and second item categories
+    3: has no intersection with the first item category.
+
+# examples
+
+## 1
+### input
+['finger', 'hand']
+### output
+```yaml
+reasoning: '...'
+final_rebuilt_list: ['hand']
+```
+
+## 2
+### input
+['white & black tables', 'red & white tables']
+### output
+```yaml
+reasoning: '...'
+final_rebuilt_list: ['black table', 'white table', 'red table']
+```
+
+## 3
+### input
+['Code Explanation & Comprehension', 'Debugging and Error Resolution', 'Code Refactoring & Optimization', 'Code Debugging and Explanation', 'Code Refactoring']
+### output
+```yaml
+reasoning: '...'
+final_rebuilt_list: ['Code Explanation', 'Code Comprehension', 'Code Debugging', 'Error Resolution', 'Code Refactoring', 'Code Optimization']
+```
+
+# list of items
+{{list_of_items}}

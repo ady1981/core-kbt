@@ -1,18 +1,22 @@
-from common import convert_to_dict, parse_yaml, remove_markdown_code, vfilter
+from common import convert_to_dict, parse_yaml, remove_markdown_code, vfilter, get_first_key
 
 
-def is_item_semantic_representation(description):
-    extra_meta = convert_to_dict(parse_yaml(remove_markdown_code(description, lang='yaml')))
-    return extra_meta.get('semantic_type') == 'item_semantic_representation'
+def is_prompt_target_item(description):
+    if description is not None:
+        extra_meta = convert_to_dict(parse_yaml(remove_markdown_code(description, lang='yaml')))
+        return extra_meta.get('is_prompt_target', False)
+    else:
+        return False
 
 
-def calc_semantic_schema(array_json_schema):
-    semantic_properties = vfilter(lambda _k, v:
-                                  is_item_semantic_representation(v.get('description')) if (v.get('description') is not None) else False,
-                                  array_json_schema['properties'])
-    upd_required_properties = list(semantic_properties.keys())
+def calc_prompt_target_json_schema(array_json_schema):
+    prompt_target_properties = vfilter(lambda _k, v:
+                                  is_prompt_target_item(v.get('description')) if (v.get('description') is not None) else False,
+                                  dict(array_json_schema['items']['properties']))
     return {
         'type': 'array',
-        'properties': semantic_properties,
-        'required': upd_required_properties
+        'items': {
+            'type': 'string',
+            'description': get_first_key(prompt_target_properties)
+        }
     }
