@@ -9,7 +9,7 @@ def is_prompt_target_item(description):
         return False
 
 
-def calc_prompt_target_json_schema(array_json_schema):
+def calc_prompt_target_list_json_schema(array_json_schema):
     prompt_target_properties = vfilter(lambda _k, v:
                                   is_prompt_target_item(v.get('description')) if (v.get('description') is not None) else False,
                                   dict(array_json_schema['items']['properties']))
