@@ -1,0 +1,72 @@
+expected_task_class:
+  generative_based:
+    - transformational:
+      - fill_mask
+      - instructed_transform
+    - instructed_generate
+  retrieval_based:
+    - semantic_similarity_question_answering:
+        - factual_retrieve
+        - synthesis_retrieve
+  discriminative_based:
+    - classification
+expected_answer_class:
+  - fact
+  - definition
+  - definition_extension__description__illustration__explanation__clarification__example
+  - new_knowledge_inference__thinking__reasoning__decision_argumentation
+  - verify_correctness__establish_truth__prove
+  - comparison
+  - summary
+  - points_of_divergence__difference
+  - procedure__instruction
+  - opinion
+  - hypothesis__prediction
+  - paraphrase__representation
+  - semantically_nearest_thing
+  - semantic_entailment__causal
+  - semantic_relation
+  - classification_class
+expected_answer_size:
+  by_word_count:
+    less_then: <number>
+classification_class:
+  - aspect
+procedure_instruction_subtype:
+  - solution
+definition_subtype:
+  - simple
+  - with_maximum_details
+explanation_subtype:
+  - advantages_and_disadvantages__pros_and_cons
+semantically_nearest_thing_subtype:
+  - another_thing_class:
+    - critique
+    - map_of_content
+    - writing_ideas
+paraphrase_representation_subtype:
+  - term
+  - synonym idiom
+  - improvement
+prompt_aspect:
+  independent_primary_aspects:
+    with_explicit_domain__specific_context: <bool>
+    reasoning_aspects:
+      - structured_reasoning: <bool>
+      - more_in_depth_reasoning: <bool>
+      - high_level_quality_only: <bool>
+      - accountability__traceability__credibility__evidence_based_reasoning: <bool>
+    writing_style:
+      - sophisticated__specialized__precise_language: <bool>
+      - with_verifiable_expertise: <bool>
+    grounding_explainability: <bool>
+  other_aspects:
+    complete__explicit_answer: <bool>
+    explicit_answer_with_lack_of_information: <bool>
+    all_issues_addressed: <bool>
+    without_unsured_things: <bool>
+    with_explicit_source_attribution: <bool>
+    with_role_framing: <str>
+    with_source_attribution_and_verifiability: <bool>
+    with_reasoning_aspects:
+    with_explicit_validation_demand: <bool>
