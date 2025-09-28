@@ -26,15 +26,15 @@
   comment: Properties define the attributes as connections between classes in the knowledge base. A string or numeric attribute does not require a property definition.
   item_schema_rules:
     - rule_type: hasAttribute
-      rule_parameters: '`domain`'
+      rule_parameters: '`domainSubclassOf`'
     - rule_type: hasAttribute
-      rule_parameters: '`range`'
+      rule_parameters: '`rangeSubclassOf`'
     - rule_type: hasAttribute
-      rule_parameters: '`is_transitive`'
+      rule_parameters: '`isTransitive`'
     - rule_type: hasAttribute
-      rule_parameters: '`is_symmetric`'
+      rule_parameters: '`isSymmetric`'
     - rule_type: hasAttribute
-      rule_parameters: '`is_functional`'
+      rule_parameters: '`isFunctional`'
     - rule_type: hasNoAttribute
       rule_parameters: '`instanceOf`'
 
@@ -45,7 +45,7 @@
   comment: Indicates that one `class` is a more specific type of another `class`. This is a core relationship for building `class` taxonomies.
   domainSubclassOf: '`class`'
   rangeSubclassOf: '`class`'
-  is_transitive: true
+  isTransitive: true
   subclassOf_examples:
     - name: '`human`'
       subclassOf: '`mammal`'
@@ -59,7 +59,7 @@
   comment: Indicates that one `property` is a more specific type of another `property`. This is a core relationship for building `property` taxonomies.
   domainSubclassOf: '`property`'
   rangeSubclassOf: '`property`'
-  is_transitive: true
+  isTransitive: true
 
 - name: '`partOf`'
   description: Describes a relationship of composition or containment
@@ -77,8 +77,8 @@
   rangeSubclassOf: '`class`'
   structuralPartOf_examples:
     - subpropertyOf: '`structuralPartOf`'
-      domain: '`finger`'
-      range: '`hand`'
+      domainSubclassOf: '`finger`'
+      rangeSubclassOf: '`hand`'
       derived_name: '`finger` `structuralPartOf` `hand`'
 
 - name: '`locatedIn`'
@@ -89,8 +89,8 @@
   rangeSubclassOf: '`class`'
   locatedIn_examples:
     - subpropertyOf: '`locatedIn`'
-      domain: '`capital city`'
-      range: '`country`'
+      domainSubclassOf: '`capital city`'
+      rangeSubclassOf: '`country`'
       derived_name: '`capital city` `locatedIn` `country`'
   instance_examples:
     - name: '`Moscow`'
@@ -102,7 +102,7 @@
   subpropertyOf:
     - '`property`'
   description: Specifies that this `instance` is an instance of a `class`.
-  domain: '`instance`'
+  domainSubclassOf: '`instance`'
   rangeSubclassOf: '`class`'
 
 - name: '`instance`'
@@ -122,14 +122,14 @@
   subpropertyOf: '`property`'
   domainSubclassOf: '`class`'
   rangeSubclassOf: '`class`'
-  is_symmetric: true
+  isSymmetric: true
 
 - name: '`equivalentClass`'
   subpropertyOf: '`property`'
   domainSubclassOf: '`class`'
   rangeSubclassOf: '`class`'
-  is_symmetric: true
-  is_transitive: true
+  isSymmetric: true
+  isTransitive: true
 
 - name: '`unionOf`'
   subpropertyOf: '`property`'
@@ -144,10 +144,10 @@
   rangeSubclassOf: '`class`'
   disjointUnionOf_examples:
     - subpropertyOf: '`disjointUnionOf`'
-      domain: '`father`'
-      range: '`parent`'
+      domainSubclassOf: '`father`'
+      rangeSubclassOf: '`parent`'
       derived_name: '`father` `disjointUnionOf` `parent`'
     - subpropertyOf: '`disjointUnionOf`'
-      domain: '`mother`'
-      range: '`parent`'
+      domainSubclassOf: '`mother`'
+      rangeSubclassOf: '`parent`'
       derived_name: '`mother` `disjointUnionOf` `parent`'
