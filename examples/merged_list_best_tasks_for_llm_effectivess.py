@@ -7,11 +7,12 @@ from ai_function_template import evaluate2
 from common import read_string, read_yaml, render_template, write_json, log_str
 from json_schema_extension import calc_prompt_target_list_json_schema
 
-AIM_AI_FUN_NAME = 'list_best_tasks_for_llm_effectivess'
-CONTEXT = 'information technology'
-TASKS_RANGE = '3-10'
+CONTEXT = '"information technology"'
+TASKS_RANGE = '1-3'
 # TASK_AREA = 'software development'
-TASK_AREA = 'symbolic reasoning'
+TASK_AREA = '"description logics" (DL)'
+##
+AIM_AI_FUN_NAME = 'list_best_tasks_for_llm_effectivess'
 
 
 def evaluate_aim_ai_function(model):
@@ -66,15 +67,13 @@ async def main():
         model_results = [evaluate_aim_ai_function(c) for c in models]
         # model_results = [read_json(f'temp/{c}') for c in ['list_best_tasks_for_llm_effectivess.deepseek-deepseek-chat.response.json', 'list_best_tasks_for_llm_effectivess.google-gemini-2-0-flash.response.json']]
         lists = extract_lists(model_results)
-        prompt_target_list_json_schema = calc_prompt_target_list_json_schema(read_yaml(f'ai_function_templates/{AIM_AI_FUN_NAME}/output_schema.yaml')['properties']['tasks'])
+        array_json_schema = read_yaml(f'ai_function_templates/{AIM_AI_FUN_NAME}/output_schema.yaml')['properties']['tasks']
+        prompt_target_list_json_schema = calc_prompt_target_list_json_schema(array_json_schema)
         log_str(f'lists: {lists}')
         log_str(f'prompt_target_list_json_schema: {prompt_target_list_json_schema}')
         updated_list = await merge_semantically_lists_into_list(models[0], lists, prompt_target_list_json_schema)
-        log_str(f'updated_list: {updated_list}')
-        updated_list2 = split_and_merge_items(models[0], updated_list)
-        write_json(updated_list2, f'temp/merged_list_best_tasks_for_llm_effectivess.json')
-        result = updated_list2['final_rebuilt_list']
-        print(result)
+        write_json(updated_list, f'temp/merged_list_best_tasks_for_llm_effectivess.json')
+        print(updated_list)
 
 
 run(main())

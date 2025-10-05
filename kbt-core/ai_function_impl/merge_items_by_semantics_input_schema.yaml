@@ -4,10 +4,19 @@ properties:
     type: object
   array_item_json_schema:
     type: object
+    examples:
+      - |
+        {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "a task type for NLP"
+          }
+        }
   arrays:
     type: array
     items:
-      type: object
+      type: string
   merge_strategy:
     type: object
     properties:

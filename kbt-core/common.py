@@ -358,3 +358,10 @@ def rest(arr):
 
 def get_first_key(adict):
     return next(iter(adict))
+
+
+def with_model_input_data(input_data, model):
+    if model is not None and model:
+        return with_key(input_data, 'meta', with_key(input_data.get('meta', {}), 'model', model))
+    else:
+        return input_data
