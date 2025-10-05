@@ -9,8 +9,15 @@ AI_FUN_NAME = 'split_and_merge_items'
 
 def calc_instruction():
     template_string = read_string(f'ai_function_templates/{AI_FUN_NAME}/prompt.md.j2')
-    context = 'information technology'
-    list_of_items = ['Debugging and Error Resolution', 'Code Refactoring & Optimization', 'Code Debugging and Explanation', 'Code Refactoring', 'Code Explanation & Comprehension']
+    context = '"description logic"'
+    list_of_items = [
+      "Axiom and Concept Translation",
+      "Ontology Learning and Population",
+      "Approximate and Explainable Query Answering",
+      "Knowledge Base Population and Axiom Generation",
+      "Natural Language to Query Translation",
+      "Reasoning Outcome Explanation and Debugging"
+    ]
     data = {'context': context,
             'list_of_items': list_of_items}
     return render_template(template_string, data)
