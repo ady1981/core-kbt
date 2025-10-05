@@ -52,12 +52,11 @@ def calc_context(array_item_json_schema):
 
 def rewrite_items_by_examples(model, items, example_items, array_item_json_schema):
     context = calc_context(array_item_json_schema)
-    r = [ai_function_template.evaluate('rewrite_thing_by_examples', {
-        'meta': {'model': model},
+    r = [ai_function_template.evaluate('rewrite_thing_by_examples', with_model_input_data({
         'context': context,
         'item': c,
         'examples': example_items
-    })['rewritten_item'] for c in items]
+    }, model))['rewritten_item'] for c in items]
     return r
 
 
