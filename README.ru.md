@@ -109,7 +109,7 @@ curl -X PUT "http://127.0.0.1:5000/ai-func/generate_what_is" \
   -d "{
   \"context\": \"Geography\",
   \"attribute\": \"capital (in a shortest form)\",
-  \"description\": \"of Russia\"
+  \"attribute_description\": \"of Russia\"
 }"
 ```
 Ответ:
