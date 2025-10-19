@@ -1,32 +1,18 @@
-{
-  "type": "array",
-  "items": [
-    {
-      "type": "object",
-      "properties": {
-        "reasoning": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "subpropertyOf": {
-          "type": "array",
-          "items": [
-            {
-              "type": "string"
-            }
-          ]
-        },
-        "comment": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "name",
-        "subpropertyOf"
-      ],
-      "additionalProperties": true
-    }
-  ]
-}
+type: array
+items:
+- type: object
+  properties:
+    reasoning:
+      type: string
+    name:
+      type: string
+    subpropertyOf:
+      type: array
+      items:
+      - type: string
+    comment:
+      type: string
+  required:
+  - name
+  - subpropertyOf
+  additionalProperties: true
