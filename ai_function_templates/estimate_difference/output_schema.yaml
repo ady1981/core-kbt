@@ -1,0 +1,62 @@
+type: object
+properties:
+  has_many_difference_aspects:
+    type: boolean
+  points_of_divergence_by_aspects:
+    type: [array, null]
+    items:
+      type: object
+      properties:
+        aspect_name:
+          type: string
+        reasoning:
+          type: string
+        _1:
+          type: object
+          properties:
+            difference_description:
+              type: string
+            difference_in_short:
+              type: string
+            required:
+              - difference_in_short
+        _2:
+          type: object
+          properties:
+            difference_description:
+              type: string
+            difference_in_short:
+              type: string
+            required:
+              - difference_in_short
+      required:
+        - aspect_name
+        - reasoning
+        - _1
+        - _2
+  difference_summary:
+    type: object
+    properties:
+      _1:
+        type: object
+        properties:
+          difference_description:
+            type: string
+          difference_in_short:
+            type: string
+          required:
+            - difference_in_short
+      _2:
+        type: object
+        properties:
+          difference_description:
+            type: string
+          difference_in_short:
+            type: string
+          required:
+            - difference_in_short
+  other_notes:
+    type: string
+  required:
+    - has_many_difference_aspects
+    - difference_summary
