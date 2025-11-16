@@ -1,7 +1,5 @@
 type: object
 properties:
-  has_many_difference_aspects:
-    type: boolean
   points_of_divergence_by_aspects:
     type: [array, null]
     items:
@@ -9,54 +7,34 @@ properties:
       properties:
         aspect_name:
           type: string
-        reasoning:
-          type: string
         _1:
           type: object
           properties:
-            difference_description:
+            difference_reasoning:
               type: string
-            difference_in_short:
+            difference_as_term:
               type: string
-            required:
-              - difference_in_short
+              description: The difference value in a nutshell as a term
+          required:
+            - difference_as_term
         _2:
           type: object
           properties:
-            difference_description:
+            difference_reasoning:
               type: string
-            difference_in_short:
+            difference_as_term:
               type: string
-            required:
-              - difference_in_short
+              description: The difference value in a nutshell as a term
+          required:
+            - difference_as_term
       required:
         - aspect_name
-        - reasoning
         - _1
         - _2
-  difference_summary:
-    type: object
-    properties:
-      _1:
-        type: object
-        properties:
-          difference_description:
-            type: string
-          difference_in_short:
-            type: string
-          required:
-            - difference_in_short
-      _2:
-        type: object
-        properties:
-          difference_description:
-            type: string
-          difference_in_short:
-            type: string
-          required:
-            - difference_in_short
+  has_extra_difference_aspects?:
+    type: boolean
   other_notes:
     type: string
   required:
-    - has_many_difference_aspects
-    - difference_summary
+    - points_of_divergence_by_aspects
+    - has_extra_difference_aspects?
