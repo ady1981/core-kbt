@@ -1,0 +1,82 @@
+task: extractive_summarization
+description:
+  same_as:
+    - An elementary LLM generative task focused on extracting the most salient sentences or phrases directly from the input content to form a summary, without paraphrasing or generating new text.
+    - Generates a summary by selecting the most important sentences or phrases directly from the input content.
+input_fields:
+  - name: content
+    group: content
+    description: The primary text document or corpus from which the summary must be extracted.
+    required: true
+    type: string
+    same_as: [ text, source_material, input_text ]
+    affect_on_aspect: [ _ALL ]
+
+  - name: size
+    group: summarizing_strategy
+    description: Defines the desired length or scope of the extracted summary.
+    required: false
+    data_type: string
+    default: "sentence_count"
+    same_as: [ summary_type, summarization_approach ]
+    affect_on_aspect: [ length, completeness ]
+    allowed_values:
+      - "sentence_count" # e.g., "Extract the top 5 sentences."
+      - "percentage"       # e.g., "Extract content equivalent to 10% of the original length."
+      - "keyword_density"  # e.g., "Ensure the summary covers X number of key entities."
+
+  - name: desired_length
+    group: summarizing_strategy
+    description: The specific numerical value corresponding to the `size` parameter (e.g., 5 if size is 'sentence_count', or 0.1 if size is 'percentage').
+    required: false
+    same_as: [ target_length_value ]
+    data_type: number
+    affect_on_aspect: [ length ]
+
+  - name: focus_keywords
+    group: context_and_constraints
+    description: A list of specific terms, entities, or concepts that the extracted summary *must* prioritize or include.
+    required: false
+    data_type: list[string]
+    same_as: [ emphasis_terms, required_entities ]
+    affect_on_aspect: [ relevance, coverage ]
+
+  - name: extraction_method
+    group: summarizing_strategy
+    description: Specifies the underlying mechanism or heuristic the model should use for sentence scoring/selection (if applicable to the specific LLM implementation).
+    required: false
+    data_type: string
+    default: "saliency_ranking"
+    same_as: [ selection_algorithm ]
+    affect_on_aspect: [ quality, coherence ]
+    allowed_values:
+      - "saliency_ranking" # Default: Rank sentences based on importance score.
+      - "positional_bias"  # Prioritize first/last sentences (common in document structures).
+      - "redundancy_aware" # Select sentences that maximize information gain while minimizing overlap.
+
+  - name: sentence_ranking_method
+    group: summarizing_strategy
+    description: The underlying method used to score and rank the importance of sentences within the content.
+    same_as: [ ranking_algorithm, selection_metric ]
+    required: false
+    data_type: string
+    default: "tfidf_based"
+    affect_on_aspect: [ quality, determinism ]
+    allowed_values:
+      - "tfidf_based"      # Traditional term frequency/inverse document frequency scoring
+      - "positional_bias"  # Prioritizes sentences near the beginning/end
+      - "semantic_similarity" # Ranks sentences based on similarity to the document's overall centroid/topic
+      - "lexical_overlap"  # Focuses on sentences containing many unique or high-frequency words
+
+  - name: output_format
+    group: output_specification
+    description: Defines how the extracted segments should be presented in the final output.
+    required: false
+    data_type: string
+    default: "concatenated_sentences"
+    same_as: [ presentation_style ]
+    affect_on_aspect: [ readability ]
+    allowed_values:
+      - "concatenated_sentences" # Sentences joined sequentially.
+      - "bullet_points"          # Each extracted sentence presented as a list item.
+      - "original_order"         # Extracted sentences must maintain their original sequence in the source document.

@@ -1,0 +1,83 @@
+task: abstractive_summarization
+description:
+  same_as:
+    - Generates a concise, novel summary of the input content, capturing the main ideas without directly copying sentences from the source.
+input_fields:
+  - name: content
+    group: content
+    description: The primary text document or passage to be summarized.
+    required: true
+    same_as: [ text, source_material, input_text ]
+    affect_on_aspect: [ _ALL ]
+    data_type: string
+
+  - name: size
+    group: summarizing_strategy
+    description: Specifies the desired length or scope of the output summary.
+    required: false
+    default: "medium"
+    same_as: [ summary_type, summarization_approach, output_length ]
+    affect_on_aspect: [ length, verbosity ]
+    allowed_values:
+      - "very_short" # e.g., one sentence or headline
+      - "short"      # e.g., 1-3 sentences, tweet length
+      - "medium"     # e.g., 1-3 paragraphs, standard abstract length
+      - "long"       # e.g., detailed summary, multiple paragraphs
+      - "custom_tokens" # Requires 'target_token_count' to be specified
+
+  - name: desired_length
+    group: summarizing_strategy
+    description: Specific target length for the summary when 'size' is set to 'custom_tokens'.
+    required: false
+    same_as: [ target_length_value ]
+    affect_on_aspect: [ length ]
+    data_type: integer
+
+  - name: focus_keywords
+    group: context_and_constraints
+    description: A list of specific terms or concepts that the summary must prioritize or include.
+    required: false
+    same_as: [ key_topics, required_entities ]
+    affect_on_aspect: [ content_relevance, inclusion_criteria ]
+    data_type: list[string]
+
+  - name: tone
+    group: output_style
+    description: The desired stylistic tone of the generated summary.
+    required: false
+    default: "neutral"
+    same_as: [ style, voice ]
+    affect_on_aspect: [ style ]
+    allowed_values:
+      - "neutral"
+      - "formal"
+      - "informal"
+      - "technical"
+      - "persuasive"
+      - "objective"
+
+  - name: audience
+    group: context_and_constraints
+    description: The intended reader of the summary, used to adjust complexity and vocabulary.
+    required: false
+    default: "general"
+    same_as: [ target_user, reading_level ]
+    affect_on_aspect: [ complexity, vocabulary ]
+    allowed_values:
+      - "general"
+      - "expert"
+      - "layman"
+      - "child"
+      - "executive"
+
+  - name: coherence_level
+    group: summarizing_strategy
+    description: Controls the degree to which the LLM should restructure and synthesize the information (higher value implies more abstractive rewriting).
+    required: false
+    default: 0.8
+    same_as: [ abstraction_degree, synthesis_level ]
+    affect_on_aspect: [ abstraction, fluency ]
+    data_type: float
+    constraints:
+      min_value: 0.0 # Purely extractive (if supported by model)
+      max_value: 1.0 # Highly abstractive and synthesized

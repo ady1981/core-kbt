@@ -1,0 +1,61 @@
+task: categorization
+same_as:
+  - classification
+description:
+  same_as: "A task where the LLM assigns one or more predefined categories to a given input item."
+input_fields:
+  - name: thing
+    group: input_things
+    required: true
+    data_type: string
+    description: "The item (text, concept, entity, etc.) that needs to be categorized."
+    same_as:
+      - "text_to_process"
+      - "item_to_classify"
+    affect_on_aspect:
+      - _ALL
+
+  - name: categories
+    group: categories
+    required: true
+    data_type: list[string]
+    description: "A list of mutually exclusive or non-exclusive labels/categories against which the 'thing' should be evaluated."
+    same_as:
+      - "labels"
+      - "taxonomy"
+    affect_on_aspect:
+      - _ALL
+
+  - name: context
+    group: context
+    required: false
+    data_type: string
+    description: "Optional contextual information that helps the LLM disambiguate the 'thing' or select the most appropriate category."
+    same_as:
+      - "background_information"
+    affect_on_aspect:
+      - _ALL
+
+  - name: categorization_type
+    group: constraints
+    required: false
+    data_type: enum(single_label, multi_label)
+    default: "single_label"
+    description: "Specifies whether the output should contain exactly one category (single_label) or zero to many categories (multi_label)."
+    same_as:
+      - "output_mode"
+    affect_on_aspect:
+      - output_format
+      - output_constraints
+
+  - name: confidence_threshold
+    group: constraints
+    required: false
+    data_type: float
+    default: 0.0
+    description: "If the LLM supports confidence scoring, only return categories whose assigned probability exceeds this threshold (between 0.0 and 1.0)."
+    same_as:
+      - "min_score"
+    affect_on_aspect:
+      - output_content
+      - output_constraints
