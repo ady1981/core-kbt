@@ -1,153 +1,228 @@
-- name: '`thing`'
-  description: Can be only a `class`, `property` or an `instance`.
-  item_schema_rules:
-    - rule_type: hasAttribute
-      rule_parameters: '`name`'
-    - rule_type: hasAttribute
-      rule_parameters: '`item_schema_rules`'
-  comment: The most fundamental concept in the knowledge base, representing anything that can be described or related.
+- name: '`anything`'
+  description: 'A wrapper meta-class to represent anything that can be described or related: a `class`, a `property` or an `instance`'
+  comment: The `anything`, the `class`, the `property` and the `instance` are the only meta-classes
+  isMetaClass: true
+  itemSchemaRules:
+    - ruleType: hasAttribute
+      ruleParameters: '`itemSchemaRules`'
+    - ruleType: hasAttribute
+      ruleParameters:
+        oneOf:
+          - '`name`'
+          - '`constructedKeyName`'
+          - '`attributeName`'
+    - ruleType: hasAttribute
+      ruleParameters: '`namespace`'
+    - ruleType: allowAnyDatatypeAttributes
+  itemSchemaRulesExamples:
+    - ruleType: hasAttribute
+      ruleParameters:
+        attribute: '`color`'
+        valueJSONSchema:
+          type: string
+          enum: [ black, white ]
+    - ruleType: cardinalityRestriction
+      ruleParameters:
+        class: '`book`'
+        property: '`hasAuthor`'
+        minCardinality: 1
+        maxCardinality: 1
 
-- name: '`class`'
-  description: Represents a concept, type, or category.
-  subclassOf:
-    - '`thing`'
-  item_schema_rules:
-    - rule_type: hasAttribute
-      rule_parameters: '`definition`'
-    - rule_type: hasAttribute
-      rule_parameters: '`subclassOf`'
-    - rule_type: hasNoAttribute
-      rule_parameters: '`instanceOf`'
+- subclassOf: [ '`anything`' ]
+  isMetaClass: true
+  name: '`class`'
+  description: 'Fundamental building block to represent a concept, type, or category'
+  itemExtraSchemaRules:
+    - ruleType: hasAttribute
+      ruleParameters: '`definition`'
+    - ruleType: hasAttribute
+      ruleParameters: '`subclassOf`'
+    - ruleType: hasNoAttribute
+      ruleParameters: '`instanceOf`'
 
-- name: '`property`'
-  subclassOf:
-    - '`thing`'
-  description: Fundamental building block used to describe the characteristics and relationships of classes.
-  comment: Properties define the attributes as connections between classes in the knowledge base. A string or numeric attribute does not require a property definition.
-  item_schema_rules:
-    - rule_type: hasAttribute
-      rule_parameters: '`domainSubclassOf`'
-    - rule_type: hasAttribute
-      rule_parameters: '`rangeSubclassOf`'
-    - rule_type: hasAttribute
-      rule_parameters: '`isTransitive`'
-    - rule_type: hasAttribute
-      rule_parameters: '`isSymmetric`'
-    - rule_type: hasAttribute
-      rule_parameters: '`isFunctional`'
-    - rule_type: hasNoAttribute
-      rule_parameters: '`instanceOf`'
+- subclassOf: [ '`anything`' ]
+  isMetaClass: true
+  name: '`property`'
+  description: 'Fundamental building block used to describe the characteristics and relationships of classes: define attributes as connections between classes'
+  itemExtraSchemaRules:
+    - ruleType: hasAttribute
+      ruleParameters: '`attributeName`'
+    - ruleType: hasAttribute
+      ruleParameters: '`domainSubclassOf`'
+    - ruleType: hasAttribute
+      ruleParameters: '`rangeSubclassOf`'
+    - ruleType: hasAttribute
+      ruleParameters: '`isTransitive`'
+    - ruleType: hasAttribute
+      ruleParameters: '`isSymmetric`'
+    - ruleType: hasAttribute
+      ruleParameters: '`isFunctional`'
+    - ruleType: hasAttribute
+      ruleParameters: '`isInverseFunctional`'
+    - ruleType: hasNoAttribute
+      ruleParameters: '`instanceOf`'
 
-- name: '`subclassOf`'
-  subpropertyOf:
-    - '`property`'
-  description: Describes a relationship of classification or kind for `class`es.
-  comment: Indicates that one `class` is a more specific type of another `class`. This is a core relationship for building `class` taxonomies.
+- attributeName: '`subclassOf`'
+  subpropertyOf: [ '`property`' ]
+  description: Describes a relationship of classification or kind for `class`es
+  comment: Indicates that one `class` is a more specific type of another `class`
   domainSubclassOf: '`class`'
   rangeSubclassOf: '`class`'
-  isTransitive: true
-  subclassOf_examples:
+  classExamples:
     - name: '`human`'
       subclassOf: '`mammal`'
+      definition: ...
     - name: '`mammal`'
       subclassOf: '`animal`'
+      definition: ...
 
-- name: '`subpropertyOf`'
-  subpropertyOf:
-    - '`property`'
-  description: Describes a relationship of classification or kind for `property`s.
-  comment: Indicates that one `property` is a more specific type of another `property`. This is a core relationship for building `property` taxonomies.
+- attributeName: '`subpropertyOf`'
+  subpropertyOf: [ '`property`' ]
+  description: Describes a relationship of classification or kind for `property`s
+  comment: Indicates that one `property` is a more specific type of another `property`
   domainSubclassOf: '`property`'
   rangeSubclassOf: '`property`'
   isTransitive: true
 
-- name: '`partOf`'
+- attributeName: '`partOf`'
   description: Describes a relationship of composition or containment
-  subpropertyOf:
-    - '`property`'
+  subpropertyOf: [ '`property`' ]
   domainSubclassOf: '`class`'
   rangeSubclassOf: '`class`'
-  comment: A relationship for describing the structure and composition of items. The `property` is not necessarily transitive in the same way as `subpropertyOf`.
+  comment: A relationship for describing the structure and composition of items. The `property` is not necessarily transitive in the same way as `subpropertyOf`
 
-- name: '`structuralPartOf`'
-  description: This property describes a relationship where the parts are essential constituents that make up the whole, and the whole cannot exist or function as intended without these specific parts.
-  subpropertyOf:
-    - '`partOf`'
+- attributeName: '`structuralPartOf`'
+  description: This property describes a relationship where the parts are essential constituents that make up the whole, and the whole cannot exist or function as intended without these specific parts
+  subpropertyOf: [ '`partOf`' ]
   domainSubclassOf: '`class`'
   rangeSubclassOf: '`class`'
-  structuralPartOf_examples:
+  propertyExamples:
     - subpropertyOf: '`structuralPartOf`'
       domainSubclassOf: '`finger`'
       rangeSubclassOf: '`hand`'
-      derived_name: '`finger` `structuralPartOf` `hand`'
+      constructedKeyName: '`structuralPartOf_hand`'
+      attributeName: '`structuralPartOf_hand`'
+      isTransitive: false
 
-- name: '`locatedIn`'
-  description: This property describes a relationship where the part is physically or spatially located within the boundaries of the whole.
-  subpropertyOf:
-    - '`partOf`'
+- attributeName: '`locatedIn`'
+  description: This property describes a relationship where the part is physically or spatially located within the boundaries of the whole
+  subpropertyOf: [ '`partOf`' ]
   domainSubclassOf: '`class`'
   rangeSubclassOf: '`class`'
-  locatedIn_examples:
+  propertyExamples:
     - subpropertyOf: '`locatedIn`'
-      domainSubclassOf: '`capital city`'
+      domainSubclassOf: '`capitalCity`'
       rangeSubclassOf: '`country`'
-      derived_name: '`capital city` `locatedIn` `country`'
-  instance_examples:
+      constructedKeyName: '`locatedIn_country`'
+      attributeName: '`locatedIn_country`'
+  instanceExamples:
     - name: '`Moscow`'
-      instanceOf:
-        - '`capital city`'
-      locatedIn: '`Russia`'
+      instanceOf: '`capitalCity`'
+      locatedIn_country: '`Russia`'
 
-- name: '`instanceOf`'
-  subpropertyOf:
-    - '`property`'
-  description: Specifies that this `instance` is an instance of a `class`.
+- attributeName: '`instanceOf`'
+  subpropertyOf: [ '`property`' ]
+  description: Specifies that this `instance` is an instance of a `class`
   domainSubclassOf: '`instance`'
   rangeSubclassOf: '`class`'
+  isFunctional: true
 
-- name: '`instance`'
-  definition: Represents a specific unique instance that exists or existed in a world.
-  subclassOf:
-    - '`thing`'
-  item_schema_rules:
-    - rule_type: hasAttribute
-      rule_parameters: '`instanceOf`'
-    - rule_type: hasNoAttribute
-      rule_parameters: '`subclassOf`'
-    - rule_type: hasNoAttribute
-      rule_parameters: '`definition`'
-  comment: Every `instance` thing should be instance of a specific `class`.
+- subclassOf: [ '`anything`' ]
+  isMetaClass: true
+  name: '`instance`'
+  description: Fundamental building block to represent a specific unique instance that exists in a world (or in a conceptual world). Every `instance` should be an instance of a specific `class`.
+  itemExtraSchemaRules:
+    - ruleType: hasAttribute
+      ruleParameters: '`instanceOf`'
+    - ruleType: hasNoAttribute
+      ruleParameters: '`subclassOf`'
+    - ruleType: hasNoAttribute
+      ruleParameters: '`definition`'
+    - ruleType: hasAttribute
+      ruleParameters:
+        attribute: '`sameAs`'
+        valueJSONSchema:
+          type: array
+          items:
+            type: string
+  comment: Axiomatically an `instance` is also an instance of the `instance` meta-class too.
 
-- name: '`disjointWith`'
-  subpropertyOf: '`property`'
+- attributeName: '`disjointWith`'
+  subpropertyOf: [ '`property`' ]
   domainSubclassOf: '`class`'
   rangeSubclassOf: '`class`'
   isSymmetric: true
 
-- name: '`equivalentClass`'
-  subpropertyOf: '`property`'
+- attributeName: '`equivalentClass`'
+  subpropertyOf: [ '`property`' ]
   domainSubclassOf: '`class`'
   rangeSubclassOf: '`class`'
   isSymmetric: true
   isTransitive: true
 
-- name: '`unionOf`'
-  subpropertyOf: '`property`'
-  description: Specifies that a `class` is equivalent to the union of several other `class`es.
+- attributeName: '`unionOf`'
+  subpropertyOf: [ '`property`' ]
+  description: Specifies that a `class` is equivalent to the union of several other `class`es
   domainSubclassOf: '`class`'
   rangeSubclassOf: '`class`'
 
-- name: '`disjointUnionOf`'
-  subpropertyOf: '`unionOf`'
-  description: Specifies that a `class` is equivalent to the union of several other `class`es, and that these constituent `class`es are pairwise disjoint.
+- attributeName: '`disjointUnionOf`'
+  subpropertyOf: [ '`unionOf`' ]
+  description: Specifies that a `class` is equivalent to the union of several other `class`es, and that these constituent `class`es are pairwise disjoint
   domainSubclassOf: '`class`'
   rangeSubclassOf: '`class`'
-  disjointUnionOf_examples:
-    - subpropertyOf: '`disjointUnionOf`'
-      domainSubclassOf: '`father`'
-      rangeSubclassOf: '`parent`'
-      derived_name: '`father` `disjointUnionOf` `parent`'
-    - subpropertyOf: '`disjointUnionOf`'
-      domainSubclassOf: '`mother`'
-      rangeSubclassOf: '`parent`'
-      derived_name: '`mother` `disjointUnionOf` `parent`'
+  classExamples:
+    - name: '`parent`'
+      subclassOf: [ '`person`' ]
+      definition: ...
+      disjointUnionOf:
+        - '`father`'
+        - '`mother`'
+- name: '`aspect`'
+  subclassOf: [ '`class`' ]
+  definition: The `class` is used to represent a specific facet, perspective, or dimension of a more complex `anything`
+  disjointUnionOf:
+    - '`classAspect`'
+    - '`instanceAspect`'
+  itemExtraSchemaRules:
+    - ruleType: hasAttribute
+      ruleParameters: '`value`'
+    - ruleType: hasAttribute
+      ruleParameters: '`isComparable`'
+    - ruleType: hasAttribute
+      ruleParameters:
+        attribute: '`comparisonOrderValue`'
+        valueJSONSchema:
+          type: integer
+
+- name: '`classAspect`'
+  subclassOf: [ '`aspect`' ]
+
+- attributeName: '`appliesToClass`'
+  subpropertyOf: [ '`property`' ]
+  domainSubclassOf: '`classAspect`'
+  rangeSubclassOf: '`class`'
+  isTransitive: true
+
+- name: '`instanceAspect`'
+  subclassOf: [ '`aspect`' ]
+  instanceExamples:
+    - name: '`expertness`'
+      namespace: '`example`'
+      instanceOf: '`instanceAspect`'
+      appliesToInstance: '`someText`'
+      value: '`high`'
+      isComparable: true
+      comparisonOrderValue: 2
+      itemExtraSchemaRules:
+        - ruleType: hasAttribute
+          ruleParameters:
+            attribute: '`value`'
+            valueJSONSchema:
+              type: string
+              enum: [ '`low`', '`high`' ]
+
+- attributeName: '`appliesToInstance`'
+  subpropertyOf: [ '`property`' ]
+  domainSubclassOf: '`instanceAspect`'
+  rangeSubclassOf: '`instance`'
