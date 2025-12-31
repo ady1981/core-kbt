@@ -1,6 +1,5 @@
 - name: '`anything`'
-  description: 'A wrapper meta-class to represent anything that can be described or related: a `class`, a `property` or an `instance`'
-  comment: The `anything`, the `class`, the `property` and the `instance` are the only meta-classes
+  description: A wrapper meta-class to represent anything. The `anything`, the `class`, the `property` and the `instance` are the only meta-classes
   isMetaClass: true
   itemSchemaRules:
     - ruleType: hasAttribute
@@ -82,14 +81,13 @@
   comment: Indicates that one `property` is a more specific type of another `property`
   domainSubclassOf: '`property`'
   rangeSubclassOf: '`property`'
-  isTransitive: true
 
 - attributeName: '`partOf`'
   description: Describes a relationship of composition or containment
   subpropertyOf: [ '`property`' ]
   domainSubclassOf: '`class`'
   rangeSubclassOf: '`class`'
-  comment: A relationship for describing the structure and composition of items. The `property` is not necessarily transitive in the same way as `subpropertyOf`
+  comment: A relationship for describing the structure and composition of items. The `isTransitive` value should be specified in a subproperty.
 
 - attributeName: '`structuralPartOf`'
   description: This property describes a relationship where the parts are essential constituents that make up the whole, and the whole cannot exist or function as intended without these specific parts
