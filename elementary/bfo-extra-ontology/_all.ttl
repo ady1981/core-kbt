@@ -1,0 +1,59 @@
+@prefix :          <domain_knowledge#> .
+@prefix owl:       <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:       <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:      <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix obo:       <http://purl.obolibrary.org/obo/> .
+
+# Ontology header
+: a owl:Ontology ;
+    rdfs:label "Comparable Aspects Ontology"@en ;
+    owl:imports <http://purl.obolibrary.org/obo/bfo/2020/bfo.owl> .
+
+# ---------- Object classes ----------
+# BFO: quality (BFO_0000019) is the parent universal for aspects
+:Aspect a owl:Class ;
+    rdfs:label "Aspect"@en ;
+    rdfs:subClassOf obo:BFO_0000019 ;   # BFO: quality
+    rdfs:comment "An Aspect is a BFO quality that can inhere in an entity and may be comparable."@en .
+
+:ComparableAspect a owl:Class ;
+    rdfs:label "Comparable Aspect"@en ;
+    rdfs:subClassOf :Aspect ;
+    rdfs:comment "An Aspect whose instances can be ordered via greater-than/less-than relations."@en .
+
+:AspectValue a owl:Class ;
+    rdfs:label "Aspect Value"@en ;
+    rdfs:subClassOf obo:BFO_0000029 ;   # BFO: specifically dependent continuant (quality value)
+    rdfs:comment "A value that is the specific value of an Aspect inhering in an entity."@en .
+
+:ComparableAspectValue a owl:Class ;
+    rdfs:label "Comparable Aspect Value"@en ;
+    rdfs:subClassOf :AspectValue ;
+    rdfs:comment "An AspectValue that participates in ordering relations."@en .
+
+# ---------- Object properties ----------
+:hasAspectValue a owl:ObjectProperty ;
+    rdfs:label "has aspect value"@en ;
+    rdfs:domain :Aspect ;
+    rdfs:range :AspectValue ;
+    rdfs:comment "Links an Aspect to its particular value instance."@en .
+
+:greaterThan a owl:ObjectProperty ;
+    rdfs:label "greater than"@en ;
+    rdfs:domain :ComparableAspectValue ;
+    rdfs:range :ComparableAspectValue ;
+    rdfs:comment "Assert that one comparable aspect value is strictly greater than another."@en ;
+    owl:inverseOf :lessThan .
+
+:lessThan a owl:ObjectProperty ;
+    rdfs:label "less than"@en ;
+    rdfs:domain :ComparableAspectValue ;
+    rdfs:range :ComparableAspectValue ;
+    rdfs:comment "Inverse of greaterThan; asserts strict ordering."@en .
+
+# ---------- Data property for the comparison value ----------
+:comparisonValue a owl:DatatypeProperty ;
+    rdfs:label "comparison value"@en ;
+    rdfs:domain :ComparableAspectValue ;
+    rdfs:range xsd:double ;   # or xsd:float, xsd:integer, etc.
+    rdfs:comment "A numeric value used to order comparable aspect values."@en .

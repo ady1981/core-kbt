@@ -30,7 +30,7 @@
 - subclassOf: [ '`anything`' ]
   isMetaClass: true
   name: '`class`'
-  description: 'Fundamental building block to represent a concept, type, or category'
+  description: Fundamental building block to represent a concept, type, or category
   itemExtraSchemaRules:
     - ruleType: hasAttribute
       ruleParameters: '`definition`'
@@ -89,35 +89,6 @@
   rangeSubclassOf: '`class`'
   comment: A relationship for describing the structure and composition of items. The `isTransitive` value should be specified in a subproperty.
 
-- attributeName: '`structuralPartOf`'
-  description: This property describes a relationship where the parts are essential constituents that make up the whole, and the whole cannot exist or function as intended without these specific parts
-  subpropertyOf: [ '`partOf`' ]
-  domainSubclassOf: '`class`'
-  rangeSubclassOf: '`class`'
-  propertyExamples:
-    - subpropertyOf: '`structuralPartOf`'
-      domainSubclassOf: '`finger`'
-      rangeSubclassOf: '`hand`'
-      constructedKeyName: '`structuralPartOf_hand`'
-      attributeName: '`structuralPartOf_hand`'
-      isTransitive: false
-
-- attributeName: '`locatedIn`'
-  description: This property describes a relationship where the part is physically or spatially located within the boundaries of the whole
-  subpropertyOf: [ '`partOf`' ]
-  domainSubclassOf: '`class`'
-  rangeSubclassOf: '`class`'
-  propertyExamples:
-    - subpropertyOf: '`locatedIn`'
-      domainSubclassOf: '`capitalCity`'
-      rangeSubclassOf: '`country`'
-      constructedKeyName: '`locatedIn_country`'
-      attributeName: '`locatedIn_country`'
-  instanceExamples:
-    - name: '`Moscow`'
-      instanceOf: '`capitalCity`'
-      locatedIn_country: '`Russia`'
-
 - attributeName: '`instanceOf`'
   subpropertyOf: [ '`property`' ]
   description: Specifies that this `instance` is an instance of a `class`
@@ -143,7 +114,7 @@
           type: array
           items:
             type: string
-  comment: Axiomatically an `instance` is also an instance of the `instance` meta-class too.
+  comment: Axiomatically every `instance` is also an instance of the `instance` meta-class too.
 
 - attributeName: '`disjointWith`'
   subpropertyOf: [ '`property`' ]
@@ -176,51 +147,3 @@
       disjointUnionOf:
         - '`father`'
         - '`mother`'
-- name: '`aspect`'
-  subclassOf: [ '`class`' ]
-  definition: The `class` is used to represent a specific facet, perspective, or dimension of a more complex `anything`
-  disjointUnionOf:
-    - '`classAspect`'
-    - '`instanceAspect`'
-  itemExtraSchemaRules:
-    - ruleType: hasAttribute
-      ruleParameters: '`value`'
-    - ruleType: hasAttribute
-      ruleParameters: '`isComparable`'
-    - ruleType: hasAttribute
-      ruleParameters:
-        attribute: '`comparisonOrderValue`'
-        valueJSONSchema:
-          type: integer
-
-- name: '`classAspect`'
-  subclassOf: [ '`aspect`' ]
-
-- attributeName: '`appliesToClass`'
-  subpropertyOf: [ '`property`' ]
-  domainSubclassOf: '`classAspect`'
-  rangeSubclassOf: '`class`'
-  isTransitive: true
-
-- name: '`instanceAspect`'
-  subclassOf: [ '`aspect`' ]
-  instanceExamples:
-    - name: '`expertness`'
-      namespace: '`example`'
-      instanceOf: '`instanceAspect`'
-      appliesToInstance: '`someText`'
-      value: '`high`'
-      isComparable: true
-      comparisonOrderValue: 2
-      itemExtraSchemaRules:
-        - ruleType: hasAttribute
-          ruleParameters:
-            attribute: '`value`'
-            valueJSONSchema:
-              type: string
-              enum: [ '`low`', '`high`' ]
-
-- attributeName: '`appliesToInstance`'
-  subpropertyOf: [ '`property`' ]
-  domainSubclassOf: '`instanceAspect`'
-  rangeSubclassOf: '`instance`'

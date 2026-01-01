@@ -1,0 +1,48 @@
+- name: '`aspect`'
+  subclassOf: [ '`class`' ]
+  definition: The `class` is used to represent a specific facet, perspective, or dimension of a more complex `anything`
+  disjointUnionOf:
+    - '`classAspect`'
+    - '`instanceAspect`'
+  itemExtraSchemaRules:
+    - ruleType: hasAttribute
+      ruleParameters: '`value`'
+    - ruleType: hasAttribute
+      ruleParameters: '`isComparable`'
+    - ruleType: hasAttribute
+      ruleParameters:
+        attribute: '`comparisonOrderValue`'
+        valueJSONSchema:
+          type: integer
+
+- name: '`classAspect`'
+  subclassOf: [ '`aspect`' ]
+
+- attributeName: '`appliesToClass`'
+  subpropertyOf: [ '`property`' ]
+  domainSubclassOf: '`classAspect`'
+  rangeSubclassOf: '`class`'
+  isTransitive: true
+
+- name: '`instanceAspect`'
+  subclassOf: [ '`aspect`' ]
+  instanceExamples:
+    - name: '`expertness`'
+      namespace: '`example`'
+      instanceOf: '`instanceAspect`'
+      appliesToInstance: '`someText`'
+      value: '`high`'
+      isComparable: true
+      comparisonOrderValue: 2
+      itemExtraSchemaRules:
+        - ruleType: hasAttribute
+          ruleParameters:
+            attribute: '`value`'
+            valueJSONSchema:
+              type: string
+              enum: [ '`low`', '`high`' ]
+
+- attributeName: '`appliesToInstance`'
+  subpropertyOf: [ '`property`' ]
+  domainSubclassOf: '`instanceAspect`'
+  rangeSubclassOf: '`instance`'
