@@ -1,6 +1,5 @@
 - name: '`anything`'
   description: A wrapper meta-class to represent anything. The `anything`, the `class`, the `property` and the `instance` are the only meta-classes
-  isMetaClass: true
   itemSchemaRules:
     - ruleType: hasAttribute
       ruleParameters: '`itemSchemaRules`'
@@ -28,7 +27,6 @@
         maxCardinality: 1
 
 - subclassOf: [ '`anything`' ]
-  isMetaClass: true
   name: '`class`'
   description: Fundamental building block to represent a concept, type, or category
   itemExtraSchemaRules:
@@ -40,7 +38,6 @@
       ruleParameters: '`instanceOf`'
 
 - subclassOf: [ '`anything`' ]
-  isMetaClass: true
   name: '`property`'
   description: 'Fundamental building block used to describe the characteristics and relationships of classes: define attributes as connections between classes'
   itemExtraSchemaRules:
@@ -67,6 +64,7 @@
   comment: Indicates that one `class` is a more specific type of another `class`
   domainSubclassOf: '`class`'
   rangeSubclassOf: '`class`'
+  isTransitive: true
   classExamples:
     - name: '`human`'
       subclassOf: '`mammal`'
@@ -97,7 +95,6 @@
   isFunctional: true
 
 - subclassOf: [ '`anything`' ]
-  isMetaClass: true
   name: '`instance`'
   description: Fundamental building block to represent a specific unique instance that exists in a world (or in a conceptual world). Every `instance` should be an instance of a specific `class`.
   itemExtraSchemaRules:
@@ -115,35 +112,3 @@
           items:
             type: string
   comment: Axiomatically every `instance` is also an instance of the `instance` meta-class too.
-
-- attributeName: '`disjointWith`'
-  subpropertyOf: [ '`property`' ]
-  domainSubclassOf: '`class`'
-  rangeSubclassOf: '`class`'
-  isSymmetric: true
-
-- attributeName: '`equivalentClass`'
-  subpropertyOf: [ '`property`' ]
-  domainSubclassOf: '`class`'
-  rangeSubclassOf: '`class`'
-  isSymmetric: true
-  isTransitive: true
-
-- attributeName: '`unionOf`'
-  subpropertyOf: [ '`property`' ]
-  description: Specifies that a `class` is equivalent to the union of several other `class`es
-  domainSubclassOf: '`class`'
-  rangeSubclassOf: '`class`'
-
-- attributeName: '`disjointUnionOf`'
-  subpropertyOf: [ '`unionOf`' ]
-  description: Specifies that a `class` is equivalent to the union of several other `class`es, and that these constituent `class`es are pairwise disjoint
-  domainSubclassOf: '`class`'
-  rangeSubclassOf: '`class`'
-  classExamples:
-    - name: '`parent`'
-      subclassOf: [ '`person`' ]
-      definition: ...
-      disjointUnionOf:
-        - '`father`'
-        - '`mother`'
