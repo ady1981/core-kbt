@@ -1,31 +1,31 @@
-- attributeName: '`disjointWith`'
-  subpropertyOf: [ '`property`' ]
-  domainSubclassOf: '`class`'
-  rangeSubclassOf: '`class`'
+- attributeName: 'disjointWith'
+  subpropertyOf: [ 'property' ]
+  domainSubclassOf: 'class'
+  rangeSubclassOf: 'class'
   isSymmetric: true
 
-- attributeName: '`equivalentClass`'
-  subpropertyOf: [ '`property`' ]
-  domainSubclassOf: '`class`'
-  rangeSubclassOf: '`class`'
+- attributeName: 'equivalentClass'
+  subpropertyOf: [ 'property' ]
+  domainSubclassOf: 'class'
+  rangeSubclassOf: 'class'
   isSymmetric: true
   isTransitive: true
 
-- attributeName: '`unionOf`'
-  subpropertyOf: [ '`property`' ]
+- attributeName: 'unionOf'
+  subpropertyOf: [ 'property' ]
   description: Specifies that a `class` is equivalent to the union of several other `class`es
-  domainSubclassOf: '`class`'
-  rangeSubclassOf: '`class`'
+  domainSubclassOf: 'class'
+  rangeSubclassOf: 'class'
 
-- attributeName: '`disjointUnionOf`'
-  subpropertyOf: [ '`unionOf`' ]
+- attributeName: 'disjointUnionOf'
+  subpropertyOf: [ 'unionOf' ]
   description: Specifies that a `class` is equivalent to the union of several other `class`es, and that these constituent `class`es are pairwise disjoint
-  domainSubclassOf: '`class`'
-  rangeSubclassOf: '`class`'
+  domainSubclassOf: 'class'
+  rangeSubclassOf: 'class'
   classExamples:
-    - name: '`parent`'
-      subclassOf: [ '`person`' ]
+    - name: 'parent'
+      subclassOf: [ 'person' ]
       definition: ...
       disjointUnionOf:
-        - '`father`'
-        - '`mother`'
+        - 'father'
+        - 'mother'

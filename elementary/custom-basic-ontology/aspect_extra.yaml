@@ -1,48 +1,53 @@
-- name: '`aspect`'
-  subclassOf: [ '`class`' ]
-  definition: The `class` is used to represent a specific facet, perspective, or dimension of a more complex `anything`
+- type: class
+  name: 'aspect'
+  subclassOf: [ 'class' ]
+  definition: The `class` is used to represent a specific facet, perspective, or dimension of a more complex instance
   disjointUnionOf:
-    - '`classAspect`'
-    - '`instanceAspect`'
+    - 'classAspect'
+    - 'instanceAspect'
   itemExtraSchemaRules:
     - ruleType: hasAttribute
-      ruleParameters: '`value`'
+      ruleParameters: 'value'
     - ruleType: hasAttribute
-      ruleParameters: '`isComparable`'
+      ruleParameters: 'isComparable'
     - ruleType: hasAttribute
       ruleParameters:
-        attribute: '`comparisonOrderValue`'
+        attribute: 'comparisonOrderValue'
         valueJSONSchema:
           type: integer
 
-- name: '`classAspect`'
-  subclassOf: [ '`aspect`' ]
+- type: class
+  name: 'classAspect'
+  subclassOf: [ 'aspect' ]
 
-- attributeName: '`appliesToClass`'
-  subpropertyOf: [ '`property`' ]
-  domainSubclassOf: '`classAspect`'
-  rangeSubclassOf: '`class`'
+- type: property
+  attributeName: 'appliesToClass'
+  subpropertyOf: [ 'property' ]
+  domainSubclassOf: 'classAspect'
+  rangeSubclassOf: 'class'
   isTransitive: true
 
-- name: '`instanceAspect`'
-  subclassOf: [ '`aspect`' ]
+- type: class
+  name: 'instanceAspect'
+  subclassOf: [ 'aspect' ]
   instanceExamples:
-    - name: '`expertness`'
-      namespace: '`example`'
-      instanceOf: '`instanceAspect`'
-      appliesToInstance: '`someText`'
-      value: '`high`'
+    - name: 'expertness'
+      namespace: 'example'
+      instanceOf: 'instanceAspect'
+      appliesToInstance: 'someText'
+      value: 'high'
       isComparable: true
       comparisonOrderValue: 2
       itemExtraSchemaRules:
         - ruleType: hasAttribute
           ruleParameters:
-            attribute: '`value`'
+            attribute: 'value'
             valueJSONSchema:
               type: string
-              enum: [ '`low`', '`high`' ]
+              enum: [ 'low', 'high' ]
 
-- attributeName: '`appliesToInstance`'
-  subpropertyOf: [ '`property`' ]
-  domainSubclassOf: '`instanceAspect`'
-  rangeSubclassOf: '`instance`'
+- type: property
+  attributeName: 'appliesToInstance'
+  subpropertyOf: [ 'property' ]
+  domainSubclassOf: 'instanceAspect'
+  rangeSubclassOf: 'instance'

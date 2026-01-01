@@ -1,29 +1,29 @@
-- attributeName: '`structuralPartOf`'
+- attributeName: 'structuralPartOf'
   description: This property describes a relationship where the parts are essential constituents that make up the whole, and the whole cannot exist or function as intended without these specific parts
-  subpropertyOf: [ '`partOf`' ]
-  domainSubclassOf: '`class`'
-  rangeSubclassOf: '`class`'
+  subpropertyOf: [ 'partOf' ]
+  domainSubclassOf: 'class'
+  rangeSubclassOf: 'class'
   isTransitive: true
   propertyExamples:
-    - subpropertyOf: '`structuralPartOf`'
-      domainSubclassOf: '`finger`'
-      rangeSubclassOf: '`hand`'
-      constructedKeyName: '`structuralPartOf_hand`'
-      attributeName: '`structuralPartOf_hand`'
+    - subpropertyOf: 'structuralPartOf'
+      domainSubclassOf: 'finger'
+      rangeSubclassOf: 'hand'
+      constructedKeyName: 'structuralPartOf_hand'
+      attributeName: 'structuralPartOf_hand'
 
-- attributeName: '`locatedIn`'
+- attributeName: 'locatedIn'
   description: This property describes a relationship where the part is physically or spatially located within the boundaries of the whole
-  subpropertyOf: [ '`partOf`' ]
-  domainSubclassOf: '`class`'
-  rangeSubclassOf: '`class`'
+  subpropertyOf: [ 'partOf' ]
+  domainSubclassOf: 'class'
+  rangeSubclassOf: 'class'
   isTransitive: true
   propertyExamples:
-    - subpropertyOf: '`locatedIn`'
-      domainSubclassOf: '`capitalCity`'
-      rangeSubclassOf: '`country`'
-      constructedKeyName: '`locatedIn_country`'
-      attributeName: '`locatedIn_country`'
+    - subpropertyOf: 'locatedIn'
+      domainSubclassOf: 'capitalCity'
+      rangeSubclassOf: 'country'
+      constructedKeyName: 'locatedIn_country'
+      attributeName: 'locatedIn_country'
   instanceExamples:
-    - name: '`Moscow`'
-      instanceOf: '`capitalCity`'
-      locatedIn_country: '`Russia`'
+    - name: 'Moscow'
+      instanceOf: 'capitalCity'
+      locatedIn_country: 'Russia'

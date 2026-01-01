@@ -1,114 +1,145 @@
-- name: '`anything`'
-  description: A wrapper meta-class to represent anything. The `anything`, the `class`, the `property` and the `instance` are the only meta-classes
+- name: ontologyItemSchema
+  description: An ontology item schema. The ontology extension is only possible in extra classes, extra properties or extra instances
   itemSchemaRules:
     - ruleType: hasAttribute
-      ruleParameters: '`itemSchemaRules`'
+      ruleParameters: 'itemSchemaRules'
+    - ruleType: hasAttribute
+      ruleParameters:
+        attribute: 'type'
+        valueJSONSchema:
+          type: string
+          enum: [ classSchema, class, propertySchema, property, instanceSchema, instance ]
     - ruleType: hasAttribute
       ruleParameters:
         oneOf:
-          - '`name`'
-          - '`constructedKeyName`'
-          - '`attributeName`'
-    - ruleType: hasAttribute
-      ruleParameters: '`namespace`'
-    - ruleType: allowAnyDatatypeAttributes
+          - 'name'
+          - 'constructedKeyName'
+          - 'attributeName'
+    - ruleType: allowExtraDatatypeAttributes
   itemSchemaRulesExamples:
     - ruleType: hasAttribute
       ruleParameters:
-        attribute: '`color`'
+        attribute: 'color'
         valueJSONSchema:
           type: string
           enum: [ black, white ]
     - ruleType: cardinalityRestriction
       ruleParameters:
-        class: '`book`'
-        property: '`hasAuthor`'
+        class: 'book'
+        property: 'hasAuthor'
         minCardinality: 1
         maxCardinality: 1
 
-- subclassOf: [ '`anything`' ]
-  name: '`class`'
+- type: classSchema
+  name: class
   description: Fundamental building block to represent a concept, type, or category
   itemExtraSchemaRules:
     - ruleType: hasAttribute
-      ruleParameters: '`definition`'
+      ruleParameters: 'definition'
     - ruleType: hasAttribute
-      ruleParameters: '`subclassOf`'
+      ruleParameters: 'subclassOf'
     - ruleType: hasNoAttribute
-      ruleParameters: '`instanceOf`'
+      ruleParameters: 'instanceOf'
 
-- subclassOf: [ '`anything`' ]
-  name: '`property`'
+- type: propertySchema
+  name: property
   description: 'Fundamental building block used to describe the characteristics and relationships of classes: define attributes as connections between classes'
   itemExtraSchemaRules:
     - ruleType: hasAttribute
-      ruleParameters: '`attributeName`'
+      ruleParameters: 'attributeName'
     - ruleType: hasAttribute
-      ruleParameters: '`domainSubclassOf`'
+      ruleParameters: 'subpropertyOf'
     - ruleType: hasAttribute
-      ruleParameters: '`rangeSubclassOf`'
+      ruleParameters: 'domainSubclassOf'
     - ruleType: hasAttribute
-      ruleParameters: '`isTransitive`'
+      ruleParameters: 'rangeSubclassOf'
     - ruleType: hasAttribute
-      ruleParameters: '`isSymmetric`'
+      ruleParameters: 'isTransitive'
     - ruleType: hasAttribute
-      ruleParameters: '`isFunctional`'
+      ruleParameters: 'isSymmetric'
     - ruleType: hasAttribute
-      ruleParameters: '`isInverseFunctional`'
+      ruleParameters: 'isFunctional'
+    - ruleType: hasAttribute
+      ruleParameters: 'isInverseFunctional'
     - ruleType: hasNoAttribute
-      ruleParameters: '`instanceOf`'
+      ruleParameters: 'instanceOf'
 
-- attributeName: '`subclassOf`'
-  subpropertyOf: [ '`property`' ]
-  description: Describes a relationship of classification or kind for `class`es
-  comment: Indicates that one `class` is a more specific type of another `class`
-  domainSubclassOf: '`class`'
-  rangeSubclassOf: '`class`'
+- type: property
+  attributeName: 'subclassOf'
+  subpropertyOf: [ 'property' ]
+  description: Describes a relationship of classification or kind for classes
+  comment: Indicates that one class is a more specific type of another class
+  domainSubclassOf: 'class'
+  rangeSubclassOf: 'class'
   isTransitive: true
   classExamples:
-    - name: '`human`'
-      subclassOf: '`mammal`'
+    - name: 'human'
+      subclassOf: 'mammal'
       definition: ...
-    - name: '`mammal`'
-      subclassOf: '`animal`'
+    - name: 'mammal'
+      subclassOf: 'animal'
       definition: ...
 
-- attributeName: '`subpropertyOf`'
-  subpropertyOf: [ '`property`' ]
+- type: property
+  attributeName: 'subpropertyOf'
+  subpropertyOf: [ 'property' ]
   description: Describes a relationship of classification or kind for `property`s
   comment: Indicates that one `property` is a more specific type of another `property`
-  domainSubclassOf: '`property`'
-  rangeSubclassOf: '`property`'
+  domainSubclassOf: 'property'
+  rangeSubclassOf: 'property'
 
-- attributeName: '`partOf`'
+- type: property
+  attributeName: 'partOf'
   description: Describes a relationship of composition or containment
-  subpropertyOf: [ '`property`' ]
-  domainSubclassOf: '`class`'
-  rangeSubclassOf: '`class`'
-  comment: A relationship for describing the structure and composition of items. The `isTransitive` value should be specified in a subproperty.
+  subpropertyOf: [ 'property' ]
+  domainSubclassOf: 'class'
+  rangeSubclassOf: 'class'
+  comment: The `isTransitive` value should be specified in a subproperty.
 
-- attributeName: '`instanceOf`'
-  subpropertyOf: [ '`property`' ]
-  description: Specifies that this `instance` is an instance of a `class`
-  domainSubclassOf: '`instance`'
-  rangeSubclassOf: '`class`'
-  isFunctional: true
-
-- subclassOf: [ '`anything`' ]
-  name: '`instance`'
-  description: Fundamental building block to represent a specific unique instance that exists in a world (or in a conceptual world). Every `instance` should be an instance of a specific `class`.
+- type: instanceSchema
+  name: instance
+  description: Fundamental building block to represent a specific unique instance that exists in a world (or in a conceptual world). Every `instance` should be an instance of a specific class.
   itemExtraSchemaRules:
     - ruleType: hasAttribute
-      ruleParameters: '`instanceOf`'
+      ruleParameters:
+        attribute: 'instanceOf'
+        description: Specifies that this `instance` is an instance of a class
     - ruleType: hasNoAttribute
-      ruleParameters: '`subclassOf`'
+      ruleParameters: 'subclassOf'
     - ruleType: hasNoAttribute
-      ruleParameters: '`definition`'
+      ruleParameters: 'definition'
     - ruleType: hasAttribute
       ruleParameters:
-        attribute: '`sameAs`'
+        attribute: 'sameAs'
         valueJSONSchema:
           type: array
           items:
             type: string
-  comment: Axiomatically every `instance` is also an instance of the `instance` meta-class too.
+
+- type: class
+  name: 'sourceReference'
+  subclassOf: [ 'class' ]
+  definition: Source references for a data verifiability
+  itemExtraSchemaRules:
+    - ruleType: hasAttribute
+      ruleParameters:
+        attribute: 'reference'
+        valueJSONSchema:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                  - URL
+                  - libraryReference
+                  - internalKnowledge
+              value:
+                type: string
+
+- type: property
+  attributeName: 'hasSourceReference'
+  subpropertyOf: [ 'property' ]
+  domainSubclassOf: 'class'
+  rangeSubclassOf: 'sourceReference'
