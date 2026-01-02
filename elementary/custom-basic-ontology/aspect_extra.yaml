@@ -12,7 +12,7 @@
       ruleParameters: 'isComparable'
     - ruleType: hasAttribute
       ruleParameters:
-        attribute: 'comparisonOrderValue'
+        attribute: 'comparisonRank'
         valueJSONSchema:
           type: integer
 

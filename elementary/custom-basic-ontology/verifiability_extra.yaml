@@ -1,0 +1,27 @@
+- type: class
+  name: 'sourceReference'
+  subclassOf: [ 'class' ]
+  definition: Source references for a data verifiability
+  itemExtraSchemaRules:
+    - ruleType: hasAttribute
+      ruleParameters:
+        attribute: 'reference'
+        valueJSONSchema:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                  - URL
+                  - libraryReference
+                  - internalKnowledge
+              value:
+                type: string
+
+- type: property
+  attributeName: 'hasSourceReference'
+  subpropertyOf: [ 'property' ]
+  domainSubclassOf: 'instance'
+  rangeSubclassOf: 'sourceReference'

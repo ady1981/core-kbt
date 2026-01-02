@@ -1,4 +1,5 @@
-- attributeName: 'structuralPartOf'
+- type: property
+  attributeName: 'structuralPartOf'
   description: This property describes a relationship where the parts are essential constituents that make up the whole, and the whole cannot exist or function as intended without these specific parts
   subpropertyOf: [ 'partOf' ]
   domainSubclassOf: 'class'
@@ -11,7 +12,8 @@
       constructedKeyName: 'structuralPartOf_hand'
       attributeName: 'structuralPartOf_hand'
 
-- attributeName: 'locatedIn'
+- type: property
+  attributeName: 'locatedIn'
   description: This property describes a relationship where the part is physically or spatially located within the boundaries of the whole
   subpropertyOf: [ 'partOf' ]
   domainSubclassOf: 'class'

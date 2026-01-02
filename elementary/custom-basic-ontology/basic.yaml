@@ -1,5 +1,5 @@
 - name: ontologyItemSchema
-  description: An ontology item schema. The ontology extension is only possible in extra classes, extra properties or extra instances
+  description: An ontology item schema. An ontology extension is only possible via extra `class` items, extra `property` items or extra `instance` items
   itemSchemaRules:
     - ruleType: hasAttribute
       ruleParameters: 'itemSchemaRules'
@@ -8,13 +8,7 @@
         attribute: 'type'
         valueJSONSchema:
           type: string
-          enum: [ classSchema, class, propertySchema, property, instanceSchema, instance ]
-    - ruleType: hasAttribute
-      ruleParameters:
-        oneOf:
-          - 'name'
-          - 'constructedKeyName'
-          - 'attributeName'
+          enum: [ classItemSchema, class, propertyItemSchema, property, instanceItemSchema, instance ]
     - ruleType: allowExtraDatatypeAttributes
   itemSchemaRulesExamples:
     - ruleType: hasAttribute
@@ -30,10 +24,18 @@
         minCardinality: 1
         maxCardinality: 1
 
-- type: classSchema
-  name: class
-  description: Fundamental building block to represent a concept, type, or category
+## Foundational ontology schemas. Any other ontology item schemas are forbidden (use the `itemExtraSchemaRules` attribute in a class items instead)
+
+- type: classItemSchema
+  name: classItemSchema
+  description: An item schema for `class`es
   itemExtraSchemaRules:
+    - ruleType: hasAttribute
+      ruleParameters:
+        attribute:
+          oneOf:
+            - 'name'
+            - 'constructedName'
     - ruleType: hasAttribute
       ruleParameters: 'definition'
     - ruleType: hasAttribute
@@ -41,12 +43,16 @@
     - ruleType: hasNoAttribute
       ruleParameters: 'instanceOf'
 
-- type: propertySchema
-  name: property
-  description: 'Fundamental building block used to describe the characteristics and relationships of classes: define attributes as connections between classes'
+- type: propertyItemSchema
+  name: propertyItemSchema
+  description: An item schema for `property`s
   itemExtraSchemaRules:
     - ruleType: hasAttribute
-      ruleParameters: 'attributeName'
+      ruleParameters:
+        attribute:
+          oneOf:
+            - 'attributeName'
+            - 'constructedAttributeName'
     - ruleType: hasAttribute
       ruleParameters: 'subpropertyOf'
     - ruleType: hasAttribute
@@ -64,10 +70,52 @@
     - ruleType: hasNoAttribute
       ruleParameters: 'instanceOf'
 
+- type: instanceItemSchema
+  name: instanceItemSchema
+  description: An item schema for `instance`s. An instance is to represent a specific unique instance that exists in a world (or in a conceptual world).
+  itemExtraSchemaRules:
+    - ruleType: hasAttribute
+      ruleParameters:
+        attribute:
+          oneOf:
+            - 'name'
+            - 'constructedName'
+    - ruleType: hasAttribute
+      ruleParameters:
+        attribute: 'instanceOf'
+        description: Specifies that this `instance` is an instance of a class
+    - ruleType: hasNoAttribute
+      ruleParameters: 'subclassOf'
+    - ruleType: hasNoAttribute
+      ruleParameters: 'definition'
+    - ruleType: hasNoAttribute
+      ruleParameters: 'itemExtraSchemaRules'
+    - ruleType: hasAttribute
+      ruleParameters:
+        attribute: 'sameAs'
+        valueJSONSchema:
+          type: array
+          items:
+            type: string
+
+## Foundational ontology objects
+
+- type: class
+  name: class
+  definition: The foundational class to represent a type, a kind, a concept, a category or a collection
+
+- type: class
+  name: property
+  definition: The foundational class to represent a property. A property is to describe relationship an instance with another item
+
+- type: class
+  name: instance
+  definition: The foundational class to represent an instance. Every `instance` should be an instance of a specific class.
+
 - type: property
   attributeName: 'subclassOf'
   subpropertyOf: [ 'property' ]
-  description: Describes a relationship of classification or kind for classes
+  description: Describes a relationship for classes
   comment: Indicates that one class is a more specific type of another class
   domainSubclassOf: 'class'
   rangeSubclassOf: 'class'
@@ -95,51 +143,3 @@
   domainSubclassOf: 'class'
   rangeSubclassOf: 'class'
   comment: The `isTransitive` value should be specified in a subproperty.
-
-- type: instanceSchema
-  name: instance
-  description: Fundamental building block to represent a specific unique instance that exists in a world (or in a conceptual world). Every `instance` should be an instance of a specific class.
-  itemExtraSchemaRules:
-    - ruleType: hasAttribute
-      ruleParameters:
-        attribute: 'instanceOf'
-        description: Specifies that this `instance` is an instance of a class
-    - ruleType: hasNoAttribute
-      ruleParameters: 'subclassOf'
-    - ruleType: hasNoAttribute
-      ruleParameters: 'definition'
-    - ruleType: hasAttribute
-      ruleParameters:
-        attribute: 'sameAs'
-        valueJSONSchema:
-          type: array
-          items:
-            type: string
-
-- type: class
-  name: 'sourceReference'
-  subclassOf: [ 'class' ]
-  definition: Source references for a data verifiability
-  itemExtraSchemaRules:
-    - ruleType: hasAttribute
-      ruleParameters:
-        attribute: 'reference'
-        valueJSONSchema:
-          type: array
-          items:
-            type: object
-            properties:
-              type:
-                type: string
-                enum:
-                  - URL
-                  - libraryReference
-                  - internalKnowledge
-              value:
-                type: string
-
-- type: property
-  attributeName: 'hasSourceReference'
-  subpropertyOf: [ 'property' ]
-  domainSubclassOf: 'class'
-  rangeSubclassOf: 'sourceReference'

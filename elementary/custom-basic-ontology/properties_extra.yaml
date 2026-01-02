@@ -1,25 +1,40 @@
-- attributeName: 'disjointWith'
+## Utility ontology objects
+
+- type: property
+  attributeName: 'disjointWith'
   subpropertyOf: [ 'property' ]
   domainSubclassOf: 'class'
   rangeSubclassOf: 'class'
   isSymmetric: true
 
-- attributeName: 'equivalentClass'
+- type: property
+  attributeName: 'equivalentClass'
   subpropertyOf: [ 'property' ]
   domainSubclassOf: 'class'
   rangeSubclassOf: 'class'
   isSymmetric: true
   isTransitive: true
 
-- attributeName: 'unionOf'
+- type: property
+  attributeName: 'equivalent'
   subpropertyOf: [ 'property' ]
-  description: Specifies that a `class` is equivalent to the union of several other `class`es
+  description: Equality relation on instance level
+  domainSubclassOf: 'instance'
+  rangeSubclassOf: 'instance'
+  isTransitive: true
+  isSymmetric: true
+
+- type: property
+  attributeName: 'unionOf'
+  subpropertyOf: [ 'property' ]
+  description: Specifies that the class is equivalent to the union of several other `class`es
   domainSubclassOf: 'class'
   rangeSubclassOf: 'class'
 
-- attributeName: 'disjointUnionOf'
+- type: property
+  attributeName: 'disjointUnionOf'
   subpropertyOf: [ 'unionOf' ]
-  description: Specifies that a `class` is equivalent to the union of several other `class`es, and that these constituent `class`es are pairwise disjoint
+  description: Specifies that the `class` is equivalent to the union of several other `class`es, and that these constituent `class`es are pairwise disjoint
   domainSubclassOf: 'class'
   rangeSubclassOf: 'class'
   classExamples:
