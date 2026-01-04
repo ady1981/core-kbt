@@ -1,0 +1,46 @@
+@prefix :          <file://domain_knowledge#> .
+@prefix owl:       <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:       <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:      <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix obo:       <http://purl.obolibrary.org/obo/> .
+@prefix xsd:       <http://www.w3.org/2001/XMLSchema#> .
+
+# Ontology Definition (Minimal setup based on BFO principles for structuring information)
+:KnowledgeBase a owl:Ontology ;
+    rdfs:label "Knowledge Base derived from Points of Divergence Information" ;
+    owl:imports obo:BFO_0000001 . # Importing a basic structure
+
+# Custom Classes for the structure
+:PointOfDivergence a owl:Class ;
+    rdfs:label "Point of Divergence" .
+
+:Aspect a owl:Class ;
+    rdfs:label "Aspect of Comparison" .
+
+:DifferenceTerm a owl:Class ;
+    rdfs:label "Specific Difference Term" .
+
+# Custom Properties
+:hasAspect a owl:ObjectProperty ;
+    rdfs:label "has aspect" ;
+    rdfs:domain :PointOfDivergence ;
+    rdfs:range :Aspect .
+
+#:hasDifference a owl:ObjectProperty ;
+#    rdfs:label "has difference" ;
+#    rdfs:domain :Aspect .
+
+:isTerm a owl:DatatypeProperty ;
+    rdfs:label "is term" ;
+    rdfs:domain :DifferenceTerm ;
+    rdfs:range xsd:string .
+
+:hasDifferenceTerm1 a owl:ObjectProperty ;
+    rdfs:label "has difference term of 1" ;
+    rdfs:domain :Aspect ;
+    rdfs:range :DifferenceTerm .
+
+:hasDifferenceTerm2 a owl:ObjectProperty ;
+    rdfs:label "has difference term of 2" ;
+    rdfs:domain :Aspect ;
+    rdfs:range :DifferenceTerm .
