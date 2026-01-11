@@ -17,13 +17,11 @@ input_fields:
     description: Defines the desired length or scope of the extracted summary.
     required: false
     data_type: string
-    default: "sentence_count"
-    same_as: [ summary_type, summarization_approach ]
-    affect_on_aspect: [ length, completeness ]
-    allowed_values:
-      - "sentence_count" # e.g., "Extract the top 5 sentences."
-      - "percentage"       # e.g., "Extract content equivalent to 10% of the original length."
-      - "keyword_density"  # e.g., "Ensure the summary covers X number of key entities."
+    same_as:
+      - sentence_count # e.g., "Extract the top 5 sentences."
+      - percentage       # e.g., "Extract content equivalent to 10% of the original length."
+      - keyword_density  # e.g., "Ensure the summary covers X number of key entities."
+    affect_on_aspect: [ response_size, completeness ]
 
   - name: desired_length
     group: summarizing_strategy
