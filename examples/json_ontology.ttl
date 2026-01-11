@@ -1,0 +1,158 @@
+@prefix :          <file://domain_knowledge#> .
+@prefix owl:       <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:       <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:      <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix obo:       <http://purl.obolibrary.org/obo/> .
+@prefix xsd:       <http://www.w3.org/2001/XMLSchema#> .
+
+# Classes
+
+# The root concept representing any configuration structure
+:ConfigElement a owl:Class ;
+    rdfs:label "Configuration Element" ;
+    rdfs:comment "The abstract base class for any node (object, array, or primitive value) found within a configuration file." .
+
+# Represents a JSON/YAML Object (key-value map)
+:ConfigObject a owl:Class ;
+    rdfs:label "Configuration Object" ;
+    rdfs:subClassOf :ConfigElement ;
+    rdfs:comment "Represents a mapping structure (like a JSON object or YAML mapping)." .
+
+# Represents a JSON/YAML Array (ordered list)
+:ConfigArray a owl:Class ;
+    rdfs:label "Configuration Array" ;
+    rdfs:subClassOf :ConfigElement ;
+    rdfs:comment "Represents an ordered sequence structure (like a JSON array or YAML sequence)." .
+
+# Represents a primitive value (string, number, boolean, null)
+:ConfigValue a owl:Class ;
+    rdfs:label "Configuration Value" ;
+    rdfs:subClassOf :ConfigElement ;
+    rdfs:comment "Represents a terminal, non-structural value within the configuration." .
+
+# Specific value types derived from XSD for better typing
+:ConfigString a owl:Class ;
+    rdfs:subClassOf :ConfigValue ;
+    rdfs:comment "A configuration value that is a string." .
+
+:ConfigNumber a owl:Class ;
+    rdfs:subClassOf :ConfigValue ;
+    rdfs:comment "A configuration value that is a numeric type." .
+
+:ConfigBoolean a owl:Class ;
+    rdfs:subClassOf :ConfigValue ;
+    rdfs:comment "A configuration value that is a boolean." .
+
+:ConfigNull a owl:Class ;
+    rdfs:subClassOf :ConfigValue ;
+    rdfs:comment "A configuration value representing null or absence of value." .
+
+# Properties (Object Properties)
+
+# Property linking a container (Object or Array) to its members
+:hasMember a owl:ObjectProperty ;
+    rdfs:label "has member" ;
+    rdfs:domain :ConfigElement ;
+    rdfs:range :ConfigElement ;
+    rdfs:comment "Links a container element (Object or Array) to one of its constituent elements." .
+
+# Specific property for key-value pairs in an Object
+:hasKeyValuePair a owl:ObjectProperty ;
+    rdfs:label "has key-value pair" ;
+    rdfs:domain :ConfigObject ;
+    rdfs:range :ConfigPair ;
+    rdfs:comment "Links a ConfigObject to one of its ConfigPairs." .
+
+# Represents the structural unit of a key-value mapping
+:ConfigPair a owl:Class ;
+    rdfs:label "Configuration Pair" ;
+    rdfs:comment "Represents the structural unit containing a key and its associated value element." .
+
+# Links a ConfigPair to its key (which is always a string)
+:hasKey a owl:ObjectProperty ;
+    rdfs:label "has key" ;
+    rdfs:domain :ConfigPair ;
+    rdfs:range :ConfigString ;
+    rdfs:comment "The string key associated with a configuration pair." .
+
+# Links a ConfigPair to its value element
+:hasValueElement a owl:ObjectProperty ;
+    rdfs:label "has value element" ;
+    rdfs:domain :ConfigPair ;
+    rdfs:range :ConfigElement ;
+    rdfs:comment "The ConfigElement that serves as the value for the key." .
+
+# Property to maintain the order within an Array
+:hasOrderedMember a owl:ObjectProperty ;
+    rdfs:label "has ordered member" ;
+    rdfs:domain :ConfigArray ;
+    rdfs:range :ConfigElement ;
+    rdfs:comment "Links an array to its members, preserving sequence order." .
+
+# Properties (Data Properties - Metadata)
+
+# Crucial property to store the structural path (e.g., JSONPath or YAML path)
+:path a owl:DatatypeProperty ;
+    rdfs:label "configuration path" ;
+    rdfs:domain :ConfigElement ;
+    rdfs:range xsd:string ;
+    rdfs:comment "The canonical path (e.g., JSONPath) to this element within the original configuration structure." .
+
+# Property to store the literal value for primitive types
+:literalValue a owl:DatatypeProperty ;
+    rdfs:label "literal value" ;
+    rdfs:domain :ConfigValue ;
+    rdfs:comment "The actual string representation of the primitive value." .
+
+# Specific datatype properties derived from XSD for direct typing (optional, but useful for inference)
+
+:stringValue a owl:DatatypeProperty ;
+    rdfs:label "string value" ;
+    rdfs:domain :ConfigString ;
+    rdfs:range xsd:string ;
+    rdfs:subPropertyOf :literalValue ;
+    rdfs:comment "The string value, typed as xsd:string." .
+
+:numberValue a owl:DatatypeProperty ;
+    rdfs:label "number value" ;
+    rdfs:domain :ConfigNumber ;
+    rdfs:range xsd:decimal ; # Using decimal for general numeric representation
+    rdfs:subPropertyOf :literalValue ;
+    rdfs:comment "The numeric value, typed as xsd:decimal." .
+
+:booleanValue a owl:DatatypeProperty ;
+    rdfs:label "boolean value" ;
+    rdfs:domain :ConfigBoolean ;
+    rdfs:range xsd:boolean ;
+    rdfs:subPropertyOf :literalValue ;
+    rdfs:comment "The boolean value, typed as xsd:boolean." .
+
+# Constraints and Axioms (Illustrative Examples)
+
+# An object must have keys that are strings
+:ConfigObject rdfs:subClassOf owl:Restriction ;
+    owl:onProperty :hasKeyValuePair ;
+    owl:someValuesFrom :ConfigPair .
+
+:ConfigPair rdfs:subClassOf owl:Restriction ;
+    owl:onProperty :hasKey ;
+    owl:allValuesFrom :ConfigString .
+
+# An array must have ordered members
+:ConfigArray rdfs:subClassOf owl:Restriction ;
+    owl:onProperty :hasOrderedMember ;
+    owl:someValuesFrom :ConfigElement .
+
+# A ConfigPair must define exactly one key and exactly one value element
+:ConfigPair owl:equivalentClass [
+    a owl:Class ;
+    owl:intersectionOf (
+        [ a owl:Restriction ; owl:onProperty :hasKey ; owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ; owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ]
+        [ a owl:Restriction ; owl:onProperty :hasValueElement ; owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ; owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ]
+    )
+] .
+
+# A ConfigValue must have a literal representation
+:ConfigValue rdfs:subClassOf owl:Restriction ;
+    owl:onProperty :literalValue ;
+    owl:someValuesFrom xsd:string .
