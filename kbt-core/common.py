@@ -136,12 +136,22 @@ def calc_string_with_zeros(number, width):
     return f'{number:0{width}d}'
 
 
+def filter_out_empty_params(template_string: str, params: dict):
+    filtered_template = template_string
+    for param_name, param_value in params.items():
+        if (param_value is None) or (param_value == ''):
+            # Remove {{param_name}} from the template string
+            filtered_template = filtered_template.replace(f'{{{{{param_name}}}}}\n', '')
+    return filtered_template
+
+
 def render_template(template_string: str, data: dict = None) -> str:
     if data is None:
         data = {}
     if not isinstance(data, dict):
         raise TypeError("invalid-data")
-    template = Environment().from_string(template_string)
+    template_string2 = filter_out_empty_params(template_string, data)
+    template = Environment().from_string(template_string2)
     return template.render(data)
 
 
