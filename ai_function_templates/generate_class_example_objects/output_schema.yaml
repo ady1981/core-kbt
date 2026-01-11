@@ -1,8 +1,0 @@
-type: object
-properties:
-  lowest common ancestor (LCA) in semantic hierarchy:
-    type: string
-    description: |
-      ```yaml
-      semantic_type: term
-      ```
