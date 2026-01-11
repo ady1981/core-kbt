@@ -1,0 +1,60 @@
+type: object
+properties:
+  elementary_tasks:
+    type: array
+    items:
+      type: object
+      properties:
+        task:
+          type: string
+        description:
+          type: object
+          properties:
+            same_as:
+              type: array
+              items:
+                type: string
+        input_fields:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              affect_on_aspect:
+                type: array
+                items:
+                  type: string
+              required:
+                type: boolean
+              group:
+                type: string
+                description: Any two groups should not have equal `affect_on_aspect` value
+              description:
+                type: string
+              same_as:
+                type: array
+                items:
+                  type: string
+              default_value:
+                type: string
+              example_values:
+                type: array
+                items:
+                  type: string
+              allowed_values:
+                type: array
+                items:
+                  type: string
+              data_type:
+                type: string
+                enum: [ string, boolean, integer, float, 'list[.]', 'map[., .]' ]
+              data_constraints:
+                type: object
+                properties:
+                  min_value:
+                    type: float
+                  max_value:
+                    type: float
+required:
+  - elementary_tasks

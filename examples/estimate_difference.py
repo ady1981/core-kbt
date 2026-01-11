@@ -18,7 +18,8 @@ def calc_instruction():
 
 
 def main():
-    model = os.environ["OPENAI_MODEL"]
+    model = "google/gemini-2.0-flash"
+    # model = "deepseek/deepseek-chat"
     formatted_model_name = model.strip().replace("/", "-").replace(".", "-")
     instruction = calc_instruction()
     print(f'instruction:\n{instruction}')
