@@ -1,0 +1,91 @@
+task: constrained_text_rewriting
+description:
+  same_as:
+  - Transforming input text based on specific constraints for content preservation
+    and modification.
+input_fields:
+- name: input_content
+  affect_on_aspect:
+  - source_content
+  required: true
+  group: content_specification
+  description: The original text that needs to be transformed.
+  same_as:
+  - input_text
+  - original_content
+  - source_text
+  data_type: string
+- name: aspects_to_keep
+  affect_on_aspect:
+  - content_preservation
+  required: true
+  group: transformation_constraints
+  description: A list of specific facts, entities, or structural elements that must
+    be retained in the output.
+  same_as:
+  - required_elements
+  - preserved_information
+  data_type: list[string]
+- name: aspects_to_change
+  affect_on_aspect:
+  - content_modification
+  required: true
+  group: transformation_constraints
+  description: A list describing the required changes to the text (e.g., change
+    tone, simplify vocabulary, update dates).
+  same_as:
+  - required_edits
+  - transformation_goals
+  data_type: list[string]
+- name: target_style
+  affect_on_aspect:
+  - style
+  required: false
+  group: output_specification
+  description: The desired stylistic attributes for the output text.
+  same_as:
+  - tone
+  - voice
+  default_value: neutral
+  example_values:
+  - formal
+  - persuasive
+  - technical
+  data_type: string
+- name: target_complexity
+  affect_on_aspect:
+  - complexity
+  required: false
+  group: output_specification
+  description: The required reading level or complexity of the output text.
+  same_as:
+  - reading_level
+  - simplification_degree
+  default_value: maintain_original
+  example_values:
+  - simplified
+  - expert_level
+  - child_friendly
+  data_type: string
+- name: output_length_constraint
+  affect_on_aspect:
+  - response_size
+  required: false
+  group: output_specification
+  description: A constraint on the length of the resulting text.
+  same_as:
+  - length_limit
+  - verbosity
+  data_type: string
+- name: response_language
+  affect_on_aspect:
+  - response_language
+  required: false
+  group: output_specification
+  description: The language the output text must be written in.
+  same_as:
+  - language
+  example_values:
+  - English
+  - Spanish
+  data_type: string

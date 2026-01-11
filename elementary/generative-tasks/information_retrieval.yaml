@@ -1,0 +1,96 @@
+task: information_retrieval
+description:
+  same_as:
+  - Retrieves specific information or an item based on a provided description.
+input_fields:
+- name: target_item_description
+  affect_on_aspect:
+  - query_specificity
+  - search_criteria
+  required: true
+  group: target_specification
+  description: The textual description used to identify the target item.
+  same_as:
+  - item_description
+  - search_term
+  - query
+  data_type: string
+
+- name: knowledge_domain
+  affect_on_aspect:
+  - knowledge_domain
+  required: false
+  group: target_specification
+  description: A specific piece of context or domain knowledge to ground the generated
+    examples in.
+  same_as:
+  - domain_context
+  - background_info
+  data_type: string
+
+- name: number_of_items
+  affect_on_aspect:
+  - response_size
+  required: false
+  default: '1'
+  group: extra_output_specification
+  description: The desired items number to return.
+  same_as:
+  - count
+  - limit
+  data_type: integer
+
+- name: item_format
+  affect_on_aspect:
+  - output_format
+  required: false
+  group: extra_output_specification
+  description: The required structure or format for each generated example (e.g.,
+    JSON, YAML, simple text pair).
+  same_as: []
+  allowed_values:
+  - plain_text
+  - markdown_text
+  - json
+  - yaml
+  data_type: string
+
+- name: item_content_language
+  group: extra_output_specification
+  data_type: string
+
+- name: matching_threshold
+  affect_on_aspect:
+  - precision_recall_tradeoff
+  - strictness
+  required: false
+  group: retrieval_strategy
+  description: The minimum similarity score required for an item to be considered
+    a match.
+  same_as:
+  - similarity_score
+  - confidence_level
+  default_value: '0.75'
+  data_type: float
+  data_constraints:
+    min_value: 0.0
+    max_value: 1.0
+- name: disambiguation_strategy
+  affect_on_aspect:
+  - handling_multiple_matches
+  - resolution_method
+  required: false
+  group: retrieval_strategy
+  description: How to proceed if multiple items closely match the description.
+  same_as:
+  - tie_breaking_rule
+  default_value: return_best_match
+  example_values:
+  - return_best_match
+  - return_all
+  - request_clarification
+  allowed_values:
+  - return_best_match
+  - return_all
+  - request_clarification
+  data_type: string

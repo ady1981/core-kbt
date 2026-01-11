@@ -1,0 +1,72 @@
+task: aspect_based_analysis
+description:
+  same_as:
+  - Analyzes text to extract specific opinions, sentiments, or attributes related
+    to predefined aspects or features of an entity or topic.
+input_fields:
+- name: input_content
+  affect_on_aspect:
+  - _ALL
+  required: true
+  group: input_content
+  description: The primary text document or passage containing opinions to be analyzed.
+  same_as:
+  - text
+  - source_material
+  - input_text
+  data_type: string
+
+- name: content_topic
+  affect_on_aspect:
+  - knowledge_domain
+  required: false
+  group: input_content
+  description: A specified knowledge domain to guide the interpretation of aspects
+    and sentiment (e.g., 'Automotive', 'Software Review').
+  same_as:
+  - domain
+  data_type: string
+
+- name: target_entity
+  affect_on_aspect:
+  - focus_entity
+  required: true
+  group: analysis_scope
+  description: The main entity, product, or topic about which aspects need to be
+    analyzed.
+  same_as:
+  - subject
+  - topic
+  data_type: string
+
+- name: aspects_to_analyze
+  affect_on_aspect:
+  - aspect_granularity
+  - feature_extraction
+  required: true
+  group: analysis_scope
+  description: A list of specific aspects or features of the target entity that
+    the analysis should focus on (e.g., 'battery life', 'customer service', 'performance').
+  same_as:
+  - features
+  - categories
+  data_type: 'list[string]'
+
+- name: sentiment_granularity
+  affect_on_aspect:
+  - sentiment_granularity
+  required: false
+  group: analysis_strategy
+  description: Controls the required level of sentiment detail for each aspect.
+  default_value: fine_grained
+  same_as:
+  - polarity_level
+  allowed_values:
+  - binary
+  - ternary
+  - fine_grained
+  example_values:
+  - binary
+  - fine_grained
+  data_type: string
+

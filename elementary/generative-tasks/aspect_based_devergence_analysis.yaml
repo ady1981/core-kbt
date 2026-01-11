@@ -1,0 +1,71 @@
+task: aspect_based_devergence_analysis
+description:
+  same_as:
+  - Analyzes two text items identifying and detailing the differences (divergences) between them.
+input_fields:
+- name: left_input_content
+  affect_on_aspect:
+  - input_content
+  required: true
+  group: input_content
+  data_type: string
+
+- name: right_input_content
+  affect_on_aspect:
+  - input_content
+  required: true
+  group: input_content
+  data_type: string
+
+- name: analysis_aspects
+  affect_on_aspect:
+  - comparison_focus
+  required: true
+  group: analysis_strategy
+  description: A list of specific attributes or dimensions (aspects) upon which
+    the comparison and divergence analysis should be performed.
+  same_as:
+  - comparison_criteria
+  - target_features
+  data_type: list[string]
+
+- name: granularity
+  affect_on_aspect:
+  - comparison_granularity
+  required: false
+  group: analysis_strategy
+  allowed_values:
+  - fine-grained
+  - coarse-grained
+  data_type: string
+
+
+- name: comparison_mode
+  affect_on_aspect:
+  - comparison_granularity
+  required: false
+  group: analysis_strategy
+  description: Defines how the comparison should be structured (e.g., pairwise,
+    holistic across all sources).
+  default_value: pairwise
+  same_as:
+  - comparison_method
+  allowed_values:
+  - pairwise
+  - holistic
+  - sequential
+  data_type: string
+
+- name: divergence_threshold
+  affect_on_aspect:
+  - output_sensitivity
+  required: false
+  group: analysis_strategy
+  description: A threshold (e.g., semantic distance, magnitude of difference) above
+    which a difference is explicitly reported as a divergence.
+  same_as:
+  - min_difference_score
+  data_type: float
+  data_constraints:
+    min_value: 0.0
+    max_value: 1.0

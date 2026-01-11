@@ -1,0 +1,88 @@
+task: example_generation
+description:
+  same_as:
+  - Generates diverse and contextually relevant examples based on a given target example description
+input_fields:
+
+- name: target_example_description
+  affect_on_aspect:
+  - task_focus
+  required: true
+  group: target_specification
+  description: A detailed description or name of the task for which examples are
+    required.
+  same_as:
+  - task_prompt
+  - goal_description
+  data_type: string
+
+- name: knowledge_domain
+  affect_on_aspect:
+  - knowledge_domain
+  required: false
+  group: target_specification
+  description: A specific piece of context or domain knowledge to ground the generated
+    examples in.
+  same_as:
+  - domain_context
+  - background_info
+  data_type: string
+
+- name: number_of_items
+  affect_on_aspect:
+  - response_size
+  required: false
+  default: '1'
+  group: extra_output_specification
+  description: The desired quantity of examples to generate.
+  same_as:
+  - count
+  - limit
+  data_type: integer
+
+- name: item_format
+  affect_on_aspect:
+  - output_format
+  required: false
+  group: extra_output_specification
+  description: The required structure or format for each generated example (e.g.,
+    JSON, YAML, simple text pair).
+  same_as: []
+  default_value: input_output_pair
+  allowed_values:
+  - plain_text
+  - markdown_text
+  - json
+  - yaml
+  data_type: string
+
+- name: item_content_language
+  group: extra_output_specification
+  data_type: string
+
+- name: target_example_aspects
+  affect_on_aspect:
+  - output_aspects
+  required: false
+  group: generation_strategy
+  description: Specific aspects for target example (e.g., length, topic, complexity).
+  same_as:
+  - output_aspects
+  data_type: list[string]
+
+- name: diversity_level
+  affect_on_aspect:
+  - input_diversity
+  required: false
+  group: generation_strategy
+  description: Controls how varied the generated examples should be across different
+    scenarios or edge cases.
+  same_as:
+  - variation_scope
+  default_value: medium
+  allowed_values:
+  - low
+  - medium
+  - high
+  - exhaustive
+  data_type: string
