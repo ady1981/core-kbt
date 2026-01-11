@@ -1,0 +1,10 @@
+type: object
+properties:
+  reasoning:
+    type: string
+  rewritten_text:
+    type: string
+  other_notes:
+    type: string
+required:
+  - rewritten_text

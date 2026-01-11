@@ -1,0 +1,31 @@
+type: object
+properties:
+  target_information:
+    type: array
+    items:
+      type: object
+      properties:
+        text:
+          type: string
+        references:
+          type: array
+          items:
+            reference_type:
+              type: string
+              enum:
+                - internal_knowledge
+                - www_href
+                - citation_ref
+            reference_text:
+              type: string
+              description: |
+                ```yaml
+                examples:
+                - A general sense fact
+                - http://example.com
+                - <Authors> (<Year>). <Title>. <Other details>.
+                ```
+  other_notes:
+    type: string
+required:
+  - target_information

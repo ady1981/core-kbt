@@ -1,0 +1,11 @@
+type: object
+properties:
+  reasoning:
+    type: string
+  review_text:
+    type: string
+  other_notes:
+    type: string
+required:
+  - reasoning
+  - review_text

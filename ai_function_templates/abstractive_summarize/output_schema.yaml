@@ -1,0 +1,11 @@
+type: object
+properties:
+  reasoning:
+    type: string
+  summary:
+    type: string
+  other_notes:
+    type: string
+required:
+  - reasoning
+  - summary

@@ -1,0 +1,69 @@
+type: object
+properties:
+  by_aspects:
+    type: array
+    items:
+      type: object
+      properties:
+        main_elementary_aspect_name:
+          type: string
+          description: |
+            Extra requirements:
+              * Should be a term
+              * write synonym names into "same_as_aspect_names" field if required
+        same_as_aspect_names:
+          type: array
+          items:
+            type: string
+        is_primary_aspect:
+          type: boolean
+        is_elementary_aspect:
+          type: boolean
+        why_this_aspect_chosen_reasoning:
+          type: string
+        features:
+          type: array
+          items:
+            type: object
+            properties:
+              feature_name:
+                type: string
+                description: |
+                  Extra requirement: should be a term
+              are_both_values_elementary:
+                type: boolean
+              left_item_elementary_value_term:
+                type: string
+                description: |
+                  The elementary feature value of the Left item.
+                  Extra requirements:
+                    * Should be a term
+                    * Don't add comments
+                    * Write extra elementary feature value for the same feature name into a new feature with the same name
+              right_item_elementary_value_term:
+                type: string
+                description: |
+                  The elementary feature value of the Right item.
+                  Extra requirements:
+                    * Should be a term
+                    * Don't add comments
+                    * Write extra elementary feature value for the same feature name into a new feature with the same name
+              values_justification:
+                type: string
+      required:
+        - main_elementary_aspect_name
+        - is_primary_aspect
+        - why_this_aspect_chosen_reasoning
+        - features
+  has_other_primary_aspects:
+    type: boolean
+  has_other_secondary_aspects:
+    type: boolean
+  granularity:
+    type: string
+    enum: [ fine-grained, coarse-grained ]
+  other_notes:
+    type: string
+required:
+  - by_aspects
+  - has_other_primary_aspects
