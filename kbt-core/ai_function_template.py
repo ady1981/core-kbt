@@ -20,7 +20,7 @@ def evaluate2(instruction, response_schema, model=MODEL, temperature=0, **chat_c
     prompt = instruction + f'''
 # RESPONSE FORMAT
 Respond only in JSON format strictly using the provided JSON Schema specification for your response: 
-```json
+```
 {json.dumps(response_schema)}
 ```
 '''
