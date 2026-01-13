@@ -32,14 +32,11 @@ properties:
                   Extra requirement: should be a term
               is_elementary_value:
                 type: boolean
-              feature_elementary_value_term:
+              feature_elementary_value:
                 type: string
                 description: |
                   The elementary feature value.
-                  Extra requirements:
-                    * Should be a term
-                    * Don't add comments
-                    * Write extra elementary feature value for the same feature name into a new feature with the same name
+                  Extra requirements: write extra elementary feature value for the same feature name into a new feature with the same name
               value_justification:
                 type: string
       required:

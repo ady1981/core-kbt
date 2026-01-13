@@ -32,22 +32,16 @@ properties:
                   Extra requirement: should be a term
               are_both_values_elementary:
                 type: boolean
-              left_item_elementary_value_term:
+              left_item_elementary_value:
                 type: string
                 description: |
                   The elementary feature value of the Left item.
-                  Extra requirements:
-                    * Should be a term
-                    * Don't add comments
-                    * Write extra elementary feature value for the same feature name into a new feature with the same name
-              right_item_elementary_value_term:
+                  Extra requirements: write extra elementary feature value for the same feature name into a new feature with the same name
+              right_item_elementary_value:
                 type: string
                 description: |
                   The elementary feature value of the Right item.
-                  Extra requirements:
-                    * Should be a term
-                    * Don't add comments
-                    * Write extra elementary feature value for the same feature name into a new feature with the same name
+                  Extra requirements: write extra elementary feature value for the same feature name into a new feature with the same name
               values_justification:
                 type: string
       required:
