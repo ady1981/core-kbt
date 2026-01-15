@@ -68,12 +68,12 @@ def calc_module_name(func_name):
 def evaluate(func_name, input_data):
     #input_data2 = json.dumps(input_data, indent=2)
     #log_str(
-    #     f'--- evaluate: {func_name}\n{input_data2[0:MAX_LOGGING_LEN] + ' ...'}\n')
+    #     f'--- evaluate: {func_name}\n{input_data2[0:MAX_LOGGING_LEN] + " ..."}\n')
     meta = input_data.get('meta', {})
     template_string = read_string(f'{calc_module_name(func_name)}/prompt.md.j2')
     instruction = render_template(template_string, input_data)
     log_str(
-        f'--- instruction:\n{instruction[0:MAX_LOGGING_LEN] + ' ...'}\n')
+        f'--- instruction:\n{instruction[0:MAX_LOGGING_LEN] + " ..."}\n')
     response_schema = read_yaml(f'{calc_module_name(func_name)}/output_schema.yaml')
     response = evaluate2(instruction, response_schema, **meta)
     json_response = response['json']
