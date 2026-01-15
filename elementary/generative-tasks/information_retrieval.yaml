@@ -16,7 +16,7 @@ input_fields:
   - query
   data_type: string
 
-- name: knowledge_domain
+- name: target_item_topic
   affect_on_aspect:
   - knowledge_domain
   required: false
@@ -26,6 +26,12 @@ input_fields:
   same_as:
   - domain_context
   - background_info
+  data_type: string
+
+- name: datasource_specification
+  affect_on_aspect:
+  - datasource_aspects
+  required: false
   data_type: string
 
 - name: number_of_items
