@@ -13,17 +13,17 @@ properties:
             reference_type:
               type: string
               enum:
-                - internal_knowledge
-                - www_href
+                - URI_href
                 - citation_ref
+                - internal_knowledge
             reference_text:
               type: string
               description: |
                 ```yaml
                 examples:
-                - A general sense fact
                 - http://example.com
                 - <Authors> (<Year>). <Title>. <Other details>.
+                - A general sense fact
                 ```
   other_notes:
     type: string
