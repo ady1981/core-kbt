@@ -4,26 +4,23 @@ import os
 from ai_function_template import evaluate2
 from common import read_string, read_yaml, render_template, write_json, dump_yaml, format_markdown_code, write_yaml
 
-AI_FUN_NAME = 'aspect_based_devergence_analysis'
+AI_FUN_NAME = 'disjoint_sequence_item_generation'
 
 
 def calc_instruction():
-    # items_topic = 'Logic'
-    # left_item = 'Aspect'
-    # right_item = 'Feature'
-    items_topic = 'Cars'
-    left_item = 'Haval Dargo'
-    right_item = 'Haval Jolion'
-
-
-    analysis_strategy = '# Analysis strategy\nGranularity: Fine-grained\n'
+    input_sequence_specification = '# Input sequence topic\nLiving organisms'
+    input_sequence = '''
+The animals kingdom
+The plant kingdom
+Viruses
+'''
+    generation_strategy = '# Generation strategy\nGenerate only living organisms classes'
+    extra_output_specification = ''
     data = {
-        '_extra_output_specification': None,
-        '_analysis_strategy': analysis_strategy,
-        '_examples': None,
-        'items_topic': items_topic,
-        'left_item': left_item,
-        'right_item': right_item
+        'input_sequence': input_sequence,
+        '_input_sequence_specification': input_sequence_specification,
+        '_generation_strategy': generation_strategy,
+        '_extra_output_specification': extra_output_specification
     }
     template_string = read_string(f'ai_function_templates/{AI_FUN_NAME}/prompt.md.j2')
     return render_template(template_string, data)

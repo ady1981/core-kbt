@@ -1,0 +1,108 @@
+task: disjoint_sequence_item_generation
+description:
+  same_as:
+  - next_item_prediction
+  - sequence_continuation
+  - disjoint_element_generation
+input_fields:
+- name: input_sequence
+  group: input_sequence_specification
+  description: The existing sequence of items that provides context for generating
+    the next unique item.
+  required: true
+  same_as:
+  - existing_sequence
+  - input_sequence
+  - context_items
+  affect_on_aspect:
+  - context_relevance
+  - coherence
+  data_type: list[string]
+
+- name: input_sequence_type
+  group: input_sequence_specification
+  description: The category or domain of the sequence to guide appropriate item
+    generation.
+  required: false
+  same_as:
+  - domain
+  - category
+  - sequence_category
+  affect_on_aspect:
+  - knowledge_domain
+  - relevance
+  data_type: string
+  example_values:
+  - numbers
+  - words
+  - concepts
+  - objects
+  - events
+
+- name: disjointness_level
+  group: generation_strategy
+  description: Controls how distinct the new item should be from existing sequence
+    elements.
+  required: false
+  default_value: '0.7'
+  same_as:
+  - uniqueness_level
+  - novelty_factor
+  affect_on_aspect:
+  - novelty
+  - diversity
+  data_type: float
+  data_constraints:
+    min_value: 0.0
+    max_value: 1.0
+
+- name: generation_constraints
+  group: generation_strategy
+  description: Specific rules or patterns that the generated item must follow.
+  required: false
+  same_as:
+  - pattern_rules
+  - generation_rules
+  - constraints
+  affect_on_aspect:
+  - adherence_to_rules
+  - pattern_consistency
+  data_type: list[string]
+  example_values:
+  - must_start_with_vowel
+  - must_be_prime
+  - must_be_animal
+
+- name: complexity_level
+  group: generation_strategy
+  description: Specifies the desired complexity or sophistication of the generated
+    item.
+  required: false
+  default_value: medium
+  same_as:
+  - sophistication_level
+  - difficulty
+  affect_on_aspect:
+  - complexity
+  - sophistication
+  data_type: string
+  allowed_values:
+  - simple
+  - medium
+  - complex
+  - expert
+
+- name: generation_count
+  group: output_specification
+  description: Number of unique items to generate for the sequence.
+  required: false
+  default_value: '1'
+  same_as:
+  - item_count
+  - number_to_generate
+  affect_on_aspect:
+  - response_size
+  data_type: integer
+  data_constraints:
+    min_value: 1
+    max_value: 10
