@@ -48,7 +48,9 @@ Respond only in JSON format strictly using the provided JSON Schema specificatio
             answer2 = {'json': None}
         else:
             if isinstance(answer, dict) and ("array" == answer.get('type', '')) and isinstance(answer.get('items'), list):
-                answer2 = {'json': answer.get('items')}
+                answer2 = {'json': answer['items']}
+            elif answer.get('properties', False):
+                answer2 = {'json': answer['properties']}
             else:
                 answer2 = {'json': answer}
     except RuntimeError:
@@ -72,6 +74,8 @@ def evaluate(func_name, input_data):
     meta = input_data.get('meta', {})
     template_string = read_string(f'{calc_module_name(func_name)}/prompt.md.j2')
     instruction = render_template(template_string, input_data)
+    log_str(
+        f'--- instruction meta: {json.dumps(meta)}\n')
     log_str(
         f'--- instruction:\n{instruction[0:MAX_LOGGING_LEN] + " ..."}\n')
     response_schema = read_yaml(f'{calc_module_name(func_name)}/output_schema.yaml')
