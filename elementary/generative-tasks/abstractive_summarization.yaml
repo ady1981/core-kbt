@@ -11,7 +11,7 @@ input_fields:
     affect_on_aspect: [ _ALL ]
     data_type: string
 
-  - name: content_topic
+  - name: input_content_topic
     same_as: [ content_topic, context ]
     group: input_content
     description: A specified knowledge domain for the content.
