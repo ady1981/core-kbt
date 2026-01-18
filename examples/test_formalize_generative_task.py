@@ -11,7 +11,7 @@ def calc_instruction():
     summarization_task = read_yaml('elementary/generative-tasks/abstractive_summarization.yaml')
     examples = format_markdown_code('yaml', dump_yaml({'elementary_tasks': [summarization_task]}))
     data = {
-      'task': 'to generatively predict a new unique disjoint item in a sequence',
+      'task': 'to identify a term by a description',
       'examples': examples
     }
     template_string = read_string(f'ai_function_templates/{AI_FUN_NAME}/prompt.md.j2')
