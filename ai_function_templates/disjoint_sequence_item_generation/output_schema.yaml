@@ -1,15 +1,21 @@
 type: object
 properties:
   new_disjoint_items:
+    description: |
+      Extra specification: If no new items to output, return empty array
     type: array
     items:
       type: object
       properties:
         item_value:
           type: string
+        item_value_in_default_language:
+          type: string
         why_this_item_reasoning:
           type: string
-        is_item_disjoint_to_input_items_and_other_new_items:
+        is_item_disjoint_with_all_other_items:
+          type: boolean
+        is_item_same_as_any_other_item:
           type: boolean
         item_disjointness_score:
           type: float
@@ -28,5 +34,4 @@ properties:
   other_notes:
     type: string
 required:
-  - reasoning
   - new_disjoint_item
