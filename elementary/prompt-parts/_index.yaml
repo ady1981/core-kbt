@@ -1,0 +1,58 @@
+'for internal knowledge retrieval generation task':
+  prompt_structure_and_formatting_self_specification: []
+  intent_content: []
+  intent_content_specification: []
+  retrieval_specification:
+  - retrieval_context_preparation
+  - knowledge_base_selection
+  - contextual_data_sources_specification
+  - knowledge_source_mapping_specification
+  - internal_knowledge_specification
+  - contextual_constraints_specification
+  - contextual_alignment_specification
+  - contextual_memory_specification
+  generation_specification:
+  - knowledge_consolidation_specification
+  - evaluation_metrics
+  - iteration_and_refinement_strategy
+  - examples
+  - safety_and_ethics_specification
+  - post_generation_verification_specification
+  - execution_plan_specification
+  - knowledge_synthesis_specification
+  - task_decomposition_specification
+  - knowledge_synthesis_specification
+  output_specification:
+  - structure_and_formatting_specification
+  - content_specification
+  - constrains_specification
+'for provided knowledge retrieval generation task':
+  prompt_structure_and_formatting_self_specification: []
+  knowledge_content: []
+  knowledge_specification:
+  - knowledge_source
+  - knowledge_source_credibility
+  - contextualization
+  - contextual_priming
+  - knowledge_verification
+  - contextual_boundary
+  - contextual_relevance
+  - contextual_formatting
+  - contextual_authority
+  intent_content: []
+  intent_content_specification: []
+  generation_specification:
+    - knowledge_consolidation_specification
+    - evaluation_metrics
+    - iteration_and_refinement_strategy
+    - examples
+    - safety_and_ethics_specification
+    - post_generation_verification_specification
+    - execution_plan_specification
+    - knowledge_synthesis_specification
+    - task_decomposition_specification
+    - knowledge_synthesis_specification
+  output_specification:
+    - structure_and_formatting_specification
+    - content_specification
+    - constrains_specification
