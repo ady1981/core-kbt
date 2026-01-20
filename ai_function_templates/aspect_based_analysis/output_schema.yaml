@@ -5,7 +5,7 @@ properties:
     items:
       type: object
       properties:
-        main_elementary_aspect_name:
+        elementary_aspect_name:
           type: string
           description: |
             Extra requirements:
@@ -35,12 +35,11 @@ properties:
               feature_elementary_value:
                 type: string
                 description: |
-                  The elementary feature value.
                   Extra requirements: write extra elementary feature value for the same feature name into a new feature with the same name
               value_justification:
                 type: string
       required:
-        - main_elementary_aspect_name
+        - elementary_aspect_name
         - is_primary_aspect
         - why_this_aspect_chosen_reasoning
         - features
@@ -56,3 +55,4 @@ properties:
 required:
   - by_aspects
   - has_other_primary_aspects
+  - granularity
