@@ -1,0 +1,45 @@
+type: object
+properties:
+  reasoning:
+    type: string
+  rewritten_item:
+    type: string
+  changed_aspects:
+    type: array
+    items:
+      type: object
+      properties:
+        elementary_aspect_name:
+          type: string
+          description: |
+            Extra requirements:
+              * Should be a term
+              * write synonym names into "same_as_aspect_names" field if required
+        same_as_aspect_names:
+          type: array
+          items:
+            type: string
+        is_elementary_aspect:
+          type: boolean
+        features:
+          type: array
+          items:
+            type: object
+            properties:
+              feature_name:
+                type: string
+                description: |
+                  Extra requirement: should be a term
+              is_elementary_value:
+                type: boolean
+              feature_elementary_value:
+                type: string
+                description: |
+                  Extra requirements: write extra elementary feature value for the same feature name into a new feature with the same name
+              value_justification:
+                type: string
+  other_notes:
+    type: string
+required:
+  - reasoning
+  - rewritten_item
