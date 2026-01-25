@@ -1,13 +1,13 @@
 type: object
 properties:
-  target_information:
+  items:
     type: array
     items:
       type: object
       properties:
-        text:
+        answer_text:
           type: string
-        references:
+        answer_references:
           type: array
           items:
             reference_type:
@@ -21,11 +21,11 @@ properties:
               description: |
                 ```yaml
                 examples:
-                - http://example.com
+                - https://example.com
                 - <Authors> (<Year>). <Title>. <Other details>.
                 - A general sense fact
                 ```
   other_notes:
     type: string
 required:
-  - target_information
+  - items
