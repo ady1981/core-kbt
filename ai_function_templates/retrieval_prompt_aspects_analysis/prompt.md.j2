@@ -1,0 +1,26 @@
+Generate items strictly satisfying to:
+* Target specification
+* Information retrieval strategy
+* Output generation strategy
+* Output specification.
+
+# Target specification
+Meta_prompt_task_type: aspect values evaluation
+Content_type: input LLM prompt
+Input_LLM_prompt_parts:
+  * input_LLM_prompt_target_specification
+  * input_LLM_prompt_information_retrieval_strategy
+  * input_LLM_prompt_output_generation_strategy
+Target_items_description: output aspect values for the input LLM prompt parts
+
+## Content
+{{prompt_content}}
+
+{{_information_retrieval_strategy}}
+# Output generation strategy
+**Take_into_account**:
+  * don't evaluate meta-prompt
+  * don't mix meta-prompt data with the input LLM prompt data
+Best_effort: true
+{{_extra_output_generation_strategy}}
+{{_extra_output_specification}}

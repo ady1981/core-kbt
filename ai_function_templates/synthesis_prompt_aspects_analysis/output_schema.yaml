@@ -1,0 +1,71 @@
+type: object
+required:
+  - input_LLM_prompt_text
+  - input_LLM_prompt_part_aspects
+properties:
+  input_LLM_prompt_text:
+    type: string
+  input_LLM_prompt_part_aspects:
+    type: object
+    properties:
+      input_LLM_prompt_target_specification_aspects:
+        type: array
+        items:
+          type: object
+          properties:
+            feature_name:
+              type: string
+              description: 'Extra requirement: should be a term'
+            is_elementary_value:
+              type: boolean
+            feature_elementary_value:
+              type: string
+              description: 'Extra requirements: write extra elementary feature value for the same feature name into a new feature with the same name'
+            value_justification:
+              type: string
+            value_description:
+              type: string
+            is_input_dependency:
+              type: boolean
+      input_LLM_prompt_knowledge_source_specification_aspects:
+        type: array
+        items:
+          type: object
+          properties:
+            feature_name:
+              type: string
+              description: 'Extra requirement: should be a term'
+            is_elementary_value:
+              type: boolean
+            feature_elementary_value:
+              type: string
+              description: 'Extra requirements: write extra elementary feature value for the same feature name into a new feature with the same name'
+            value_justification:
+              type: string
+            value_description:
+              type: string
+            is_input_source:
+              type: boolean
+      input_LLM_prompt_output_generation_strategy_aspects:
+        type: array
+        items:
+          type: object
+          properties:
+            feature_name:
+              type: string
+              description: 'Extra requirement: should be a term'
+            is_elementary_value:
+              type: boolean
+            feature_elementary_value:
+              type: string
+              description: 'Extra requirements: write extra elementary feature value for the same feature name into a new feature with the same name'
+            value_justification:
+              type: string
+            value_description:
+              type: string
+      input_LLM_prompt_has_extra_primary_aspects:
+        type: boolean
+      input_LLM_prompt_has_extra_secondary_aspects:
+        type: boolean
+  other_notes:
+    type: string

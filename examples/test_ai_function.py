@@ -4,23 +4,16 @@ import os
 from ai_function_template import evaluate2
 from common import read_string, read_yaml, render_template, write_json, dump_yaml, format_markdown_code, write_yaml
 
-AI_FUN_NAME = 'disjoint_sequence_item_generation'
+AI_FUN_NAME = 'generate'
 
 
 def calc_instruction():
-    input_sequence_specification = '# Input sequence topic\nLiving organisms'
-    input_sequence = '''
-The animals kingdom
-The plant kingdom
-Viruses
-'''
-    generation_strategy = '# Generation strategy\nGenerate only living organisms classes'
-    extra_output_specification = ''
+    target_specification = 'target_description: What is Capital of Russia?'
+    ##
+    # intent_content = 'What is Capital of Russia?'
+    # intent_content = 'Your task is to do aspect based analysis for a specified Content.'
     data = {
-        'input_sequence': input_sequence,
-        '_input_sequence_specification': input_sequence_specification,
-        '_generation_strategy': generation_strategy,
-        '_extra_output_specification': extra_output_specification
+        'target_specification': target_specification,
     }
     template_string = read_string(f'ai_function_templates/{AI_FUN_NAME}/prompt.md.j2')
     return render_template(template_string, data)
