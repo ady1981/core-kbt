@@ -14,7 +14,7 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-MAX_LOGGING_LEN = 512
+MAX_LOGGING_LEN = 1024
 API_TOKEN = os.getenv('AI_FUNC_API_TOKEN')
 
 
