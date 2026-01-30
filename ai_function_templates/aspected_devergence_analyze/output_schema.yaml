@@ -8,8 +8,7 @@ properties:
         elementary_aspect_name:
           type: string
           description: |
-            Extra requirements:
-              * The elementary_aspect should be a group of features
+            Extra requirements:              
               * Should be a term
               * Write synonym names into "same_as_aspect_names" field if required
         same_as_aspect_names:
@@ -35,15 +34,13 @@ properties:
                 type: boolean
               are_values_different:
                 type: boolean
-              left_item_elementary_value:
+              left_item_feature_elementary_value:
                 type: string
-                description: |
-                  The elementary feature value of the Left item.
+                description: |                  
                   Extra requirements: write extra elementary feature value for the same feature name into a new feature with the same name
-              right_item_elementary_value:
+              right_item_feature_elementary_value:
                 type: string
-                description: |
-                  The elementary feature value of the Right item.
+                description: |                  
                   Extra requirements: write extra elementary feature value for the same feature name into a new feature with the same name
               values_justification:
                 type: string
