@@ -5,7 +5,7 @@ import traceback
 from openai import OpenAI
 from dotenv import load_dotenv
 
-from common import deep_dict_compare, clear_code_markdown, read_string, render_template, read_yaml, log_str
+from common import deep_dict_compare, clear_code_markdown, read_string, render_template, read_yaml, log_str, dump_json
 
 load_dotenv()
 
@@ -74,11 +74,13 @@ def evaluate(func_name, input_data):
     meta = input_data.get('meta', {})
     template_string = read_string(f'{calc_module_name(func_name)}/prompt.md.j2')
     instruction = render_template(template_string, input_data)
-    log_str(
-        f'--- instruction meta: {json.dumps(meta)}\n')
-    log_str(
-        f'--- instruction:\n{instruction[0:MAX_LOGGING_LEN] + " ..."}\n')
+    log_str(f'--- instruction meta: {json.dumps(meta)}\n')
+    log_str(f'--- instruction:\n{instruction[0:MAX_LOGGING_LEN] + " ..."}\n')
     response_schema = read_yaml(f'{calc_module_name(func_name)}/output_schema.yaml')
     response = evaluate2(instruction, response_schema, **meta)
-    json_response = response['json']
-    return json_response
+    if response.get('json'):
+        return response['json']
+    else:
+        log_str(f'--- invalid response:\n' + dump_json(response))
+        raise RuntimeError('invalid response')
+

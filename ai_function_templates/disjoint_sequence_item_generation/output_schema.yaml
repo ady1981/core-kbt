@@ -1,16 +1,34 @@
 type: object
 properties:
-  new_disjoint_items:
+  Universe_of_Discourse_category:
+    type: string
+  is_sequence_a_full_Universe_of_Discourse_already:
+    type: boolean
+    description: If the sequence is a full Universe of Discourse already, no extra extra disjoint items are possible
+  is_the_Universe_of_Discourse_a_finite_set:
+    type: string
+  extra_disjoint_items:
     description: |
       Extra specification: If no new items to output, return empty array
     type: array
     items:
       type: object
+      required:
+        - is_item_an_instance_of_the_Universe_of_Discourse
+        - why_this_item_reasoning
+        - item_value_in_english_language
+        - item_value
+        - is_item_disjoint_with_all_other_items
+        - is_item_same_as_any_other_item
+        - item_disjointness_score_explaination
+        - item_disjointness_score
       properties:
         item_value:
           type: string
-        item_value_in_default_language:
+        item_value_in_english_language:
           type: string
+        is_item_an_instance_of_the_Universe_of_Discourse:
+          type: boolean
         why_this_item_reasoning:
           type: string
         is_item_disjoint_with_all_other_items:
