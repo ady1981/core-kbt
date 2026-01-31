@@ -79,6 +79,11 @@ OPENAI_API_KEY=<DEEPSEEK_API_TOKEN>
 AI_FUNC_API_TOKEN=<A_SECRET>
 ```
 2. Запускаем сервер AI-функций:
+  * через docker:
+```shell
+./run-gh-docker-image.sh
+```
+   * через командную строку:
 ```shell
 ./runner.sh -s kbt-core/ai_function_server.py
 ```
