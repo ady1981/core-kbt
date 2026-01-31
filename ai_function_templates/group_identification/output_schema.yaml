@@ -1,0 +1,8 @@
+type: object
+properties:
+  Universe_of_Discourse_name:
+    type: string
+  other_notes:
+    type: string
+required:
+  - Universe_of_Discourse_name
