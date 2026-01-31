@@ -21,32 +21,27 @@ properties:
           type: boolean
         why_this_aspect_chosen_reasoning:
           type: string
-        different_features:
+        common_aspect_features:
           type: array
+          description: Should be empty if no common aspect features
           items:
             type: object
             properties:
-              feature_name:
+              common_feature_name:
                 type: string
                 description: |
                   Extra requirement: should be a term
-              are_both_values_elementary:
+              is_common_feature_value_elementary:
                 type: boolean
-              are_values_different:
+              is_common_feature_value_same_for_left_item_and_right_item:
                 type: boolean
-              is_left_item_feature_value_elementary:
-                type: boolean
-              left_item_feature_elementary_value:
+                description: |
+                  Extra requirement: this value should be true for common feature
+              common_feature_value:
                 type: string
                 description: |                  
-                  Extra requirements: write extra elementary feature value for the same feature name into a new feature with the same name
-              is_right_item_feature_value_elementary:
-                type: boolean
-              right_item_feature_elementary_value:
-                type: string
-                description: |                  
-                  Extra requirements: write extra elementary feature value for the same feature name into a new feature with the same name
-              values_justification:
+                  Extra requirement: write extra elementary feature value for the same feature name into a new feature with the same name
+              common_feature_value_justification:
                 type: string
       required:
         - main_elementary_aspect_name
