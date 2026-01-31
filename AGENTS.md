@@ -84,15 +84,13 @@ The server will run on the host and port specified in your `.env` file (e.g., `1
 You can test an AI function with a `curl` request.
 ```bash
 source .env
-curl -X PUT "http://127.0.0.1:5000/ai-func/generate_what_is" \
+curl -X PUT "http://127.0.0.1:5001/ai-func/generate" \
   -H "Api-Token: $AI_FUNC_API_TOKEN" \
   -H "Content-Type: application/json" \
   -H "Accept: application/json" \
-  -d '{
-  "context": "Geography",
-  "attribute": "capital (in a shortest form)",
-  "attribute_description": "of Russia"
-}'
+  -d "{
+  \"target_specification\": \"target_description: What is Capital of Russia?\"
+}"
 ```
 
 ## 5. Development Guide
