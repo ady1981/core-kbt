@@ -1,0 +1,37 @@
+type: object
+properties:
+  items:
+    type: array
+    items:
+      type: object
+      properties:
+        answer_reasoning:
+          type: string
+        answer_text:
+          type: string
+        answer_references:
+          type: array
+          items:
+            type: object
+            required:
+              - source_document_name
+              - heading_path_in_source_document
+              - source_reference_start_text
+              - is_sample_text_partially_omitted
+            properties:
+              source_document_name:
+                type: string
+              heading_path_in_source_document:
+                type: array
+                items:
+                  type: string
+              source_reference_sample_start_text:
+                type: string
+              source_reference_sample_end_text:
+                type: string
+              is_sample_text_partially_omitted:
+                type: boolean
+  other_notes:
+    type: string
+required:
+  - items

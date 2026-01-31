@@ -10,21 +10,23 @@ properties:
         answer_references:
           type: array
           items:
-            reference_type:
-              type: string
-              enum:
-                - URI_href
-                - citation_ref
-                - internal_knowledge
-            reference_text:
-              type: string
-              description: |
-                ```yaml
-                examples:
-                - https://example.com
-                - <Authors> (<Year>). <Title>. <Other details>.
-                - A general sense fact
-                ```
+            type: object
+            properties:
+              reference_type:
+                type: string
+                enum:
+                  - URI_href
+                  - citation_ref
+                  - internal_knowledge
+              reference_text:
+                type: string
+                description: |
+                  ```yaml
+                  examples:
+                  - https://example.com
+                  - <Authors> (<Year>). <Title>. <Other details>.
+                  - A general sense fact
+                  ```
   other_notes:
     type: string
 required:
