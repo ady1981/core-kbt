@@ -52,7 +52,7 @@ properties:
         - main_elementary_aspect_name
         - is_primary_aspect
         - why_this_aspect_chosen_reasoning
-        - features
+        - different_features
   has_other_primary_aspects:
     type: boolean
   has_other_secondary_aspects:
