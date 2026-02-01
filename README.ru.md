@@ -68,11 +68,8 @@ cd core-kbt
 ```
 2. Задаем значения переменных среды в `.env` файле, например для DeepSeek:
 ```shell
-DEVELOPMENT=1
-HOST=127.0.0.1
+HOST=0.0.0.0
 PORT=5001
-PYTHONUTF8=1
-PYTHONIOENCODING=utf8
 OPENAI_BASE_URL=https://api.deepseek.com
 OPENAI_MODEL=deepseek-chat
 OPENAI_API_KEY=<DEEPSEEK_API_TOKEN>
