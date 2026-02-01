@@ -13,7 +13,7 @@ client = OpenAI()
 OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL")
 MODEL = os.getenv("OPENAI_MODEL")
 DEFAULT_TIMEOUT = float(os.getenv("DEFAULT_TIMEOUT", "300.0"))
-MAX_LOGGING_LEN = int(os.getenv('MAX_LOGGING_LEN'))
+MAX_LOGGING_LEN = int(os.getenv('MAX_LOGGING_LEN', '1000'))
 
 
 def evaluate2(instruction, response_schema, model=MODEL, temperature=0, **chat_completions_args):
