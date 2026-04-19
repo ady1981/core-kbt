@@ -1,0 +1,71 @@
+type: object
+properties:
+  not_comparable:
+    type: object
+    properties:
+      _1:
+        type: array
+        items:
+        - type: array
+          items:
+          - type: integer
+          - type: object
+        - type: array
+          items:
+          - type: integer
+          - type: object
+      _2:
+        type: array
+        items:
+        - type: array
+          items:
+          - type: integer
+          - type: object
+        - type: array
+          items:
+          - type: integer
+          - type: object
+  comparable:
+    type: object
+    properties:
+      equal:
+        type: array
+        items:
+        - type: object
+          properties:
+            _1:
+              type: array
+              items:
+              - type: integer
+              - type: object
+            _2:
+              type: array
+              items:
+              - type: integer
+              - type: object
+          required:
+          - _1
+          - _2
+      not_equal:
+        type: object
+        properties:
+          _1:
+            type: array
+            items:
+            - type: array
+              items:
+              - type: integer
+              - type: object
+          _2:
+            type: array
+            items:
+            - type: array
+              items:
+              - type: integer
+              - type: object
+    required:
+      - equal
+      - not_equal
+required:
+- not_comparable
+- comparable
