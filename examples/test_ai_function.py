@@ -4,16 +4,30 @@ import os
 from ai_function_template import evaluate2
 from common import read_string, read_yaml, render_template, write_json, dump_yaml, format_markdown_code, write_yaml
 
-AI_FUN_NAME = 'generate'
+AI_FUN_NAME = 'instance_to_property_compatibility_evaluation'
 
 
 def calc_instruction():
-    target_specification = 'target_description: What is Capital of Russia?'
-    ##
-    # intent_content = 'What is Capital of Russia?'
-    # intent_content = 'Your task is to do aspect based analysis for a specified Content.'
+    description = 'For hardware low-level applications'
+    generic_concept = 'programming language'
+    property = 'Execution Model'
+    property_value = 'Bytecode interpretation, Just-In-Time (JIT) compilation'
+    knowledge_domain = 'common sense'
+    # knowledge_domain = 'Informational Technology'
+#     properties = '''Syntax
+# Semantics
+# Paradigm
+# Type System
+# Execution Model
+# Memory Management
+# Standard Library'''
+    context_knowledge_specification = f'### Knowledge domain\n{knowledge_domain}'
     data = {
-        'target_specification': target_specification,
+        'description': description,
+        'generic_concept': generic_concept,
+        'property': property,
+        'property_value': property_value,
+        'context_knowledge_specification': context_knowledge_specification
     }
     template_string = read_string(f'ai_function_templates/{AI_FUN_NAME}/prompt.md.j2')
     return render_template(template_string, data)
