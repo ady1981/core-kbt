@@ -1,0 +1,8 @@
+type: object
+properties:
+  generic_concept:
+    type: string
+  other_notes:
+    type: string
+required:
+  - generic_concept

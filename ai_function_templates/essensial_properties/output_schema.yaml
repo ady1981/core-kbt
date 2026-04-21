@@ -1,0 +1,21 @@
+type: object
+properties:
+  concept_properties:
+    type: array
+    items:
+      type: object
+      properties:
+        property_name:
+          type: string
+          description: |
+            Extra requirements: should be a term
+        is_essential_property:
+          type: boolean
+  has_other_essential_properties:
+    type: boolean
+  other_notes:
+    type: string
+required:
+  - concept_properties
+  - has_other_essential_properties
+  - other_notes
