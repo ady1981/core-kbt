@@ -1,0 +1,16 @@
+#schema: ontology_schema.yaml
+- name: cat
+  kind: entity
+  schema: entity_schema
+  definition: A feline animal
+- name: Alice
+  kind: entity
+  schema: entity_schema
+  definition: A specific cat named Alice
+- name: Alice_is_a_cat
+  kind: relation
+  schema: instanceOf_schema
+  subjectEntities:
+  - Alice
+  objectEntities:
+  - cat

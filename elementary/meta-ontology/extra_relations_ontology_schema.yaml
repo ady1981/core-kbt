@@ -1,6 +1,6 @@
 - name: superclassOf_schema
   extends: relation_schema
-  description: Describes that subject entity is a superclass of entity entity
+  description: Describes that subject entity is a superclass of entity
   isTransitive: true
   isSymmetric: false
 

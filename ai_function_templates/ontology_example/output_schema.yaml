@@ -1,0 +1,6 @@
+type: object
+properties:
+  extra_ontology_items:
+    type: array
+  other_notes:
+      type: string

@@ -1,4 +1,4 @@
-## ontology_schema: ontology_schema.yaml
 - name: entity
-  type: class
+  schema: entity_schema
+  kind: entity
   definition: An axiomatic root class that encompasses all real and imaginary entities

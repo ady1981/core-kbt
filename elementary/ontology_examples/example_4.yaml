@@ -1,0 +1,21 @@
+- kind: entity
+  schema: entity_schema
+  name: mother
+  definition: a female parent
+- kind: entity
+  schema: entity_schema
+  name: father
+  definition: a male parent
+- kind: entity
+  schema: entity_schema
+  name: parent
+  definition: a mother or a father
+- kind: relation
+  schema: disjointUnionOf_schema
+  name: parent_disjoint_union
+  subjectEntities:
+  - parent
+  objectEntities:
+  - mother
+  - father
+  description: parent is the disjoint union of mother and father

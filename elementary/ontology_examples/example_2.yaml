@@ -1,0 +1,18 @@
+- name: cat
+  kind: entity
+  schema: entity_schema
+  definition: A small domesticated carnivorous mammal with soft fur
+- name: mammal
+  kind: entity
+  schema: entity_schema
+  definition: |
+    A warm-blooded vertebrate animal of a class that is distinguished by
+    the possession of hair or fur, the secretion of milk by females for the nourishment
+    of the young
+- name: subclassOf
+  kind: relation
+  schema: subclassOf_schema
+  subjectEntities:
+  - cat
+  objectEntities:
+  - mammal

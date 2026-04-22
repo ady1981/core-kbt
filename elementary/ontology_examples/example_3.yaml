@@ -1,0 +1,16 @@
+- name: hand
+  kind: entity
+  schema: entity_schema
+  definition: A manipulator at the end of an arm or a forelimb, used for grasping and holding.
+- name: arm
+  kind: entity
+  schema: entity_schema
+  definition: The upper limb of the human body, extending from the shoulder to the wrist.
+- name: partOf
+  kind: relation
+  schema: partOf_schema
+  subjectEntities:
+  - hand
+  objectEntities:
+  - arm
+  isTransitive: false

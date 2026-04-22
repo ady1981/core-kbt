@@ -1,0 +1,30 @@
+type: object
+properties:
+  ontology_schema:
+    type: object
+    properties:
+      is_valid: boolean
+      points_to_improve:
+        type: array
+        items:
+          is_critical:
+            type: boolean
+          text:
+            type: string
+    required:
+      - is_valid
+  ontology:
+    type: object
+    properties:
+      is_valid: boolean
+      points_to_improve:
+        type: array
+        items:
+          is_critical:
+            type: boolean
+          text:
+            type: string
+    required:
+      - is_valid
+  other_notes:
+      type: string

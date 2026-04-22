@@ -1,25 +1,32 @@
 - name: item_schema
-  description: A root item schema
-  itemSchemaRules:
+  description: |
+    A root item schema.
+    Take into account:
+    - Any item inherit attribute values of its schema. 
+    - Any item attribute value is idempotent (any overwrite is not allowed).
+    - 'extraItemSchemaRules' are rules for ontology items and not for schema ontology items
+  extraItemSchemaRules:
     - ruleType: hasAttribute
       ruleParameters: itemSchemaRules
     - ruleType: hasAttribute
-      ruleParameters:
-        attribute: type
-        valueJSONSchema:
-          type: string
-          enum: [ class_schema, relation_schema ]
+      ruleParameters: kind
+      description: 'kind' can be only 'entity' or 'relation'
+    - ruleType: hasAttribute
+      ruleParameters: schema
+      description: The item schema to apply
     - ruleType: hasAttribute
       ruleParameters: extends
+      description: It is allowed to extend a schema only
     - ruleType: allowExtraDatatypeAttributes
   itemSchemaRulesExamples: []
 
-## Foundational class_schema
+## Foundational entity_schema
 
-- name: class_schema
-  type: item_schema
-  description: A root item schema for class
-  itemSchemaRules:
+- name: entity_schema
+  extends: item_schema
+  kind: entity
+  description: A root item schema for entity.
+  extraItemSchemaRules:
     - ruleType: hasAttribute
       ruleParameters:
         attribute:
@@ -28,15 +35,14 @@
             - constructedNameTemplate
     - ruleType: hasAttribute
       ruleParameters: definition
-    - ruleType: hasAttribute
-      ruleParameters: subclassOf
 
 ## Foundational relation_schema
 
 - name: relation_schema
-  type: item_schema
+  extends: item_schema
+  kind: relation
   description: A root item schema for relation
-  itemSchemaRules:
+  extraItemSchemaRules:
     - ruleType: hasAttribute
       ruleParameters:
         attribute:
@@ -44,12 +50,9 @@
             - name
             - constructedNameTemplate
     - ruleType: hasAttribute
-      ruleParameters: extends
-      description: A schema to impotential extend
+      ruleParameters: subjectEntities
     - ruleType: hasAttribute
-      ruleParameters: subjectClasses
-    - ruleType: hasAttribute
-      ruleParameters: objectClasses
+      ruleParameters: objectEntities
     - ruleType: hasAttribute
       ruleParameters: isTransitive
     - ruleType: hasAttribute
@@ -77,13 +80,6 @@
   extends: relation_schema
   description: Describes spatial and non-spatial relationship of subject entity to object entity
   isSymmetric: false
-  comment: The `isTransitive` value should be specified in a subclass relation
-
-- name: equivalentTo_schema
-  extends: relation_schema
-  description: Describes that subject entity is equivalent class to object entity
-  isSymmetric: true
-  isTransitive: true
 
 - name: disjointWith_schema
   extends: relation_schema
@@ -98,3 +94,9 @@
 - name: disjointUnionOf_schema
   extends: unionOf_schema
   description: Specifies that the class is equivalent to the union of several other classes and these constituent classes are pairwise disjoint
+
+- name: equivalentTo_schema
+  extends: relation_schema
+  description: Describes that subject entity is equivalent class to object entity
+  isSymmetric: true
+  isTransitive: true
