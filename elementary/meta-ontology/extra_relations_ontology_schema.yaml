@@ -1,0 +1,13 @@
+- name: superclassOf_schema
+  extends: relation_schema
+  description: Describes that subject entity is a superclass of entity entity
+  isTransitive: true
+  isSymmetric: false
+
+- name: structuralPartOf
+  extends: partOfSchema
+  description: This relation describes a relationship where the parts are essential constituents that make up the whole, and the whole cannot exist or function as intended without these specific parts
+
+- name: locatedIn
+  extends: partOfSchema
+  description: This relation describes a relationship where the part is physically or spatially located within the boundaries of the whole

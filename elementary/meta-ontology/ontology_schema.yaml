@@ -1,0 +1,100 @@
+- name: item_schema
+  description: A root item schema
+  itemSchemaRules:
+    - ruleType: hasAttribute
+      ruleParameters: itemSchemaRules
+    - ruleType: hasAttribute
+      ruleParameters:
+        attribute: type
+        valueJSONSchema:
+          type: string
+          enum: [ class_schema, relation_schema ]
+    - ruleType: hasAttribute
+      ruleParameters: extends
+    - ruleType: allowExtraDatatypeAttributes
+  itemSchemaRulesExamples: []
+
+## Foundational class_schema
+
+- name: class_schema
+  type: item_schema
+  description: A root item schema for class
+  itemSchemaRules:
+    - ruleType: hasAttribute
+      ruleParameters:
+        attribute:
+          oneOf:
+            - name
+            - constructedNameTemplate
+    - ruleType: hasAttribute
+      ruleParameters: definition
+    - ruleType: hasAttribute
+      ruleParameters: subclassOf
+
+## Foundational relation_schema
+
+- name: relation_schema
+  type: item_schema
+  description: A root item schema for relation
+  itemSchemaRules:
+    - ruleType: hasAttribute
+      ruleParameters:
+        attribute:
+          oneOf:
+            - name
+            - constructedNameTemplate
+    - ruleType: hasAttribute
+      ruleParameters: extends
+      description: A schema to impotential extend
+    - ruleType: hasAttribute
+      ruleParameters: subjectClasses
+    - ruleType: hasAttribute
+      ruleParameters: objectClasses
+    - ruleType: hasAttribute
+      ruleParameters: isTransitive
+    - ruleType: hasAttribute
+      ruleParameters: isSymmetric
+    - ruleType: hasAttribute
+      ruleParameters: isFunctional
+    - ruleType: hasAttribute
+      ruleParameters: isInverseFunctional
+
+## Extra relation ontology schemas
+
+- name: instanceOf_schema
+  extends: relation_schema
+  description: Describes that subject entity is instance of object entity
+  isTransitive: false
+  isSymmetric: false
+
+- name: subclassOf_schema
+  extends: relation_schema
+  description: Describes that subject entity is a subclass of entity entity
+  isTransitive: true
+  isSymmetric: false
+
+- name: partOf_schema
+  extends: relation_schema
+  description: Describes spatial and non-spatial relationship of subject entity to object entity
+  isSymmetric: false
+  comment: The `isTransitive` value should be specified in a subclass relation
+
+- name: equivalentTo_schema
+  extends: relation_schema
+  description: Describes that subject entity is equivalent class to object entity
+  isSymmetric: true
+  isTransitive: true
+
+- name: disjointWith_schema
+  extends: relation_schema
+  description: The disjointWith relation defines that two classes are disjoint, meaning they have no overlapping instances
+  isSymmetric: true
+  isTransitive: true
+
+- name: unionOf_schema
+  extends: relation_schema
+  description: Specifies that the class is equivalent to the union of several other classes
+
+- name: disjointUnionOf_schema
+  extends: unionOf_schema
+  description: Specifies that the class is equivalent to the union of several other classes and these constituent classes are pairwise disjoint
