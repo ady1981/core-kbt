@@ -1,0 +1,52 @@
+type: object
+properties:
+  frame_of_reference_name:
+    type: string
+  perspective_observer_strategy_name:
+    type: string
+  point_of_view_name:
+    type: string
+  perspective_aspects:
+    type: list
+    items:
+      aspect_name:
+        type: string
+      aspect_importance_score_to_other_aspects:
+        type: integer
+        minimum: 1
+      can_perspective_determine_aspect_importance_score:
+        type: boolean
+      aspect_features:
+        type: array
+        items:
+          type: object
+          properties:
+            feature_name:
+              type: string
+              description: Write simple name only. Write extra synonym in the feature_same_as_name field or in an extra feature.
+            feature_same_as_name:
+              type: array
+              items:
+                type: string
+            feature_value_type:
+              type: string
+              enum: ["Integer", "Float", "IntegerEnumeration", "FloatEnumeration", "StringEnumeration", "BooleanEnumeration"]
+            feature_value_unit:
+              type: object
+              properties:
+                name_in_SI:
+                  type: string
+                name:
+                  type: string
+            feature_importance_score_to_other_features:
+              type: integer
+              minimum: 1
+            can_perspective_determine_feature_importance_score:
+              type: boolean
+          required:
+            - feature_name
+            - feature_value_type
+  extra_perspective_aspects:
+    type: boolean
+  other_notes:
+      type: string

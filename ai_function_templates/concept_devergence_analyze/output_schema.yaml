@@ -1,0 +1,46 @@
+type: object
+properties:
+  superordinate_concept_in_single_form:
+    type: string
+  by_concept_properties:
+    type: array
+    items:
+      type: object
+      properties:
+        concept_property_name:
+          type: string
+          description: |
+            Extra requirements: should be a term
+        is_essential_property:
+          type: boolean
+        difference:
+            type: object
+            properties:
+              left_item_property_value:
+                type: string
+                description: |                  
+                  Extra requirements:
+                    * should be a term
+                    * write extra elementary property value for the same property into a new difference item
+              right_item_property_value:
+                type: string
+                description: |                  
+                  Extra requirements:
+                    * should be a term
+                    * write extra elementary property value for the same property into a new difference item
+              are_both_values_elementary:
+                type: boolean
+              are_values_different:
+                type: boolean
+            required:
+              - left_item_property_value
+              - right_item_property_value
+              - are_both_values_elementary
+              - are_values_different
+  has_other_essential_properties:
+    type: boolean
+  other_notes:
+    type: string
+required:
+  - superordinate_concept
+  - by_concept_properties

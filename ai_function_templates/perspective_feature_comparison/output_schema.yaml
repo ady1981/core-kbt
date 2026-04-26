@@ -1,0 +1,20 @@
+type: object
+properties:
+  aspect_feature_value_comparison:
+    type: array
+    items:
+      type: object
+      properties:
+        feature_name:
+          type: string
+        comparison:
+          type: integer
+          enum: [-1, 1, 0]
+          description: |
+            - -1 if A feature worse then B feature
+            - +1 if A feature better then B feature
+            - 0 if A and B features are not comparable
+  extra_perspective_aspects:
+    type: boolean
+  other_notes:
+      type: string
