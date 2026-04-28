@@ -1,23 +1,20 @@
 LLM_prompt:
-  prompt_structure_and_notation_specification: []
+  prompt_structure_and_notation_self_specification: []
   target_specification:
   - task_specification
-  - task_description
   - target_semantic_specification
-  - target_semantic_description
-  context_knowledge_specification:
-  - knowledge_topic
-  - knowledge_source:
-      - properties
-      - content
   information_retrieval_strategy:
+  - context_knowledge_specification:
+    - context_knowledge_topic
+    - context_knowledge_source:
+        - properties
+        - content
   - knowledge_sources_selection_strategy
   - context_preparation_strategy
   - contextual_alignment_strategy
   - contextual_memory_strategy
   - ...
   output_generation_strategy:
-  - focus_on
   - execution_plan_specification
   - task_decomposition_specification
   - knowledge_consolidation_specification
