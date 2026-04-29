@@ -2,3 +2,4 @@
 .idea/
 temp/
 __pycache__/
+.vscode
