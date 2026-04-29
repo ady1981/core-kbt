@@ -4,7 +4,7 @@ import os
 from ai_function_template import evaluate2
 from common import read_string, read_yaml, render_template, write_json, dump_yaml, format_markdown_code, write_yaml
 
-AI_FUN_NAME = 'essensial_properties'
+AI_FUN_NAME = 'essential_properties'
 
 
 def calc_instruction():
