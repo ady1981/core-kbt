@@ -17,7 +17,7 @@ def calc_perspective_aspects(model, concept, observer_context_description, frame
     return (perspective_observer_strategy, point_of_view, perspective_aspects)
 
 
-def with_feature_comparison(aspect, a_concept, b_concept, model, perspective_observer_strategy, point_of_view, frame_of_reference):
+def with_feature_comparison(aspect, a_concept, b_concept, model, observer_strategy, point_of_view, frame_of_reference):
     aspect_name = aspect['aspect_name']
     aspect_features = index_by(lambda c: c["feature_name"], aspect['aspect_features'])
     aspect_features_coll = '\n'.join([f'- {c}' for c in aspect_features.keys()])
@@ -27,7 +27,7 @@ def with_feature_comparison(aspect, a_concept, b_concept, model, perspective_obs
         'aspect_name': aspect_name,
         'aspect_features': aspect_features_coll,
         'frame_of_reference': frame_of_reference,
-        'perspective_observer_strategy': perspective_observer_strategy,
+        'observer_strategy': observer_strategy,
         'point_of_view': point_of_view
     }, model)
     perspective_feature_comparisons = ai_function_template.evaluate('perspective_feature_comparison', input_data)
