@@ -1,0 +1,382 @@
+{
+  "name": "concept-comparison",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "dd28341c-cb87-49a5-8562-4a809bc0915c",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "jsCode": "// utils\n\nfunction indexBy(f, objs) {\n    return objs.reduce((acc, c) => {\n            acc[f(c)] = c;\n            return acc;\n        },\n        {});\n}\n\nreturn [{\n  json: {\n    properties: $('Set properties').first().json,\n    parameters: indexBy((c) => c.parameter, items.map(item => item.json))\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        0
+      ],
+      "id": "5e60a30a-9e0c-4207-bb56-4a1a14f53389",
+      "name": "Merge items"
+    },
+    {
+      "parameters": {
+        "jsCode": "const perspective_aspects = \n  $('AI-function: compare concepts').first().json.result.perspective_aspects;\n//console.log(perspective_aspects);\nlet features = perspective_aspects.reduce((acc, aspect) => \n  [...acc, ...aspect.aspect_features.map(feature => \n    ({\n      type: 'feature_score',\n      ...feature,\n      aspect_name: aspect.aspect_name,\n      a_winner: feature.normalized_comparison > 0,\n      a_score: feature.normalized_comparison >= 0 ? feature.normalized_comparison : 0,\n      b_winner: feature.normalized_comparison < 0,\n      b_score: feature.normalized_comparison <= 0 ? -feature.normalized_comparison : 0,\n      message: `a_concept: ${$('Merge items').first().json.parameters.a_concept.value}, b_concept: ${$('Merge items').first().json.parameters.b_concept.value}`})\n    )]\n  , []);\nconst comparison_total = $('AI-function: compare concepts').first().json.result.comparison_total;\nconst a_winner_total = comparison_total > 0;\nconst b_winner_total = comparison_total < 0;\nfeatures = [{\n    type: 'total',\n    a_winner: a_winner_total,\n    a_score: comparison_total,\n    b_winner: b_winner_total,\n    b_score: -comparison_total,\n    message: `Winner concept: ${$('AI-function: compare concepts').first().json.result.comparison_winner}`\n  }, \n           ... features];\nreturn features;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1152,
+        0
+      ],
+      "id": "be2e3669-b8f9-4bf8-aeb0-e6b8f2443acc",
+      "name": "Split items"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ad40503a-0154-401b-98cb-5151db0c93bd",
+              "name": "ai_functions_url",
+              "value": "http://127.0.0.1:5001",
+              "type": "string"
+            },
+            {
+              "id": "a0fb242a-270d-4343-afdd-2ea693c9e4b3",
+              "name": "ai_functions_api_token",
+              "value": "xxx",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "0765eb51-9878-4f11-b357-1796083b6386",
+      "name": "Set properties"
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "={{ $json.properties.ai_functions_url }}/ai-func/concept_aspect_comparison",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Api-Token",
+              "value": "={{ $json.properties.ai_functions_api_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "observer_context_description",
+              "value": "={{ $json.parameters.observer_context_description.value }}"
+            },
+            {
+              "name": "frame_of_reference",
+              "value": "={{ $json.parameters.frame_of_reference.value }}"
+            },
+            {
+              "name": "a_concept",
+              "value": "={{ $json.parameters.a_concept.value }}"
+            },
+            {
+              "name": "b_concept",
+              "value": "={{ $json.parameters.b_concept.value }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        768,
+        0
+      ],
+      "id": "86e2f6af-3efd-403d-bf95-8ea687b8e489",
+      "name": "AI-function: compare concepts"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "z4ZbQA8R0GBgb1hm",
+          "mode": "list",
+          "cachedResultName": "concept-comparison-input",
+          "cachedResultUrl": "/projects/QosD6QypqpaVnHlA/datatables/z4ZbQA8R0GBgb1hm"
+        },
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        384,
+        0
+      ],
+      "id": "2e17c18c-142d-49b0-896f-e40207ae316b",
+      "name": "Read input table"
+    },
+    {
+      "parameters": {
+        "operation": "deleteRows",
+        "dataTableId": {
+          "__rl": true,
+          "value": "c9OXF8AX7G7DVI9n",
+          "mode": "list",
+          "cachedResultName": "concept-comparison-output",
+          "cachedResultUrl": "/projects/QosD6QypqpaVnHlA/datatables/c9OXF8AX7G7DVI9n"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "isNotEmpty"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        960,
+        0
+      ],
+      "id": "7e18d02f-49e0-491b-abcc-8624c883dd98",
+      "name": "Clear output table",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "c9OXF8AX7G7DVI9n",
+          "mode": "list",
+          "cachedResultName": "concept-comparison-output",
+          "cachedResultUrl": "/projects/QosD6QypqpaVnHlA/datatables/c9OXF8AX7G7DVI9n"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "a_concept_score": "={{ $json.a_score.toFixed(3) }}",
+            "b_concept_score": "={{ $json.b_score.toFixed(3) }}",
+            "aspect_feature": "={{ $json.feature_name || '-' }}",
+            "aspect_name": "={{ $json.aspect_name || '-' }}",
+            "a_concept_winner": "={{ $json.a_winner }}",
+            "b_concept_winner": "={{ $json.b_winner }}",
+            "type": "={{ $json.type }}",
+            "message": "={{ $json.message }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "type",
+              "displayName": "type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "aspect_name",
+              "displayName": "aspect_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "aspect_feature",
+              "displayName": "aspect_feature",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "a_concept_winner",
+              "displayName": "a_concept_winner",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "a_concept_score",
+              "displayName": "a_concept_score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "b_concept_winner",
+              "displayName": "b_concept_winner",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "b_concept_score",
+              "displayName": "b_concept_score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        1328,
+        0
+      ],
+      "id": "68406bab-5063-4cf3-ba64-c3b0e9dcf37b",
+      "name": "Update output table"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Set properties",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge items": {
+      "main": [
+        [
+          {
+            "node": "AI-function: compare concepts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split items": {
+      "main": [
+        [
+          {
+            "node": "Update output table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set properties": {
+      "main": [
+        [
+          {
+            "node": "Read input table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI-function: compare concepts": {
+      "main": [
+        [
+          {
+            "node": "Clear output table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read input table": {
+      "main": [
+        [
+          {
+            "node": "Merge items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clear output table": {
+      "main": [
+        [
+          {
+            "node": "Split items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "a61d66e1-0ed0-449b-b56b-b0d33d95640a",
+  "meta": {
+    "instanceId": "be3a30e25c5dda98ac0e654ec7f4484619450e5e7d0e0a7c9e9a36c5474903b8"
+  },
+  "id": "Oa0L0tGz2uumQHDe",
+  "tags": []
+}

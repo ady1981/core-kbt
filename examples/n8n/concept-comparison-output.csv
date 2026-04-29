@@ -1,0 +1,10 @@
+﻿id,type,aspect_name,aspect_feature,a_concept_winner,a_concept_score,b_concept_winner,b_concept_score,message,createdAt,updatedAt
+1,total,-,-,1,0.219,0,-0.219,Winner concept: FastAPI,2026-04-29T16:34:57.396Z,2026-04-29T16:34:57.396Z
+2,feature_score,Development Speed/Time to Market,Time to Launch,1,0.185,0,0,"a_concept: FastAPI, b_concept: Gin",2026-04-29T16:34:57.397Z,2026-04-29T16:34:57.397Z
+3,feature_score,Development Speed/Time to Market,Initial Feature Velocity,1,0.148,0,0,"a_concept: FastAPI, b_concept: Gin",2026-04-29T16:34:57.397Z,2026-04-29T16:34:57.397Z
+4,feature_score,Scalability/Load Handling,Concurrent Users Support,0,0,0,0,"a_concept: FastAPI, b_concept: Gin",2026-04-29T16:34:57.398Z,2026-04-29T16:34:57.398Z
+5,feature_score,Scalability/Load Handling,Throughput Capacity,0,0,0,0,"a_concept: FastAPI, b_concept: Gin",2026-04-29T16:34:57.399Z,2026-04-29T16:34:57.399Z
+6,feature_score,Suitability for Microservices,Deployment Footprint,1,0.086,0,0,"a_concept: FastAPI, b_concept: Gin",2026-04-29T16:34:57.399Z,2026-04-29T16:34:57.399Z
+7,feature_score,Suitability for Microservices,Inter-service Communication Support,0,0,0,0,"a_concept: FastAPI, b_concept: Gin",2026-04-29T16:34:57.400Z,2026-04-29T16:34:57.400Z
+8,feature_score,Ecosystem Maturity and Talent Availability,Developer Pool Size,0,0,1,0.114,"a_concept: FastAPI, b_concept: Gin",2026-04-29T16:34:57.401Z,2026-04-29T16:34:57.401Z
+9,feature_score,Ecosystem Maturity and Talent Availability,Library Availability,0,0,1,0.086,"a_concept: FastAPI, b_concept: Gin",2026-04-29T16:34:57.401Z,2026-04-29T16:34:57.401Z

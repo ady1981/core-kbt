@@ -1,0 +1,5 @@
+﻿id,parameter,value,createdAt,updatedAt
+2,observer_context_description,An product owner must choose which framework to use to create a new mid-size high-load microservice. The project should be launched within 3 months.,2026-04-26T16:14:38.139Z,2026-04-29T16:32:05.081Z
+3,frame_of_reference,Unbiased logic frame,2026-04-26T16:14:38.139Z,2026-04-29T16:07:25.770Z
+4,a_concept,FastAPI,2026-04-26T16:14:38.139Z,2026-04-29T16:05:13.635Z
+5,b_concept,Gin,2026-04-26T16:14:38.139Z,2026-04-29T16:05:16.713Z
