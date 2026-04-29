@@ -4,10 +4,11 @@ import os
 from ai_function_template import evaluate2
 from common import read_string, read_yaml, render_template, write_json, dump_yaml, format_markdown_code, write_yaml
 
-AI_FUN_NAME = 'generic_concept_identification'
+AI_FUN_NAME = 'genus_concept_identification'
 
 
 def calc_instruction():
+
     concepts = '1. FastAPI\n2. Gin'
     knowledge_domain = 'Information technology'
     context_knowledge_specification = f'### Knowledge domain\n{knowledge_domain}'

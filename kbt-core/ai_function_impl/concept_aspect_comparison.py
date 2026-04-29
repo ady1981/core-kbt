@@ -65,13 +65,25 @@ def with_total_comparison(perspective_aspects):
     return (comparison_total, perspective_aspects2)
 
 
+def calc_genus_concept(model, a_concept, b_concept, observer_context_description):
+    concepts = f'- {a_concept}\n- {b_concept}'
+    context_knowledge_specification = f'### Context description\n{observer_context_description}'
+    genus_concept_identification_resp = ai_function_template.evaluate('genus_concept_identification', with_model_input_data(
+        {
+            'concepts': concepts,
+            'context_knowledge_specification': context_knowledge_specification
+        }, model))
+    return genus_concept_identification_resp['genus_concept']
+
+
 async def evaluate(input_data):
     meta = input_data.get('meta', {})
     model = meta.get('model', None)
-    (a_concept, b_concept, frame_of_reference) = (input_data['a_concept'], input_data['b_concept'], input_data['frame_of_reference'])
+    (observer_context_description, a_concept, b_concept, frame_of_reference) = (input_data['observer_context_description'], input_data['a_concept'], input_data['b_concept'], input_data['frame_of_reference'])
+    genus_concept = calc_genus_concept(model, a_concept, b_concept, observer_context_description)
     (perspective_observer_strategy, point_of_view, perspective_aspects) = calc_perspective_aspects(model,
-                                                                                                   input_data['genus_concept'],
-                                                                                                   input_data['observer_context_description'],
+                                                                                                   genus_concept,
+                                                                                                   observer_context_description,
                                                                                                    frame_of_reference)
     perspective_aspects2 = [with_feature_comparison(c, a_concept, b_concept, model, perspective_observer_strategy, point_of_view, frame_of_reference) for c in perspective_aspects]
     (comparison_total, perspective_aspects3) = with_total_comparison(perspective_aspects2)
