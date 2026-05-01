@@ -27,12 +27,12 @@
     },
     {
       "parameters": {
-        "jsCode": "const perspective_aspects = \n  $('AI-function: compare concepts').first().json.result.perspective_aspects;\n//console.log(perspective_aspects);\nlet features = perspective_aspects.reduce((acc, aspect) => \n  [...acc, ...aspect.aspect_features.map(feature => \n    ({\n      type: 'feature_score',\n      ...feature,\n      aspect_name: aspect.aspect_name,\n      a_winner: feature.normalized_comparison > 0,\n      a_score: feature.normalized_comparison >= 0 ? feature.normalized_comparison : 0,\n      b_winner: feature.normalized_comparison < 0,\n      b_score: feature.normalized_comparison <= 0 ? -feature.normalized_comparison : 0,\n      message: `a_concept: ${$('Merge items').first().json.parameters.a_concept.value}, b_concept: ${$('Merge items').first().json.parameters.b_concept.value}`})\n    )]\n  , []);\nconst comparison_total = $('AI-function: compare concepts').first().json.result.comparison_total;\nconst a_winner_total = comparison_total > 0;\nconst b_winner_total = comparison_total < 0;\nfeatures = [{\n    type: 'total',\n    a_winner: a_winner_total,\n    a_score: comparison_total,\n    b_winner: b_winner_total,\n    b_score: -comparison_total,\n    message: `Winner concept: ${$('AI-function: compare concepts').first().json.result.comparison_winner}`\n  }, \n           ... features];\nreturn features;"
+        "jsCode": "const perspective_aspects = \n  $('AI-function: compare concepts').first().json.result.perspective_aspects;\n//console.log(perspective_aspects);\nlet features = perspective_aspects.reduce((acc, aspect) => \n  [...acc, ...aspect.aspect_features.map(feature => \n    ({\n      LLM_model: $('Merge items').first().json.parameters.LLM_model.value,\n      type: 'feature_score',\n      ...feature,\n      aspect_name: aspect.aspect_name,\n      a_winner: feature.normalized_comparison > 0,\n      a_score: feature.normalized_comparison >= 0 ? feature.normalized_comparison : 0,\n      b_winner: feature.normalized_comparison < 0,\n      b_score: feature.normalized_comparison <= 0 ? -feature.normalized_comparison : 0,\n      message: `a_concept: ${$('Merge items').first().json.parameters.a_concept.value}, b_concept: ${$('Merge items').first().json.parameters.b_concept.value}`})\n    )]\n  , []);\nconst comparison_total = $('AI-function: compare concepts').first().json.result.comparison_total;\nconst a_winner_total = comparison_total > 0;\nconst b_winner_total = comparison_total < 0;\nfeatures = [{\n    LLM_model: $('Merge items').first().json.parameters.LLM_model.value,\n    type: 'model_total',\n    a_winner: a_winner_total,\n    a_score: comparison_total,\n    b_winner: b_winner_total,\n    b_score: -comparison_total,\n    message: `Winner concept: ${$('AI-function: compare concepts').first().json.result.comparison_winner}\\nOther_details:\\nperspective_observer_strategy: ${$('AI-function: compare concepts').first().json.result.perspective_observer_strategy}\\npoint_of_view: ${$('AI-function: compare concepts').first().json.result.point_of_view}\\nsuperordinate_concept: ${$('AI-function: compare concepts').first().json.result.superordinate_concept}`\n  }, \n           ... features];\nreturn features;"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1152,
+        992,
         0
       ],
       "id": "be2e3669-b8f9-4bf8-aeb0-e6b8f2443acc",
@@ -52,6 +52,12 @@
               "id": "a0fb242a-270d-4343-afdd-2ea693c9e4b3",
               "name": "ai_functions_api_token",
               "value": "xxx",
+              "type": "string"
+            },
+            {
+              "id": "8d4b81b8-5f92-4ff9-97c4-5ebcbc54f66e",
+              "name": "extra_information_retrieval_strategy",
+              "value": "Only_authorative_sources: true",
               "type": "string"
             }
           ]
@@ -89,26 +95,8 @@
           ]
         },
         "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "observer_context_description",
-              "value": "={{ $json.parameters.observer_context_description.value }}"
-            },
-            {
-              "name": "frame_of_reference",
-              "value": "={{ $json.parameters.frame_of_reference.value }}"
-            },
-            {
-              "name": "a_concept",
-              "value": "={{ $json.parameters.a_concept.value }}"
-            },
-            {
-              "name": "b_concept",
-              "value": "={{ $json.parameters.b_concept.value }}"
-            }
-          ]
-        },
+        "specifyBody": "json",
+        "jsonBody": "={\"observer_context_description\": \"{{ $json.parameters.observer_context_description.value }}\", \"frame_of_reference\": \"{{ $json.parameters.frame_of_reference.value }}\",\n\"a_concept\": \"{{ $json.parameters.a_concept.value }}\",\n\"b_concept\": \"{{ $json.parameters.b_concept.value }}\", \"output_content_language\": \"{{ $json.parameters.output_content_language.value }}\",\n\"extra_information_retrieval_strategy\": \"{{ $json.properties.extra_information_retrieval_strategy }}\",\n\"meta\": {\"model\": \"{{ $json.parameters.LLM_model.value }}\"}} ",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -125,10 +113,10 @@
         "operation": "get",
         "dataTableId": {
           "__rl": true,
-          "value": "z4ZbQA8R0GBgb1hm",
+          "value": "Mc7cdh2eJFl2DB5Z",
           "mode": "list",
           "cachedResultName": "concept-comparison-input",
-          "cachedResultUrl": "/projects/QosD6QypqpaVnHlA/datatables/z4ZbQA8R0GBgb1hm"
+          "cachedResultUrl": "/projects/QosD6QypqpaVnHlA/datatables/Mc7cdh2eJFl2DB5Z"
         },
         "returnAll": true
       },
@@ -163,21 +151,44 @@
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1,
       "position": [
-        960,
-        0
+        0,
+        192
       ],
       "id": "7e18d02f-49e0-491b-abcc-8624c883dd98",
       "name": "Clear output table",
-      "alwaysOutputData": true
+      "alwaysOutputData": true,
+      "disabled": true
     },
     {
       "parameters": {
+        "operation": "upsert",
         "dataTableId": {
           "__rl": true,
           "value": "c9OXF8AX7G7DVI9n",
           "mode": "list",
           "cachedResultName": "concept-comparison-output",
           "cachedResultUrl": "/projects/QosD6QypqpaVnHlA/datatables/c9OXF8AX7G7DVI9n"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "LLM_model",
+              "keyValue": "={{ $json.LLM_model }}"
+            },
+            {
+              "keyName": "type",
+              "keyValue": "={{ $json.type }}"
+            },
+            {
+              "keyName": "aspect_name",
+              "keyValue": "={{ $json.aspect_name }}"
+            },
+            {
+              "keyName": "aspect_feature",
+              "keyValue": "={{ $json.feature_name }}"
+            }
+          ]
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -189,10 +200,21 @@
             "a_concept_winner": "={{ $json.a_winner }}",
             "b_concept_winner": "={{ $json.b_winner }}",
             "type": "={{ $json.type }}",
-            "message": "={{ $json.message }}"
+            "message": "={{ $json.message }}",
+            "LLM_model": "={{ $json.LLM_model }}"
           },
           "matchingColumns": [],
           "schema": [
+            {
+              "id": "LLM_model",
+              "displayName": "LLM_model",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
             {
               "id": "type",
               "displayName": "type",
@@ -282,7 +304,7 @@
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1,
       "position": [
-        1328,
+        1184,
         0
       ],
       "id": "68406bab-5063-4cf3-ba64-c3b0e9dcf37b",
@@ -339,7 +361,7 @@
       "main": [
         [
           {
-            "node": "Clear output table",
+            "node": "Split items",
             "type": "main",
             "index": 0
           }
@@ -359,13 +381,7 @@
     },
     "Clear output table": {
       "main": [
-        [
-          {
-            "node": "Split items",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     }
   },
@@ -373,7 +389,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "a61d66e1-0ed0-449b-b56b-b0d33d95640a",
+  "versionId": "239bc24a-bf8d-4fc5-9154-5581f64f5b7c",
   "meta": {
     "instanceId": "be3a30e25c5dda98ac0e654ec7f4484619450e5e7d0e0a7c9e9a36c5474903b8"
   },
