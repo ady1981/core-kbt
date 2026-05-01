@@ -1,0 +1,6 @@
+type: object
+properties:
+  least_common_general_superordinate_concept:
+    type: string
+  other_notes:
+    type: string
