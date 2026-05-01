@@ -27,10 +27,8 @@ def create_process(process_input):
         raise RuntimeError('process-already-exists')
 
 
-
-
 def calc_process_module(process_type):
-    return f'processes.implementation.{process_type}'
+    return f'process_impl.{process_type}'
 
 
 def already_existed_process(input_id):
@@ -50,7 +48,7 @@ def calc_state_file_name(status, input_id):
 
 
 def read_ids(status):
-    return [c.removesuffix('.json') for c in os.listdir(calc_state_directory_name(status))]
+    return [c.removesuffix('.json') for c in os.listdir(calc_state_directory_name(status)) if not c.startswith('.')]
 
 
 def read_input(input_id):

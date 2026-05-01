@@ -14,17 +14,17 @@ OPENAI_MODEL = os.environ["OPENAI_MODEL"]
 
 
 async def main():
-    genus_concept = 'Programming language'
     observer_context_description = 'We need a programming language for a hardware driver'
     frame_of_reference = 'Unbiased framework' ## 'Common sense'
     a_concept = 'Java'
     b_concept = 'C++'
+    output_content_language = 'English'
     input_data = {
-        'genus_concept': genus_concept,
         'observer_context_description': observer_context_description,
         'frame_of_reference': frame_of_reference,
         'a_concept': a_concept,
-        'b_concept': b_concept
+        'b_concept': b_concept,
+        'output_content_language': output_content_language
     }
     r = await evaluate_function(AI_FUN_NAME, with_model_input_data(input_data, OPENAI_MODEL))
     print('=== Response:\n' + dump_json(r))
