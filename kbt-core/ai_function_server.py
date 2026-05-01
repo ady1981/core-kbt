@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 
 import ai_function
 import ai_function_template
+import process
 from ai_function import calc_function_type, PY_IMPL_FUN_TYPE, J2_FUN_TYPE
 from common import log_str
 
@@ -66,6 +67,12 @@ async def execute_function(function_name):
         return jsonify({"error": f"{e}"}), 500
 
 
+def update_processes_to_initial():
+    for input_id in process.read_ids('running'):
+        log_str(f'--- update-processes-to-initial: input_id={input_id}')
+        process.update_status(input_id, 'initial')
+
+
 # --- Run the Flask app ---
 if __name__ == '__main__':
     # For development, set debug=True to get detailed error messages
@@ -77,4 +84,5 @@ if __name__ == '__main__':
     if not API_TOKEN:
         log_str('invalid-api-token')
         exit(1)
+    update_processes_to_initial()
     app.run(host=HOST, debug=DEBUG, port=PORT)

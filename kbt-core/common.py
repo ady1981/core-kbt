@@ -306,7 +306,7 @@ R = TypeVar('R')
 async def async_map(
         f: Callable[[T], Coroutine[Any, Any, R]],
         items: List[T],
-        concurrent_n: int = None
+        concurrent_n: int = 1
 ) -> List[R]:
     if not items:
         return []

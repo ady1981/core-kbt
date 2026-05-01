@@ -17,6 +17,14 @@ dependencies = [
     "rdflib (>=7.5.0,<8.0.0)"
 ]
 
+[tool.pytest]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.0"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

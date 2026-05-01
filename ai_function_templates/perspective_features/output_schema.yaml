@@ -14,6 +14,7 @@ properties:
       aspect_importance_score_to_other_aspects:
         type: integer
         minimum: 1
+        maximum: 10
       can_perspective_determine_aspect_importance_score:
         type: boolean
       aspect_features:
@@ -41,6 +42,7 @@ properties:
             feature_importance_score_to_other_features:
               type: integer
               minimum: 1
+              maximum: 10
             can_perspective_determine_feature_importance_score:
               type: boolean
           required:
