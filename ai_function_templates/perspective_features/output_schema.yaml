@@ -7,7 +7,7 @@ properties:
   point_of_view_name:
     type: string
   perspective_aspects:
-    type: list
+    type: array
     items:
       aspect_name:
         type: string
