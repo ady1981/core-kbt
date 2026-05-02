@@ -23,7 +23,7 @@ async def calc_perspective_aspects(model, concept, observer_context_description,
             '_extra_information_retrieval_strategy': extra_information_retrieval_strategy
         }, output_content_language), model))
     if perspective_features_resp.get('other_notes'):
-        log_str(f'other_notes: {perspective_features_resp.get('other_notes')}')
+        log_str(f'other_notes: {perspective_features_resp.get("other_notes", "")}')
     perspective_observer_strategy = perspective_features_resp['perspective_observer_strategy_name']
     point_of_view = perspective_features_resp['point_of_view_name']
     perspective_aspects = perspective_features_resp['perspective_aspects']
@@ -45,7 +45,7 @@ async def with_feature_comparison(aspect, a_concept, b_concept, model, observer_
     }, output_content_language), model)
     perspective_feature_comparisons_resp = await evaluate_via_process('perspective_feature_comparison', input_data)
     if perspective_feature_comparisons_resp.get('other_notes'):
-        log_str(f'other_notes: {perspective_feature_comparisons_resp.get('other_notes')}')
+        log_str(f'other_notes: {perspective_feature_comparisons_resp.get("other_notes")}')
     for c in perspective_feature_comparisons_resp["aspect_feature_value_comparison"]:
       feature_name = c.get("feature_name", '')
       if aspect_features.get(feature_name):
@@ -84,7 +84,7 @@ async def calc_superordinate_concept(model, a_concept, b_concept, observer_conte
             'context_knowledge_specification': context_knowledge_specification
         }, model))
     if superordinate_concept_identification_resp.get('other_notes'):
-        log_str(f'other_notes: {superordinate_concept_identification_resp.get('other_notes')}')
+        log_str(f'other_notes: {superordinate_concept_identification_resp.get("other_notes")}')
     return superordinate_concept_identification_resp['least_common_general_superordinate_concept']
 
 
