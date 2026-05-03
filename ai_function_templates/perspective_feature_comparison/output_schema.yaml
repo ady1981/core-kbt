@@ -7,14 +7,18 @@ properties:
       properties:
         feature_name:
           type: string
+        is_concept_A_better_in_aspect_feature:
+          type: boolean
+        is_concept_B_better_in_aspect_feature:
+          type: boolean
         comparison:
           type: integer
-          enum: [-1, 1, 0]
+          enum: [1, -1, 0]
           description: |
-            - -1 if A feature worse then B feature
-            - +1 if A feature better then B feature
-            - 0 if A and B features are not comparable
+            - +1 if concept "A" better then concept "B" in this aspect feature
+            - -1 if concept "B" better then concept "A" in this aspect feature
+            - 0 if concepts "A" and "B" are not comparable in this aspect feature
   extra_perspective_aspects:
     type: boolean
   other_notes:
-      type: string
+    type: string

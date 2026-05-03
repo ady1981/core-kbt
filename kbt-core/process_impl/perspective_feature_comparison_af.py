@@ -5,7 +5,7 @@ from common import read_string, render_template, calc_md5, read_yaml, log_str
 from .common import load_process_input, calc_model
 
 PROCESS_TYPE = 'perspective_feature_comparison_af'
-PROCESS_VERSION = 1
+PROCESS_VERSION = 2
 AI_FUN_NAME = 'perspective_feature_comparison'
 
 
