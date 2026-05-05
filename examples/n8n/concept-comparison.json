@@ -57,7 +57,7 @@
             {
               "id": "8d4b81b8-5f92-4ff9-97c4-5ebcbc54f66e",
               "name": "extra_information_retrieval_strategy",
-              "value": "Only_authorative_sources: true",
+              "value": "Only_unbiased_authorative_sources: true",
               "type": "string"
             }
           ]
@@ -367,7 +367,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "dcc69a0d-8b59-4e2b-97be-e2401fd92b3f",
+  "versionId": "f1c1628b-78b5-40b4-aec8-88c55a45c76d",
   "meta": {
     "instanceId": "be3a30e25c5dda98ac0e654ec7f4484619450e5e7d0e0a7c9e9a36c5474903b8"
   },

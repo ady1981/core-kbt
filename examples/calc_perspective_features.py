@@ -11,10 +11,12 @@ def calc_instruction():
     concept = 'Programming language'
     observer_context_description = 'We need a programming language for microprocessors'
     frame_of_reference = 'Common sense'
+    information_retrieval_strategy = '## Information retrieval strategy\nCommon sense'
     data = {
         'concept': concept,
         'observer_context_description': observer_context_description,
         'frame_of_reference': frame_of_reference,
+        '_information_retrieval_strategy': information_retrieval_strategy
     }
     template_string = read_string(f'ai_function_templates/{AI_FUN_NAME}/prompt.md.j2')
     return render_template(template_string, data)

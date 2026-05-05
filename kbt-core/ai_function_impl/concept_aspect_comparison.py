@@ -15,12 +15,13 @@ async def evaluate_via_process(func_name, input_data):
 
 
 async def calc_perspective_aspects(model, concept, observer_context_description, frame_of_reference, output_content_language, extra_information_retrieval_strategy):
+    information_retrieval_strategy = f'# Information retrieval strategy\n{extra_information_retrieval_strategy}'
     perspective_features_resp = await evaluate_via_process('perspective_features', with_model_input_data(
         with_extra_output_specification({
             'concept': concept,
             'observer_context_description': observer_context_description,
             'frame_of_reference': frame_of_reference,
-            '_extra_information_retrieval_strategy': extra_information_retrieval_strategy
+            '_information_retrieval_strategy': information_retrieval_strategy
         }, output_content_language), model))
     if perspective_features_resp.get('other_notes'):
         log_str(f'other_notes: {perspective_features_resp.get("other_notes", "")}')
@@ -30,10 +31,11 @@ async def calc_perspective_aspects(model, concept, observer_context_description,
     return (perspective_observer_strategy, point_of_view, perspective_aspects)
 
 
-async def with_feature_comparison(aspect, a_concept, b_concept, model, observer_strategy, point_of_view, frame_of_reference, output_content_language):
+async def with_feature_comparison(aspect, a_concept, b_concept, model, observer_strategy, point_of_view, frame_of_reference, output_content_language, extra_information_retrieval_strategy):
     aspect_name = aspect['aspect_name']
     aspect_features = index_by(lambda c: c["feature_name"], aspect['aspect_features'])
     aspect_features_coll = '\n'.join([f'- {c}' for c in aspect_features.keys()])
+    information_retrieval_strategy = f'# Information retrieval strategy\n{extra_information_retrieval_strategy}'
     input_data = with_model_input_data(with_extra_output_specification({
         'a_concept': a_concept,
         'b_concept': b_concept,
@@ -41,7 +43,8 @@ async def with_feature_comparison(aspect, a_concept, b_concept, model, observer_
         'aspect_features': aspect_features_coll,
         'frame_of_reference': frame_of_reference,
         'observer_strategy': observer_strategy,
-        'point_of_view': point_of_view
+        'point_of_view': point_of_view,
+        '_information_retrieval_strategy': information_retrieval_strategy
     }, output_content_language), model)
     perspective_feature_comparisons_resp = await evaluate_via_process('perspective_feature_comparison', input_data)
     if perspective_feature_comparisons_resp.get('other_notes'):
@@ -112,13 +115,14 @@ async def evaluate(input_data):
                                                                                                          output_content_language,
                                                                                                          extra_information_retrieval_strategy)
     perspective_aspects2 = [await with_feature_comparison(c,
-                                                    a_concept,
-                                                    b_concept,
-                                                    model,
-                                                    perspective_observer_strategy,
-                                                    point_of_view,
-                                                    frame_of_reference,
-                                                    output_content_language)
+                                                          a_concept,
+                                                          b_concept,
+                                                          model,
+                                                          perspective_observer_strategy,
+                                                          point_of_view,
+                                                          frame_of_reference,
+                                                          output_content_language,
+                                                          extra_information_retrieval_strategy)
                             for c in perspective_aspects]
     (comparison_total, perspective_aspects3) = with_total_comparison(perspective_aspects2)
     return {
