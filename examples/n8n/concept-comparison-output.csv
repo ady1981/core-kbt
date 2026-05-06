@@ -1,21 +1,12 @@
 ﻿id,LLM_model,type,aspect_name,aspect_feature,a_concept_winner,a_concept_score,b_concept_winner,b_concept_score,message,createdAt,updatedAt
-1,deepseek/deepseek-chat,model_total,-,-,1,0.625,0,-0.625,"Winner concept: FastAPI (Python)
+1,google/gemini-2.0-flash,model_total,-,-,1,61%,0,-61%,"Winner concept: FastAPI (Python)
 Other_details:
-perspective_observer_strategy: Стратегия владельца продукта, ориентированная на результат
-point_of_view: Владелец продукта, выбирающий инструмент для разработки микросервиса с ограниченным временем и приоритетами скорости разработки и качества
-superordinate_concept: Web Application Frameworks",2026-05-01T13:46:02.937Z,2026-05-01T13:46:02.937Z
-2,deepseek/deepseek-chat,feature_score,Скорость разработки и выхода на рынок (Time-to-Market),Время обучения команды,1,0.089,0,0,"a_concept: FastAPI (Python), b_concept: Gin (Go)",2026-05-01T13:46:02.966Z,2026-05-01T13:46:02.966Z
-3,deepseek/deepseek-chat,feature_score,Скорость разработки и выхода на рынок (Time-to-Market),Наличие готовых шаблонов и инструментов для быстрого старта,1,0.079,0,0,"a_concept: FastAPI (Python), b_concept: Gin (Go)",2026-05-01T13:46:03.127Z,2026-05-01T13:46:03.127Z
-4,deepseek/deepseek-chat,feature_score,Скорость разработки и выхода на рынок (Time-to-Market),Скорость итераций (компиляция/перезагрузка),1,0.069,0,0,"a_concept: FastAPI (Python), b_concept: Gin (Go)",2026-05-01T13:46:03.281Z,2026-05-01T13:46:03.281Z
-5,deepseek/deepseek-chat,feature_score,Качество продукта (Производительность и Поддерживаемость),"Производительность выполнения (время отклика, пропускная способность)",0,0,1,0.065,"a_concept: FastAPI (Python), b_concept: Gin (Go)",2026-05-01T13:46:03.319Z,2026-05-01T13:46:03.319Z
-6,deepseek/deepseek-chat,feature_score,Качество продукта (Производительность и Поддерживаемость),Читаемость и структурированность кода,1,0.052,0,0,"a_concept: FastAPI (Python), b_concept: Gin (Go)",2026-05-01T13:46:03.362Z,2026-05-01T13:46:03.362Z
-7,deepseek/deepseek-chat,feature_score,Качество продукта (Производительность и Поддерживаемость),Качество и доступность документации,1,0.045,0,0,"a_concept: FastAPI (Python), b_concept: Gin (Go)",2026-05-01T13:46:03.391Z,2026-05-01T13:46:03.391Z
-8,deepseek/deepseek-chat,feature_score,Качество продукта (Производительность и Поддерживаемость),"Возможности тестирования (юнит, интеграционные)",1,0.052,0,0,"a_concept: FastAPI (Python), b_concept: Gin (Go)",2026-05-01T13:46:03.426Z,2026-05-01T13:46:03.426Z
-9,deepseek/deepseek-chat,feature_score,Экосистема и сообщество,Размер и активность сообщества,1,0.101,0,0,"a_concept: FastAPI (Python), b_concept: Gin (Go)",2026-05-01T13:46:03.441Z,2026-05-01T13:46:03.441Z
-10,deepseek/deepseek-chat,feature_score,Экосистема и сообщество,Наличие и качество сторонних библиотек/пакетов,1,0.09,0,0,"a_concept: FastAPI (Python), b_concept: Gin (Go)",2026-05-01T13:46:03.456Z,2026-05-01T13:46:03.456Z
-11,deepseek/deepseek-chat,feature_score,Соответствие требованиям микросервисной архитектуры,"Встроенная поддержка создания API (REST, GraphQL, gRPC)",0,0,0,0,"a_concept: FastAPI (Python), b_concept: Gin (Go)",2026-05-01T13:46:03.484Z,2026-05-01T13:46:03.484Z
-12,deepseek/deepseek-chat,feature_score,Соответствие требованиям микросервисной архитектуры,Легковесность и время запуска,1,0.063,0,0,"a_concept: FastAPI (Python), b_concept: Gin (Go)",2026-05-01T13:46:03.507Z,2026-05-01T13:46:03.507Z
-13,deepseek/deepseek-chat,feature_score,Соответствие требованиям микросервисной архитектуры,Интеграция с инструментами контейнеризации (Docker),0,0,0,0,"a_concept: FastAPI (Python), b_concept: Gin (Go)",2026-05-01T13:46:03.526Z,2026-05-01T13:46:03.526Z
-14,deepseek/deepseek-chat,feature_score,Долгосрочная поддерживаемость и эволюция,Стабильность API и обратная совместимость,0,0,0,0,"a_concept: FastAPI (Python), b_concept: Gin (Go)",2026-05-01T13:46:03.558Z,2026-05-01T13:46:03.558Z
-15,deepseek/deepseek-chat,feature_score,Долгосрочная поддерживаемость и эволюция,Долгосрочная поддержка (LTS) версий,0,0,0,0,"a_concept: FastAPI (Python), b_concept: Gin (Go)",2026-05-01T13:46:03.575Z,2026-05-01T13:46:03.575Z
-16,deepseek/deepseek-chat,feature_score,Долгосрочная поддерживаемость и эволюция,Популярность на рынке труда (найм разработчиков),1,0.049,0,0,"a_concept: FastAPI (Python), b_concept: Gin (Go)",2026-05-01T13:46:03.610Z,2026-05-01T13:46:03.610Z
+perspective_observer_strategy: Оценка применимости фреймворка к задаче разработки микросервиса с учетом временных ограничений
+point_of_view: Владелец продукта
+superordinate_concept: Web Framework",2026-05-06T03:52:22.328Z,2026-05-06T03:52:22.328Z
+2,google/gemini-2.0-flash,feature_score,Скорость итеративной разработки,Скорость цикла разработки,0,0,1,20%,"a_concept: FastAPI (Python), b_concept: Gin (Go)",2026-05-06T03:52:22.329Z,2026-05-06T03:52:22.329Z
+3,google/gemini-2.0-flash,feature_score,Скорость итеративной разработки,Наличие готовых шаблонов/стартовых наборов,1,17%,0,0,"a_concept: FastAPI (Python), b_concept: Gin (Go)",2026-05-06T03:52:22.330Z,2026-05-06T03:52:22.330Z
+4,google/gemini-2.0-flash,feature_score,Соответствие требованиям к микросервису,Поддержка асинхронности,1,16%,0,0,"a_concept: FastAPI (Python), b_concept: Gin (Go)",2026-05-06T03:52:22.331Z,2026-05-06T03:52:22.331Z
+5,google/gemini-2.0-flash,feature_score,Соответствие требованиям к микросервису,Размер и сложность фреймворка,1,14%,0,0,"a_concept: FastAPI (Python), b_concept: Gin (Go)",2026-05-06T03:52:22.332Z,2026-05-06T03:52:22.332Z
+6,google/gemini-2.0-flash,feature_score,Соблюдение сроков запуска (60 дней),Кривая обучения для команды,1,19%,0,0,"a_concept: FastAPI (Python), b_concept: Gin (Go)",2026-05-06T03:52:22.333Z,2026-05-06T03:52:22.333Z
+7,google/gemini-2.0-flash,feature_score,Соблюдение сроков запуска (60 дней),Наличие документации и экосистемы,1,15%,0,0,"a_concept: FastAPI (Python), b_concept: Gin (Go)",2026-05-06T03:52:22.334Z,2026-05-06T03:52:22.334Z

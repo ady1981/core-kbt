@@ -27,7 +27,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const perspective_aspects = \n  $('AI-function: compare concepts').first().json.result.perspective_aspects;\n//console.log(perspective_aspects);\nlet features = perspective_aspects.reduce((acc, aspect) => \n  [...acc, ...aspect.aspect_features.map(feature => \n    ({\n      LLM_model: $('Merge items').first().json.parameters.LLM_model.value,\n      type: 'feature_score',\n      ...feature,\n      aspect_name: aspect.aspect_name,\n      a_winner: feature.normalized_comparison > 0,\n      a_score: feature.normalized_comparison >= 0 ? feature.normalized_comparison : 0,\n      b_winner: feature.normalized_comparison < 0,\n      b_score: feature.normalized_comparison <= 0 ? -feature.normalized_comparison : 0,\n      message: `a_concept: ${$('Merge items').first().json.parameters.a_concept.value}, b_concept: ${$('Merge items').first().json.parameters.b_concept.value}`})\n    )]\n  , []);\nconst comparison_total = $('AI-function: compare concepts').first().json.result.comparison_total;\nconst a_winner_total = comparison_total > 0;\nconst b_winner_total = comparison_total < 0;\nfeatures = [{\n    LLM_model: $('Merge items').first().json.parameters.LLM_model.value,\n    type: 'model_total',\n    aspect_name: '-',\n    feature_name: '-',\n    a_winner: a_winner_total,\n    a_score: comparison_total,\n    b_winner: b_winner_total,\n    b_score: -comparison_total,\n    message: `Winner concept: ${$('AI-function: compare concepts').first().json.result.comparison_winner}\\nOther_details:\\nperspective_observer_strategy: ${$('AI-function: compare concepts').first().json.result.perspective_observer_strategy}\\npoint_of_view: ${$('AI-function: compare concepts').first().json.result.point_of_view}\\nsuperordinate_concept: ${$('AI-function: compare concepts').first().json.result.superordinate_concept}`\n  }, \n           ... features];\nreturn features;"
+        "jsCode": "// utils\nfunction toPerc(x) {\n  return Math.round(x * 100) + '%'\n}\n// core\nconst perspective_aspects = \n  $('AI-function: compare concepts').first().json.result.perspective_aspects;\n//console.log(perspective_aspects);\nlet features = perspective_aspects.reduce((acc, aspect) => \n  [...acc, ...aspect.aspect_features.map(feature => \n    ({\n      LLM_model: $('Merge items').first().json.parameters.LLM_model.value,\n      type: 'feature_score',\n      ...feature,\n      aspect_name: aspect.aspect_name,\n      a_winner: feature.normalized_comparison > 0,\n      a_score: feature.normalized_comparison >= 0 ? toPerc(feature.normalized_comparison) : 0,\n      b_winner: feature.normalized_comparison < 0,\n      b_score: feature.normalized_comparison <= 0 ? toPerc(-feature.normalized_comparison) : 0,\n      message: `a_concept: ${$('Merge items').first().json.parameters.a_concept.value}, b_concept: ${$('Merge items').first().json.parameters.b_concept.value}`})\n    )]\n  , []);\nconst comparison_total = $('AI-function: compare concepts').first().json.result.comparison_total;\nconst a_winner_total = comparison_total > 0;\nconst b_winner_total = comparison_total < 0;\nfeatures = [{\n    LLM_model: $('Merge items').first().json.parameters.LLM_model.value,\n    type: 'model_total',\n    aspect_name: '-',\n    feature_name: '-',\n    a_winner: a_winner_total,\n    a_score: toPerc(comparison_total),\n    b_winner: b_winner_total,\n    b_score: toPerc(-comparison_total),\n    message: `Winner concept: ${$('AI-function: compare concepts').first().json.result.comparison_winner}\\nOther_details:\\nperspective_observer_strategy: ${$('AI-function: compare concepts').first().json.result.perspective_observer_strategy}\\npoint_of_view: ${$('AI-function: compare concepts').first().json.result.point_of_view}\\nsuperordinate_concept: ${$('AI-function: compare concepts').first().json.result.superordinate_concept}`\n  }, \n           ... features];\nreturn features;"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -171,8 +171,8 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "a_concept_score": "={{ $json.a_score.toFixed(3) }}",
-            "b_concept_score": "={{ $json.b_score.toFixed(3) }}",
+            "a_concept_score": "={{ $json.a_score }}",
+            "b_concept_score": "={{ $json.b_score }}",
             "aspect_feature": "={{ $json.feature_name || '-' }}",
             "aspect_name": "={{ $json.aspect_name || '-' }}",
             "a_concept_winner": "={{ $json.a_winner }}",
@@ -239,7 +239,7 @@
               "required": false,
               "defaultMatch": false,
               "display": true,
-              "type": "number",
+              "type": "string",
               "readOnly": false,
               "removed": false
             },
@@ -259,7 +259,7 @@
               "required": false,
               "defaultMatch": false,
               "display": true,
-              "type": "number",
+              "type": "string",
               "readOnly": false,
               "removed": false
             },
@@ -367,7 +367,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "f1c1628b-78b5-40b4-aec8-88c55a45c76d",
+  "versionId": "490c9a24-135e-4e10-94ff-27aaf44235c0",
   "meta": {
     "instanceId": "be3a30e25c5dda98ac0e654ec7f4484619450e5e7d0e0a7c9e9a36c5474903b8"
   },
