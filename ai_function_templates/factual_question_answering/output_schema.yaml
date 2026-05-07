@@ -5,6 +5,8 @@ properties:
     items:
       type: object
       properties:
+        context_knowledge_topic:
+          type: string
         answer_text:
           type: string
         answer_references:
@@ -29,5 +31,3 @@ properties:
                   ```
   other_notes:
     type: string
-required:
-  - items
