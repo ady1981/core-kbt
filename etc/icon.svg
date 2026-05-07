@@ -1,0 +1,31 @@
+<svg data-cmp="ProjectIcon" width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg"
+     class="shadow-custom transition-transform hover:scale-105 duration-300">
+    <defs>
+        <linearGradient id="metaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="rgb(79, 70, 229)"></stop>
+            <stop offset="100%" stop-color="rgb(147, 51, 234)"></stop>
+        </linearGradient>
+        <linearGradient id="pathGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="rgba(255, 255, 255, 0.1)"></stop>
+            <stop offset="50%" stop-color="rgba(255, 255, 255, 1)"></stop>
+            <stop offset="100%" stop-color="rgba(255, 255, 255, 0.1)"></stop>
+        </linearGradient>
+    </defs>
+    <rect width="80" height="80" rx="18" fill="url(#metaGrad)"></rect>
+    <ellipse cx="40" cy="40" rx="26" ry="10" transform="rotate(35 40 40)" stroke="rgba(255, 255, 255, 0.3)"
+             stroke-width="1.5"></ellipse>
+    <ellipse cx="40" cy="40" rx="26" ry="10" transform="rotate(-35 40 40)" stroke="rgba(255, 255, 255, 0.4)"
+             stroke-width="1.5" stroke-dasharray="4 4"></ellipse>
+    <ellipse cx="40" cy="40" rx="26" ry="10" transform="rotate(90 40 40)" stroke="rgba(255, 255, 255, 0.15)"
+             stroke-width="1"></ellipse>
+    <path d="M 22 25 Q 45 5 58 55" stroke="url(#pathGrad)" stroke-width="2" fill="none"></path>
+    <circle cx="40" cy="40" r="7" fill="rgb(255, 255, 255)"></circle>
+    <circle cx="40" cy="40" r="13" fill="none" stroke="rgba(255, 255, 255, 0.4)" stroke-width="1"></circle>
+    <circle cx="22" cy="25" r="3.5" fill="rgb(255, 255, 255)"></circle>
+    <circle cx="58" cy="55" r="4.5" fill="rgb(216, 180, 254)"></circle>
+    <circle cx="40" cy="14" r="2.5" fill="rgb(167, 139, 250)"></circle>
+    <circle cx="22" cy="54" r="2" fill="rgb(255, 255, 255)"></circle>
+    <circle cx="36" cy="15" r="1.5" fill="rgb(255, 255, 255)"></circle>
+    <circle cx="49" cy="20" r="1" fill="rgb(255, 255, 255)"></circle>
+    <circle cx="48" cy="62" r="1.5" fill="rgba(255, 255, 255, 0.6)"></circle>
+</svg>
