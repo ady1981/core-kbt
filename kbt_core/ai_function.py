@@ -1,7 +1,7 @@
 import importlib
 
-from common import read_string
-import ai_function_template
+from .common import read_string
+from . import ai_function_template
 
 PY_IMPL_FUN_TYPE = 'py_implementation'
 J2_FUN_TYPE = 'j2_template'

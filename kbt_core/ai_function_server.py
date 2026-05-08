@@ -3,11 +3,9 @@ import traceback
 
 from dotenv import load_dotenv
 
-import ai_function
-import ai_function_template
-import process
-from ai_function import calc_function_type, PY_IMPL_FUN_TYPE, J2_FUN_TYPE
-from common import log_str
+from kbt_core import ai_function, ai_function_template, process
+from kbt_core.ai_function import calc_function_type, PY_IMPL_FUN_TYPE, J2_FUN_TYPE
+from kbt_core.common import log_str
 
 load_dotenv()
 

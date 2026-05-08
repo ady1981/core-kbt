@@ -1,4 +1,4 @@
-from common import convert_to_dict, parse_yaml, remove_markdown_code, vfilter, get_first_key
+from .common import convert_to_dict, parse_yaml, remove_markdown_code, vfilter, get_first_key
 
 
 def is_prompt_target_item(description):
