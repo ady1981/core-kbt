@@ -22,7 +22,7 @@ EXPOSE 5000
 # Define environment variables
 ENV HOST=0.0.0.0
 ENV PORT=5000
-ENV FLASK_APP=kbt-core/ai_function_server.py
+ENV FLASK_APP=kbt_core/ai_function_server.py
 
 # Run the application
-CMD ["/bin/sh", "-c", "./runner.sh -s kbt-core/ai_function_server.py"]
+CMD ["/bin/sh", "-c", "./runner.sh -s kbt_core/ai_function_server.py"]
