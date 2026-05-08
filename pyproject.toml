@@ -1,5 +1,5 @@
 [project]
-name = "core-kbt"
+name = "kbt_core"
 version = "0.2.6"
 description = "Core Knowledge Base Trajectory"
 authors = [
