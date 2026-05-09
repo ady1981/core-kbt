@@ -28,7 +28,7 @@ def create_process(process_input):
 
 
 def calc_process_module(process_type):
-    return f'process_impl.{process_type}'
+    return f'kbt_core.process_impl.{process_type}'
 
 
 def already_existed_process(input_id):

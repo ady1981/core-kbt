@@ -8,7 +8,7 @@ J2_FUN_TYPE = 'j2_template'
 
 
 def calc_module_name(func_name):
-    return f'ai_function_impl.{func_name}'
+    return f'kbt_core.ai_function_impl.{func_name}'
 
 
 async def evaluate_function(func_name, input_data):
