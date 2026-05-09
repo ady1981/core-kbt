@@ -1,6 +1,6 @@
 from functools import reduce
 
-from kbt_core.common import with_model_input_data, index_by, with_key, log_str, async_map
+from kbt_core.common import with_model_input_data, index_by, with_key, log_str, async_map, dump_json
 from kbt_core.normalized_values import with_normalized_value
 from kbt_core.process import execute_process
 
@@ -10,7 +10,11 @@ async def evaluate_via_process(func_name, input_data):
     process_input['process_type'] = f'{func_name}_af'
     process_inputs = [process_input]
     process_results = await async_map(execute_process, process_inputs)
-    return process_results[0]['state']['response']
+    try:
+        return process_results[0]['state']['response']
+    except KeyError as e:
+        log_str(f"Error: process_results:\n" + dump_json(process_results))
+        raise e
 
 
 async def calc_perspective_aspects(model, concept, observer_context_description, frame_of_reference, output_content_language, extra_information_retrieval_strategy):
