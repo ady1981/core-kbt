@@ -5,7 +5,7 @@ import traceback
 from openai import OpenAI
 from dotenv import load_dotenv
 
-from .common import deep_dict_compare, clear_code_markdown, read_string, render_template, read_yaml, log_str, dump_json
+from kbt_core.common import deep_dict_compare, clear_code_markdown, read_string, render_template, read_yaml, log_str, dump_json
 
 load_dotenv()
 
