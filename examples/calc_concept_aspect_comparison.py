@@ -19,12 +19,14 @@ async def main():
     a_concept = 'Java'
     b_concept = 'C++'
     output_content_language = 'English'
+    extra_information_retrieval_strategy = 'Only_unbiased_authorative_sources: true'
     input_data = {
         'observer_context_description': observer_context_description,
         'frame_of_reference': frame_of_reference,
         'a_concept': a_concept,
         'b_concept': b_concept,
-        'output_content_language': output_content_language
+        'output_content_language': output_content_language,
+        'extra_information_retrieval_strategy': extra_information_retrieval_strategy
     }
     r = await evaluate_function(AI_FUN_NAME, with_model_input_data(input_data, OPENAI_MODEL))
     print('=== Response:\n' + dump_json(r))

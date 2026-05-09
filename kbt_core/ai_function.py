@@ -1,14 +1,14 @@
 import importlib
 
-from common import read_string
 import ai_function_template
+from kbt_core.common import read_string
 
 PY_IMPL_FUN_TYPE = 'py_implementation'
 J2_FUN_TYPE = 'j2_template'
 
 
 def calc_module_name(func_name):
-    return f'ai_function_impl.{func_name}'
+    return f'kbt_core.ai_function_impl.{func_name}'
 
 
 async def evaluate_function(func_name, input_data):

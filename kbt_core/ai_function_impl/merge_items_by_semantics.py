@@ -1,7 +1,7 @@
 from functools import reduce
 
-import ai_function_template
-from common import first, rest, with_model_input_data, log_str, dump_json
+from kbt_core import ai_function_template
+from kbt_core.common import first, rest, with_model_input_data, log_str, dump_json
 
 
 def merge_arrays(model, left, right, array_item_json_schema, merge_strategy):

@@ -3,7 +3,7 @@ import importlib
 import os
 import traceback
 
-from common import write_json, log_error, read_json, list_files
+from .common import write_json, log_error, read_json, list_files
 
 STATUSES = ['initial', 'running', 'error', 'terminated']
 
@@ -28,7 +28,7 @@ def create_process(process_input):
 
 
 def calc_process_module(process_type):
-    return f'process_impl.{process_type}'
+    return f'kbt_core.process_impl.{process_type}'
 
 
 def already_existed_process(input_id):

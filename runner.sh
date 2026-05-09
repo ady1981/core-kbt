@@ -80,7 +80,7 @@ if ! command -v poetry &> /dev/null; then
     exit 1
 fi
 
-if ! poetry install --no-root --sync --no-interaction; then
+if ! poetry install --no-interaction; then
     echo "Error: Failed to install dependencies. Please check your pyproject.toml and network connection."
     exit 1
 fi

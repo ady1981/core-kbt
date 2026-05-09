@@ -1,6 +1,6 @@
 import os
 
-from common import read_json
+from kbt_core.common import read_json
 
 MODEL = os.environ['OPENAI_MODEL']
 MAX_LOGGING_LEN = int(os.getenv('MAX_LOGGING_LEN', '500'))

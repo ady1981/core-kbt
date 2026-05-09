@@ -1,12 +1,12 @@
 import json
 
-from ai_function_template import evaluate2
-from common import read_string, render_template, calc_md5, read_yaml, log_str
 from .common import load_process_input, calc_model, MAX_LOGGING_LEN
+from kbt_core.ai_function_template import evaluate2
+from kbt_core.common import read_string, render_template, calc_md5, log_str, read_yaml
 
-PROCESS_TYPE = 'perspective_features_af'
-PROCESS_VERSION = 1
-AI_FUN_NAME = 'perspective_features'
+PROCESS_TYPE = 'perspective_feature_comparison_af'
+PROCESS_VERSION = 2
+AI_FUN_NAME = 'perspective_feature_comparison'
 
 
 def calc_instruction(process_input):
