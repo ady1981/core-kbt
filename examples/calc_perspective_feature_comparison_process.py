@@ -3,9 +3,7 @@ import json
 import os
 
 import process
-from ai_function_template import evaluate2
-from common import read_string, read_yaml, render_template, write_json, dump_yaml, format_markdown_code, write_yaml, \
-    async_map
+from common import write_json, async_map
 
 AI_FUN_NAME = 'perspective_feature_comparison'
 
