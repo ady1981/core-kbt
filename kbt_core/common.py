@@ -375,3 +375,11 @@ def with_model_input_data(input_data, model):
         return with_key(input_data, 'meta', with_key(input_data.get('meta', {}), 'model', model))
     else:
         return input_data
+
+
+def get_float(data: dict, key: str, default: float):
+    value = data.get(key)
+    try:
+        return float(value) if value is not None else default
+    except (ValueError, TypeError):
+        return default

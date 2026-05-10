@@ -1,11 +1,11 @@
-import os
+from kbt_core.common import get_float
 
 DEFAULT_VALUE = 0
 DEFAULT_SCORE = 1.0
 
 
 def with_normalized_value(items: list[dict], value_field: str, normalized_prefix: str, score_field: str, items_external_weight = 1.0):
-    total_score = sum(c.get(score_field, DEFAULT_SCORE) for c in items)
+    total_score = sum(get_float(c, score_field, DEFAULT_SCORE) for c in items)
     for c in items:
-        c[f'{normalized_prefix}{value_field}'] = c.get(value_field, DEFAULT_VALUE) * (c.get(score_field, DEFAULT_SCORE) / total_score) * items_external_weight
+        c[f'{normalized_prefix}{value_field}'] = get_float(c, value_field, DEFAULT_VALUE) * (get_float(c, score_field, DEFAULT_SCORE) / total_score) * items_external_weight
     return (total_score * items_external_weight, items)
