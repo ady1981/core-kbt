@@ -16,3 +16,5 @@ examples/
 Dockerfile
 .dockerignore
 docs/
+.vscode/
+tests/
