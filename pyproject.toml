@@ -1,6 +1,6 @@
 [project]
 name = "kbt_core"
-version = "0.2.8"
+version = "0.2.9"
 description = "Core Knowledge Base Trajectory"
 authors = [
     { name = "andrey.siver", email = "andrey.siver@gmail.com" }
