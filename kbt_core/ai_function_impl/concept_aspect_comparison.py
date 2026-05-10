@@ -50,13 +50,17 @@ async def with_feature_comparison(aspect, a_concept, b_concept, model, observer_
         '_information_retrieval_strategy': information_retrieval_strategy
     }, output_content_language), model)
     perspective_feature_comparisons_resp = await evaluate_via_process('perspective_feature_comparison', input_data)
-    if perspective_feature_comparisons_resp.get('other_notes'):
-        log_str(f'other_notes: {perspective_feature_comparisons_resp.get("other_notes")}')
-    for c in perspective_feature_comparisons_resp["aspect_feature_value_comparison"]:
-      feature_name = c.get("feature_name", '')
-      if aspect_features.get(feature_name):
-          aspect_features[feature_name]['comparison'] = c.get('comparison', 0)
-    return with_key(aspect, "aspect_features", list(aspect_features.values()))
+    try:
+        if perspective_feature_comparisons_resp.get('other_notes'):
+            log_str(f'other_notes: {perspective_feature_comparisons_resp.get("other_notes")}')
+        for c in perspective_feature_comparisons_resp["aspect_feature_value_comparison"]:
+          feature_name = c.get("feature_name", '')
+          if aspect_features.get(feature_name):
+              aspect_features[feature_name]['comparison'] = c.get('comparison', 0)
+        return with_key(aspect, "aspect_features", list(aspect_features.values()))
+    except RuntimeError as e:
+        log_str('Unknown error: perspective_feature_comparisons_resp=\n' + dump_json(perspective_feature_comparisons_resp))
+        raise e
 
 
 def calc_aspect_total_score(perspective_aspects):
