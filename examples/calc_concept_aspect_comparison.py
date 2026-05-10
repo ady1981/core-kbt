@@ -14,11 +14,12 @@ OPENAI_MODEL = os.environ["OPENAI_MODEL"]
 
 
 async def main():
-    observer_context_description = 'We need a programming language for a hardware driver'
+    observer_context_description = 'Работаю фрилансером-дизайнером, много времени провожу в Adobe Photoshop и Lightroom на мобильном, часто редактирую фото/видео на ходу, синхронизирую с MacBook, важна стабильность ПО и автономность батареи (день без подзарядки), бюджет до 120 000 руб.'
+    a_concept = 'Google Pixel 8 Pro'
+    b_concept = 'iPhone 15 Pro'
+
     frame_of_reference = 'Unbiased framework' ## 'Common sense'
-    a_concept = 'Java'
-    b_concept = 'C++'
-    output_content_language = 'English'
+    output_content_language = 'Russian'
     extra_information_retrieval_strategy = 'Only_unbiased_authorative_sources: true'
     input_data = {
         'observer_context_description': observer_context_description,
