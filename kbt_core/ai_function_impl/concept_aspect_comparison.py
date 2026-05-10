@@ -1,6 +1,6 @@
 from functools import reduce
 
-from kbt_core.common import with_model_input_data, index_by, with_key, log_str, async_map, dump_json
+from kbt_core.common import with_model_input_data, index_by, with_key, log_str, async_map, dump_json, get_float
 from kbt_core.normalized_values import with_normalized_value
 from kbt_core.process import execute_process
 
@@ -60,12 +60,12 @@ async def with_feature_comparison(aspect, a_concept, b_concept, model, observer_
 
 
 def calc_aspect_total_score(perspective_aspects):
-    return reduce(lambda acc, c: acc + c["aspect_importance_score_to_other_aspects"], perspective_aspects, 0)
+    return reduce(lambda acc, c: acc + get_float(c, 'aspect_importance_score_to_other_aspects', 0), perspective_aspects, 0)
 
 
 def with_aspect_comparison(aspect, aspect_total_score):
-    aspect_features = aspect["aspect_features"]
-    aspect_w = aspect.get("aspect_importance_score_to_other_aspects", 1) / aspect_total_score
+    aspect_features = aspect['aspect_features']
+    aspect_w = get_float(aspect, 'aspect_importance_score_to_other_aspects', 1.0) / aspect_total_score if aspect_total_score > 0 else 1.0
     aspect['normalized_aspect_score'] = aspect_w
     (_, aspect_features2) = with_normalized_value(aspect_features, 'comparison', 'normalized_', 'feature_importance_score_to_other_features', aspect_w)
     aspect['normalized_comparison'] = sum([c['normalized_comparison'] for c in aspect_features2])
