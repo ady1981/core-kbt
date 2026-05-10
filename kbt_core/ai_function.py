@@ -1,6 +1,6 @@
 import importlib
 
-import ai_function_template
+from kbt_core import ai_function_template
 from kbt_core.common import read_string
 
 PY_IMPL_FUN_TYPE = 'py_implementation'
