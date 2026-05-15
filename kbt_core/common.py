@@ -385,10 +385,14 @@ def get_float(data: dict, key: str, default: float):
         return default
 
 
-def select_item(index, items: list):
+def select_item(index, alist: list):
     """
     Returns a tuple: (1) selected list[index] value, (2) join list of other items (except the selected)
     """
-    selected = items[index]
-    others = [item for i, item in enumerate(items) if i != index]
+    selected = alist[index]
+    others = [item for i, item in enumerate(alist) if i != index]
     return (selected, others)
+
+
+def list_intersection(list1, list2):
+  return list(set(list1).intersection(list2))
