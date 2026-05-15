@@ -1,20 +1,20 @@
 type: object
-properties:
-  concept_properties:
+features:
+  concept_features:
     type: array
     items:
       type: object
-      properties:
-        property_name:
+      features:
+        feature_name:
           type: string
-        property_value:
+        feature_value:
           type: string
           description: |
             Extra requirements: 
               * should be a term
-              * write extra elementary property value for the same property into a new item
+              * write extra elementary feature value for the same feature into a new item
   other_notes:
     type: string
 required:
-  - concept_properties
+  - concept_features
   - other_notes
