@@ -1,7 +1,7 @@
 from kbt_core.common import with_model_input_data, index_by, log_str, async_map, dump_json, read_string, \
     format_markdown_code, select_item, n_range, vmap, list_intersection, with_only_keys
 from kbt_core.process import execute_process
-from minimal_set_covering import calc_set_covering
+from kbt_core.minimal_set_covering import calc_set_covering
 
 OUTPUT_CONTENT_LANGUAGE = 'English'
 INFORMATION_RETRIEVAL_STRATEGY = 'Use unbiased internal knowledge'
