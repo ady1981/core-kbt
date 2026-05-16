@@ -1,4 +1,5 @@
-from kbt_core.common import with_model_input_data, index_by, log_str, async_map, dump_json, read_string, format_markdown_code, select_item, n_range, vmap, list_intersection
+from kbt_core.common import with_model_input_data, index_by, log_str, async_map, dump_json, read_string, \
+    format_markdown_code, select_item, n_range, vmap, list_intersection, with_only_keys
 from kbt_core.process import execute_process
 from minimal_set_covering import calc_set_covering
 
@@ -7,6 +8,7 @@ INFORMATION_RETRIEVAL_STRATEGY = 'Use unbiased internal knowledge'
 OUTPUT_GENERATION_STRATEGY = '''
 Extra_instructions:
 - write ONLY existing and correct relations for ONLY specified entities
+- classify non-specified relations to the specified relation in accordance with the Perspective (if possible)
 - write empty relations if no existing and correct relations
 '''
 ISMEMBER_RELATIONS = ['subclassOf_schema', 'instanceOf_schema', 'partOf_schema']
@@ -105,12 +107,22 @@ def is_member_of(leftside_concept, rightside_concept, concept_relations_map):
                           ISMEMBER_RELATIONS)
 
 
+def is_same(leftside_concept, rightside_concept, concept_relations_map):
+    ## - allow any "sameAs"
+    ## - consider mutual partOf relation as "sameAs"
+    return ("sameAs_schema" in concept_relations_map.get(leftside_concept, {}).get(rightside_concept, {}).keys()) or \
+             ("sameAs_schema" in concept_relations_map.get(rightside_concept, {}).get(leftside_concept, {}).keys()) or \
+             ("partOf_schema" in concept_relations_map.get(leftside_concept, {}).get(rightside_concept, {}).keys() and \
+              "partOf_schema" in concept_relations_map.get(rightside_concept, {}).get(leftside_concept, {}).keys())
+
+
 def calc_concept_set_covering(concepts, concept_relations_map):
     concepts_n = len(concepts)
     member_element_sets = [[subject_concept_idx
                             for subject_concept_idx in n_range(concepts_n)
                             if set_idx == subject_concept_idx or \
-                              is_member_of(concepts[subject_concept_idx - 1], concepts[set_idx - 1], concept_relations_map)]
+                               is_same(concepts[subject_concept_idx - 1], concepts[set_idx - 1], concept_relations_map) or \
+                               is_member_of(concepts[subject_concept_idx - 1], concepts[set_idx - 1], concept_relations_map)]
                            for set_idx in n_range(concepts_n)]
     # print('member_element_sets:\n' + dump_json(member_element_sets)) ## TODO
     set_covering_ids = calc_set_covering(concepts_n, member_element_sets)
@@ -122,8 +134,10 @@ def ensure_concept_relations_nonsymmetry(concepts, concept_relations_map):
     for c1 in concepts:
         for c2 in concepts:
             if c1 != c2:
-                if is_member_of(c1, c2, concept_relations_map) and is_member_of(c2, c1, concept_relations_map):
-                    log_str(f'invalid-concept_relations-symmetry: c1={c1}, c2={c2}, concept_relations_map=\n' + dump_json(concept_relations_map))
+                if is_member_of(c1, c2, concept_relations_map) and is_member_of(c2, c1, concept_relations_map) \
+                        and not is_same(c1, c2, concept_relations_map):
+                    truncated_concept_relations_map = with_only_keys(concept_relations_map, [c1, c2])
+                    log_str(f'invalid-concept_relations-symmetry: c1={c1}, c2={c2}, truncated_concept_relations_map=\n' + dump_json(truncated_concept_relations_map))
                     raise RuntimeError('invalid-concept_relations-symmetry')
 
 
