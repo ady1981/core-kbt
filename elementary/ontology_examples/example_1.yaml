@@ -10,7 +10,7 @@
 - name: Alice_is_a_cat
   kind: relation
   schema: instanceOf_schema
-  subjectEntities:
+  domainEntities:
   - Alice
-  objectEntities:
+  rangeEntities:
   - cat

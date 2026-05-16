@@ -13,9 +13,9 @@
 - kind: relation
   schema: disjointUnionOf_schema
   name: parent_disjoint_union
-  subjectEntities:
+  domainEntities:
   - parent
-  objectEntities:
+  rangeEntities:
   - mother
   - father
   description: parent is the disjoint union of mother and father
