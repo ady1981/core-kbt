@@ -50,9 +50,9 @@
             - name
             - constructedNameTemplate
     - ruleType: hasAttribute
-      ruleParameters: domainEntities
+      ruleParameters: domain
     - ruleType: hasAttribute
-      ruleParameters: rangeEntities
+      ruleParameters: range
     - ruleType: hasAttribute
       ruleParameters: isTransitive
     - ruleType: hasAttribute

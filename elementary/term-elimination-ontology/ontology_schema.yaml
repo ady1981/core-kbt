@@ -2,8 +2,8 @@
   description: |
     A root item schema.
     Take into account:
-    - Any item inherit attribute values of its schema. 
-    - Any item attribute value is idempotent (any overwrite is not allowed).
+    - Any item inherit attribute values of its schema
+    - Any item attribute value is idempotent (any overwrite is not allowed)
     - 'extraItemSchemaRules' are rules for ontology items and not for schema ontology items
   extraItemSchemaRules:
     - ruleType: hasAttribute
@@ -51,20 +51,20 @@
             - constructedNameTemplate
     - ruleType: hasAttribute
       ruleParameters:
-        attribute: domainEntities
+        attribute: domain
+        description: The domain entities for this relation
         JSON_Schema:
           type: array
           items:
             type: string
-            description: Entity name
     - ruleType: hasAttribute
       ruleParameters:
-        attribute: rangeEntities
+        attribute: range
+        description: The range entities for this relation
         JSON_Schema:
           type: array
           items:
             type: string
-            description: Entity name
     - ruleType: hasAttribute
       ruleParameters: isTransitive
     - ruleType: hasAttribute
@@ -80,7 +80,7 @@
     - ruleType: hasAttribute
       ruleParameters:
         attribute: is_correct
-        description: Is this a correct relation from "domain" entity to "range" entity?
+        description: Is this a correct relation of the 'domain' entity to the 'range' entity?
         JSON_Schema:
           type: boolean
 
@@ -88,23 +88,59 @@
 
 - name: subclassOf_schema
   extends: relation_schema
-  description: Describes that "domain" entity is a subclass of "range" entity
+  description: Describes that the 'domain' entity is a subclass of the 'range' entity
   isTransitive: true
   isSymmetric: false
+  extraItemSchemaRules:
+    - ruleType: hasAttribute
+      ruleParameters:
+        attribute: superclass
+        description: Superclass entities. The same values as in the 'range' of this relation
+        JSON_Schema:
+          type: array
+          items:
+            type: string
+    - ruleType: hasAttribute
+      ruleParameters:
+        attribute: is_correct
+        description: Is the 'domain' a subclass of the 'range'?
 
 - name: partOf_schema
   extends: relation_schema
-  description: Describes structural (including spatial and non-spatial) relationship of "domain" entity to "range" entity
+  description: Describes compositional (including spatial and non-spatial) relationship of the 'domain' entity to the 'range' entity
   isSymmetric: false
+  extraItemSchemaRules:
+    - ruleType: hasAttribute
+      ruleParameters:
+        attribute: wholeClass
+        description: The whole class entities. The same values as in the 'range' of this relation
+        JSON_Schema:
+          type: array
+          items:
+            type: string
+    - ruleType: hasAttribute
+      ruleParameters:
+        attribute: is_correct
+        description: Is the 'domain' a part of the 'range'?
 
 - name: instanceOf_schema
   extends: relation_schema
-  description: Describes that "domain" entity is instance of "range" entity
+  description: Describes that the 'domain' entity is an instance of the 'range' entity
   isTransitive: false
   isSymmetric: false
+  extraItemSchemaRules:
+    - ruleType: hasAttribute
+      ruleParameters:
+        attribute: is_correct
+        description: Is the 'domain' is an instance of the 'range'?
 
-- name: sameAs_schema
+- name: sameIdentityAs_schema
   extends: relation_schema
-  description: Describes that the "domain" term is same as "range" term and both correspond to the same concept or instance
+  description: Describes that the 'domain' term is same as the 'range' term and both correspond to the same concept or instance
   isSymmetric: true
   isTransitive: true
+  extraItemSchemaRules:
+    - ruleType: hasAttribute
+      ruleParameters:
+        attribute: is_correct
+        description: Is the 'domain' a synonym to the 'range'?

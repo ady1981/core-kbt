@@ -9,8 +9,8 @@
 - name: partOf
   kind: relation
   schema: partOf_schema
-  domainEntities:
+  domain:
   - hand
-  rangeEntities:
+  range:
   - arm
   isTransitive: false
