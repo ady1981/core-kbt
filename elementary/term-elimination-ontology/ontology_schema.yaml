@@ -51,7 +51,7 @@
             - constructedNameTemplate
     - ruleType: hasAttribute
       ruleParameters:
-        attribute: subjectEntities
+        attribute: domainEntities
         JSON_Schema:
           type: array
           items:
@@ -59,7 +59,7 @@
             description: Entity name
     - ruleType: hasAttribute
       ruleParameters:
-        attribute: objectEntities
+        attribute: rangeEntities
         JSON_Schema:
           type: array
           items:
@@ -77,24 +77,47 @@
       ruleParameters:
         attribute: is_correct
         JSON_Schema:
-          description: Is this item a correct relation between every entity in `subjectEntities` and every entity in `objectEntities` and the relation fields are correct?
+          description: Is this item a correct relation between every "domainEntities" entity to every "rangeEntities" entity?
           type: boolean
 
 ## Specified relation ontology schemas
 
 - name: instanceOf_schema
   extends: relation_schema
-  description: Describes that subject entity is instance of object entity
+  description: Describes that "domain" entity is instance of "range" entity
   isTransitive: false
   isSymmetric: false
+  extraItemSchemaRules:
+    - ruleType: hasAttribute
+      ruleParameters:
+        attribute: is_correct
+        JSON_Schema:
+          description: Is every "domainEntities" entity an instance of every "rangeEntities" entity?
 
 - name: subclassOf_schema
   extends: relation_schema
-  description: Describes that subject entity is a subclass of entity entity
+  description: Describes that "domain" entity is a subclass of "range" entity
   isTransitive: true
   isSymmetric: false
+  extraItemSchemaRules:
+    - ruleType: hasAttribute
+      ruleParameters:
+        attribute: is_correct
+        JSON_Schema:
+          description: Is every "domainEntities" entity a subclass of every "rangeEntities" entity?
 
 - name: partOf_schema
   extends: relation_schema
-  description: Describes spatial and non-spatial relationship of subject entity to object entity
+  description: Describes structural relationship of "domain" entity to "range" entity
   isSymmetric: false
+  extraItemSchemaRules:
+    - ruleType: hasAttribute
+      ruleParameters:
+        attribute: reasoning
+        JSON_Schema:
+          description: Extra reasoning for correct answer
+    - ruleType: hasAttribute
+      ruleParameters:
+        attribute: is_correct
+        JSON_Schema:
+          description: Is every "domainEntities" entity a part of every "rangeEntities" entity?
