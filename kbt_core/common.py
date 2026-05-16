@@ -16,6 +16,8 @@ from jinja2 import Environment
 from ruamel.yaml import YAML
 
 
+KBT_ENSURE_ASCII = False
+
 def read_string(filepath):
     with open(filepath, 'r') as file:
         return file.read()
@@ -93,7 +95,7 @@ def dump_yaml(data):
 
 
 def dump_json(data, indent=2):
-    return json.dumps(data, indent=indent)
+    return json.dumps(data, indent=indent, ensure_ascii=KBT_ENSURE_ASCII)
 
 
 def setvalue(adict, key, value):
