@@ -8,8 +8,7 @@ INFORMATION_RETRIEVAL_STRATEGY = 'Use unbiased internal knowledge'
 OUTPUT_GENERATION_STRATEGY = '''
 Extra_instructions:
 - write ONLY existing and correct relations for ONLY specified entities
-- classify non-specified relations to the specified relation in accordance with the Perspective (if possible)
-- write empty relations if no existing and correct relations
+- write empty relations if no correct relations
 '''
 ISMEMBER_RELATIONS = ['subclassOf_schema', 'instanceOf_schema', 'partOf_schema']
 
@@ -69,7 +68,11 @@ async def calc_perspective_concept_relations2(model, concept_nindex, concept_nam
         '_extra_output_specification': f'# Extra output specification\nOutput_content_language: {OUTPUT_CONTENT_LANGUAGE}'
     }, model)
     response = await evaluate_via_process('perspective_concept_relations', input_data)
-    return [relation for relation in response["relation_items"] if relation.get('is_correct')]
+    try:
+        return [relation for relation in response["relation_items"] if relation.get('is_correct')]
+    except KeyError as e:
+        log_str('key-error:\n response=' + dump_json(response))
+        raise e
 
 
 async def calc_perspective_concept_relations(model, concepts, perspective):
@@ -84,13 +87,13 @@ def calc_concept_relations_map(concepts, perspective_concept_relations):
     for concept in concepts:
         by_subject = result.get(concept, {})
         for relation in perspective_concept_relations:
-            subject_entities = relation['domainEntities']
+            subject_entities = relation['domain']
             if isinstance(subject_entities, str):
                 subject_entities = [subject_entities]
-            if isinstance(relation['rangeEntities'], str):
-                relation['rangeEntities'] = [relation['rangeEntities']]
+            if isinstance(relation['range'], str):
+                relation['range'] = [relation['range']]
             if concept in subject_entities:
-                for object in relation['rangeEntities']:
+                for object in relation['range']:
                     by_object = by_subject.get(object, [])
                     by_object.append(relation)
                     by_subject[object] = by_object
@@ -110,8 +113,8 @@ def is_member_of(leftside_concept, rightside_concept, concept_relations_map):
 def is_same(leftside_concept, rightside_concept, concept_relations_map):
     ## - allow any "sameAs"
     ## - consider mutual partOf relation as "sameAs"
-    return ("sameAs_schema" in concept_relations_map.get(leftside_concept, {}).get(rightside_concept, {}).keys()) or \
-             ("sameAs_schema" in concept_relations_map.get(rightside_concept, {}).get(leftside_concept, {}).keys()) or \
+    return ("sameIdentityAs_schema" in concept_relations_map.get(leftside_concept, {}).get(rightside_concept, {}).keys()) or \
+             ("sameIdentityAs_schema" in concept_relations_map.get(rightside_concept, {}).get(leftside_concept, {}).keys()) or \
              ("partOf_schema" in concept_relations_map.get(leftside_concept, {}).get(rightside_concept, {}).keys() and \
               "partOf_schema" in concept_relations_map.get(rightside_concept, {}).get(leftside_concept, {}).keys())
 
@@ -159,7 +162,10 @@ async def evaluate(input_data):
         (set_covering_ids, eliminated_ids) = calc_concept_set_covering(concepts, concept_relations_map)
         ## result
         result = {
-            'covering_concepts': [concepts[c - 1] for c in set_covering_ids],
+            'covering_concepts': [{
+                'concept': concepts[c - 1],
+                'by_range_relations': concept_relations_map.get(concepts[c - 1], {})
+            } for c in set_covering_ids],
             'eliminated_concepts': [{
                 'concept': concepts[c - 1],
                 'by_range_relations': concept_relations_map[concepts[c - 1]]
@@ -170,4 +176,5 @@ async def evaluate(input_data):
         if str(e) == 'invalid-concept_relations-symmetry':
             return {'error': 'invalid-concept-relations-symmetry'}
         else:
+            log_str(f'unknown-error: input_id={input_data.get("input_id")}')
             raise e
