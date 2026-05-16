@@ -22,7 +22,7 @@ async def calc_method1():
 
 
 async def calc_method2():
-    concepts = ['Animals', 'Plants', 'Human']
+    concepts = ['Animals', 'Plants', 'Human', 'Human being']
     perspective = {
         "basis_of_consideration": "Living organisms within biological systematics (taxonomy, phylogeny, morphology, physiology, ecology, etc.)",
         "perspective_observer_strategy": "Objective analysis of biological entities based on established scientific principles and empirical evidence, minimizing anthropocentric or subjective bias.",
@@ -37,16 +37,20 @@ async def calc_method2():
 
 async def main():
     # observer_context_description = 'Рассматриваются живые организмы в биологической систематике. Гранулярность рассмотрения - низкая'
-    # concepts = ['Растения', 'Животные', 'Человек']
-    # concepts = ['Киты', 'Дельфины', 'Китообразные', 'Приматы', 'Рыбы', 'Человек'] ## 'Млекопитающие'
+    # concepts = ['Растения', 'Животные', 'Человек', 'Люди']
+    # concepts = ['Киты', 'Дельфины', 'Китообразные', 'Рыбы', 'Приматы', 'Человек'] ## 'Млекопитающие'
 
     # observer_context_description = 'Объектно-ориентированное программирование на языке Java. Существенные признаки - наследование.'
-    # concepts = ['Collection', 'List', 'ArrayList', 'Set', 'LinkedList', 'HashSet', 'SortedSet'] ## 'Iterable'
+    # concepts = ['List', 'ArrayList', 'Set', 'LinkedList', 'HashSet', 'SortedSet'] ## 'Collection', 'Iterable'
 
-    observer_context_description = 'Административно-территориальное деление России. Существенные признаки - вхождение в более крупные единицы'
-    concepts = 'Москва, Центральный федеральный округ, Московская область, Город федерального значения, Санкт-Петербург, Ленинградская область, Северо-Западный федеральный округ'.split(', ')
+    # observer_context_description = 'Административно-территориальное деление России. Существенные признаки - вхождение в более крупные единицы'
+    # concepts = 'Москва, Центральный федеральный округ, Московская область, Город федерального значения, Санкт-Петербург, Ленинградская область, Северо-Западный федеральный округ'.split(', ')
 
-    frame_of_reference = 'Unbiased framework' ## 'Common sense'
+    observer_context_description = 'Описание этапов разработки программного обеспечения для заказчика. Гранулярность рассмотрения - низкая'
+    concepts = 'Планирование, Анализ требований, Кодирование, Тестирование, Развертывание, Фаза инициации, Фаза исполнения, Фаза завершения, Приемочное тестирование'\
+                .split(', ')
+
+    frame_of_reference = 'Unbiased logical framework' ## 'Common sense'
     input_data = {
         'observer_context_description': observer_context_description,
         'concepts': concepts,

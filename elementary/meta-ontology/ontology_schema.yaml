@@ -95,8 +95,14 @@
   extends: unionOf_schema
   description: Specifies that the class is equivalent to the union of several other classes and these constituent classes are pairwise disjoint
 
-- name: equivalentTo_schema
+- name: byInstancesEquivalentTo_schema
   extends: relation_schema
-  description: Describes that subject entity is equivalent class to object entity
+  description: Describes that instances set of the "domain" class is equivalent to instances set of "range" class
+  isSymmetric: true
+  isTransitive: true
+
+- name: sameAs_schema
+  extends: relation_schema
+  description: Describes that the "domain" terms are same as "range" terms and both correspond to the same concept or instance
   isSymmetric: true
   isTransitive: true

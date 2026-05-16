@@ -5,7 +5,7 @@ from kbt_core.ai_function_template import evaluate2
 from kbt_core.common import read_string, render_template, calc_md5, log_str, read_yaml
 
 PROCESS_TYPE = 'perspective_concept_relations_af'
-PROCESS_VERSION = 4
+PROCESS_VERSION = 6
 AI_FUN_NAME = 'perspective_concept_relations'
 
 
