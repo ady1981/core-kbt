@@ -54,7 +54,7 @@ Respond only in JSON format strictly using the provided JSON Schema specificatio
             else:
                 answer2 = {'json': answer}
     except Exception:
-        sys.stderr.write('cannot-evaluate => return as raw:\n')
+        sys.stderr.write('cannot-evaluate => return as raw:>>>\n' + raw_answer + '<<<\n')
         sys.stderr.write(traceback.format_exc() + '\n')
         answer2 = {'raw': raw_answer}
     finally:
