@@ -183,7 +183,7 @@ async def evaluate(input_data):
             } for c in set_covering_ids],
             'eliminated_concepts': [{
                 'concept': concepts[c - 1],
-                'by_range_relations': concept_relations_map[concepts[c - 1]]
+                'by_range_relations': concept_relations_map.get(concepts[c - 1], {})
             } for c in eliminated_ids]
         }
         return result
