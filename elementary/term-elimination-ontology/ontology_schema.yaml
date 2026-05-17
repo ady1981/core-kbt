@@ -95,7 +95,7 @@
     - ruleType: hasAttribute
       ruleParameters:
         attribute: superclass
-        description: Superclass entities. The same values as in the 'range' of this relation
+        description: Superclass entities. Check that the 'range' field have the same values
         JSON_Schema:
           type: array
           items:
@@ -103,7 +103,7 @@
     - ruleType: hasAttribute
       ruleParameters:
         attribute: is_correct
-        description: Is the 'domain' a subclass of the 'range'?
+        description: Is the 'domain' a subclass of the 'range' (and the 'range' is superclass of the 'domain')?
 
 - name: partOf_schema
   extends: relation_schema

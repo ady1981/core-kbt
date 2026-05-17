@@ -9,6 +9,7 @@ OUTPUT_GENERATION_STRATEGY = '''
 Extra_instructions:
 - give maximal attention to the Perspective and analyze the Ontology within the Perspective  
 - write ONLY existing and correct relations ('relation' kind) for ONLY specified entities ('entity' kind)
+- ignore relations to 'entity' root entity
 - write empty relations if no correct relations
 '''
 ISMEMBER_RELATIONS = ['subclassOf_schema', 'instanceOf_schema', 'partOf_schema'] ## 'dependsOn_schema', 'samePurposeAs_schema'

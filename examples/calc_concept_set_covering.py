@@ -41,9 +41,8 @@ async def main():
     # concepts = ['Киты', 'Дельфины', 'Китообразные', 'Рыбы', 'Приматы', 'Человек'] ## 'Млекопитающие'
 
     observer_context_description = 'Каталог компьютерных комплектующих. Учитывать, что все компоненты поставляются в несобранном виде. Существенные признаки: принадлежность к подтипу, игнорировать функциональные отношения'
-    concepts = 'CPU, motherboard'.split(', ')
-    # concepts = 'CPU, RAM, hard drive, motherboard, video card, SSD, NVMe, Nvidia GeForce RTX 50'\
-    #             .split(', ')
+    # concepts = 'CPU, motherboard'.split(', ')
+    concepts = 'CPU, RAM, hard drive, motherboard, video card, SSD, NVMe, Nvidia GeForce RTX 50'.split(', ')
 
     # observer_context_description = 'Описание этапов разработки программного обеспечения для заказчика. Гранулярность рассмотрения - низкая'
     # concepts = 'Планирование, Анализ требований, Кодирование, Тестирование, Развертывание, Фаза инициации, Фаза исполнения, Фаза завершения, Приемочное тестирование'\
