@@ -3,7 +3,7 @@ import importlib
 import os
 import traceback
 
-from .common import write_json, log_error, read_json, list_files
+from .common import write_json, log_error, read_json, list_files, log_str
 
 STATUSES = ['initial', 'running', 'error', 'terminated']
 
@@ -142,6 +142,7 @@ async def execute_process(process_input):
             raise e
     state = read_state(process_input_id)
     if state['status'] in ['terminated', 'error']:
+        log_str(f'execute_process: already terminated, input_id={process_input_id}')
         result = {'input': process_input, 'state': state}
     elif state['status'] == 'running':
         log_error(f'already-running-process: input_id={process_input_id}')

@@ -1,0 +1,15 @@
+type: object
+properties:
+  relation_items:
+    type: array
+    items:
+      type: object
+      description: Should be a correct relation item according to the specified relation schema
+  is_correct:
+    type: boolean
+    description: Is the answer correct?
+  other_notes:
+    type: string
+required:
+  - relation_items
+  - is_correct

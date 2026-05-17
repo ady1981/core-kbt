@@ -16,6 +16,8 @@ from jinja2 import Environment
 from ruamel.yaml import YAML
 
 
+KBT_ENSURE_ASCII = False
+
 def read_string(filepath):
     with open(filepath, 'r') as file:
         return file.read()
@@ -93,7 +95,7 @@ def dump_yaml(data):
 
 
 def dump_json(data, indent=2):
-    return json.dumps(data, indent=indent)
+    return json.dumps(data, indent=indent, ensure_ascii=KBT_ENSURE_ASCII)
 
 
 def setvalue(adict, key, value):
@@ -383,3 +385,26 @@ def get_float(data: dict, key: str, default: float):
         return float(value) if value is not None else default
     except (ValueError, TypeError):
         return default
+
+
+def select_item(index, alist: list):
+    """
+    Returns a tuple: (1) selected list[index] value, (2) join list of other items (except the selected)
+    """
+    selected = alist[index]
+    others = [item for i, item in enumerate(alist) if i != index]
+    return (selected, others)
+
+
+def list_intersection(list1, list2):
+  return list(set(list1).intersection(list2))
+
+
+def has_transitive_property(a, b, has_direct_property, rest_items: set):
+    if has_direct_property(a, b):
+        return True
+    for c in rest_items - {a} - {b}:
+        if has_direct_property(a, c):
+            if has_transitive_property(c, b, has_direct_property, rest_items - {a} - {b} - {c}):
+                return True
+    return False

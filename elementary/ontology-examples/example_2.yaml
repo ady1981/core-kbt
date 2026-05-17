@@ -12,7 +12,7 @@
 - name: subclassOf
   kind: relation
   schema: subclassOf_schema
-  subjectEntities:
+  domain:
   - cat
-  objectEntities:
+  range:
   - mammal

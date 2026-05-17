@@ -1,0 +1,12 @@
+type: object
+properties:
+  frame_of_reference:
+    type: string
+  basis_of_consideration:
+    type: string
+  perspective_observer_strategy:
+    type: string
+  point_of_view:
+    type: string
+  other_notes:
+    type: string

@@ -53,8 +53,8 @@ Respond only in JSON format strictly using the provided JSON Schema specificatio
                 answer2 = {'json': answer['properties']}
             else:
                 answer2 = {'json': answer}
-    except RuntimeError:
-        sys.stderr.write('cannot-evaluate => return as raw:\n')
+    except Exception:
+        sys.stderr.write('cannot-evaluate => return as raw:>>>\n' + raw_answer + '<<<\n')
         sys.stderr.write(traceback.format_exc() + '\n')
         answer2 = {'raw': raw_answer}
     finally:
