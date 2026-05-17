@@ -398,3 +398,15 @@ def select_item(index, alist: list):
 
 def list_intersection(list1, list2):
   return list(set(list1).intersection(list2))
+
+
+def has_property(a, b, has_direct_property, rest_items: set):
+    if has_direct_property(a, b):
+        return True
+    else:
+        for c in rest_items:
+            if has_direct_property(a, c):
+                return True
+            else:
+                return has_property(a, b, has_direct_property, rest_items - {c})
+        return False

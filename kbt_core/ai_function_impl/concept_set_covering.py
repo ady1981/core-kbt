@@ -1,5 +1,5 @@
 from kbt_core.common import with_model_input_data, index_by, log_str, async_map, dump_json, read_string, \
-    format_markdown_code, select_item, n_range, vmap, list_intersection, with_only_keys
+    format_markdown_code, select_item, n_range, vmap, list_intersection, with_only_keys, has_property
 from kbt_core.process import execute_process
 from kbt_core.minimal_set_covering import calc_set_covering
 
@@ -102,13 +102,19 @@ def calc_concept_relations_map(concepts, perspective_concept_relations):
     return result
 
 
-def is_member_of(leftside_concept, rightside_concept, concept_relations_map):
+def is_direct_member_of(leftside_concept, rightside_concept, concept_relations_map):
     return list_intersection(concept_relations_map
                           .get(leftside_concept, {})
                           .get(rightside_concept, {})
                           .keys(),
                           ISMEMBER_RELATIONS)
 
+
+def is_member_of(leftside_concept, rightside_concept, concept_relations_map, concepts):
+    return has_property(leftside_concept,
+                        rightside_concept,
+                        lambda a, b: is_direct_member_of(a, b, concept_relations_map),
+                        set(concepts))
 
 def is_same(leftside_concept, rightside_concept, concept_relations_map):
     ## - allow any "sameAs"
@@ -124,8 +130,8 @@ def calc_concept_set_covering(concepts, concept_relations_map):
     member_element_sets = [[subject_concept_idx
                             for subject_concept_idx in n_range(concepts_n)
                             if set_idx == subject_concept_idx or \
-                               is_same(concepts[subject_concept_idx - 1], concepts[set_idx - 1], concept_relations_map) or \
-                               is_member_of(concepts[subject_concept_idx - 1], concepts[set_idx - 1], concept_relations_map)]
+                            is_same(concepts[subject_concept_idx - 1], concepts[set_idx - 1], concept_relations_map) or \
+                            is_member_of(concepts[subject_concept_idx - 1], concepts[set_idx - 1], concept_relations_map, concepts)]
                            for set_idx in n_range(concepts_n)]
     # print('member_element_sets:\n' + dump_json(member_element_sets)) ## TODO
     set_covering_ids = calc_set_covering(concepts_n, member_element_sets)
@@ -137,7 +143,7 @@ def ensure_concept_relations_nonsymmetry(concepts, concept_relations_map):
     for c1 in concepts:
         for c2 in concepts:
             if c1 != c2:
-                if is_member_of(c1, c2, concept_relations_map) and is_member_of(c2, c1, concept_relations_map) \
+                if is_direct_member_of(c1, c2, concept_relations_map) and is_direct_member_of(c2, c1, concept_relations_map) \
                         and not is_same(c1, c2, concept_relations_map):
                     truncated_concept_relations_map = with_only_keys(concept_relations_map, [c1, c2])
                     log_str(f'invalid-concept_relations-symmetry: c1={c1}, c2={c2}, truncated_concept_relations_map=\n' + dump_json(truncated_concept_relations_map))
