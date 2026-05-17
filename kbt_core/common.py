@@ -401,12 +401,14 @@ def list_intersection(list1, list2):
 
 
 def has_property(a, b, has_direct_property, rest_items: set):
+    if not rest_items:
+        return False
     if has_direct_property(a, b):
         return True
-    else:
-        for c in rest_items:
-            if has_direct_property(a, c):
-                return True
-            else:
-                return has_property(a, b, has_direct_property, rest_items - {c})
-        return False
+    for c in rest_items - {a} - {b}:
+        if has_direct_property(a, c) and has_direct_property(c, b):
+            return True
+    for c in rest_items - {a} - {b}:
+        if has_property(a, b, has_direct_property, rest_items - {c}):
+            return True
+    return False

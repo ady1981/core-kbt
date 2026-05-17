@@ -40,9 +40,10 @@ async def calc_method2():
     perspective_concept_relations = await concept_set_covering.calc_perspective_concept_relations(None, concepts, perspective)
     concept_relations_map = concept_set_covering.calc_concept_relations_map(concepts, perspective_concept_relations)
     print('concept_relations_map:\n' + dump_json(concept_relations_map))
-    (set_covering_ids, eliminated_ids) = calc_concept_set_covering(concepts, concept_relations_map)
+    (set_covering_ids, eliminated_ids, member_element_sets) = calc_concept_set_covering(concepts, concept_relations_map)
     print('set_covering_ids:', set_covering_ids)
     print('eliminated_ids:', eliminated_ids)
+    print('member_element_sets:\n', member_element_sets)
 
 
 async def main():

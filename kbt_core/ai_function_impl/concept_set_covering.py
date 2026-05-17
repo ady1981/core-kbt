@@ -116,7 +116,7 @@ def is_member_of(leftside_concept, rightside_concept, concept_relations_map, con
     return has_property(leftside_concept,
                         rightside_concept,
                         lambda a, b: is_direct_member_of(a, b, concept_relations_map),
-                        set(concepts) - {leftside_concept})
+                        set(concepts))
 
 def is_same(leftside_concept, rightside_concept, concept_relations_map):
     ## - allow any "sameAs"
@@ -143,7 +143,7 @@ def calc_concept_set_covering(concepts, concept_relations_map):
     # print('member_element_sets:\n' + dump_json(member_element_sets)) ## TODO
     set_covering_ids = calc_set_covering(concepts_n, member_element_sets)
     eliminated_ids = [idx for idx in n_range(concepts_n) if not idx in set_covering_ids]
-    return (set_covering_ids, eliminated_ids)
+    return (set_covering_ids, eliminated_ids, member_element_sets)
 
 
 def ensure_concept_relations_nonsymmetry(concepts, concept_relations_map):
@@ -172,10 +172,11 @@ async def evaluate(input_data):
         ## ensure consistency
         ensure_concept_relations_nonsymmetry(concepts, concept_relations_map)
         ## optimization
-        (set_covering_ids, eliminated_ids) = calc_concept_set_covering(concepts, concept_relations_map)
+        (set_covering_ids, eliminated_ids, member_element_sets) = calc_concept_set_covering(concepts, concept_relations_map)
         ## result
         result = {
             'perspective': perspective,
+            'member_element_sets': member_element_sets,
             'covering_concepts': [{
                 'concept': concepts[c - 1],
                 'by_range_relations': concept_relations_map.get(concepts[c - 1], {})
