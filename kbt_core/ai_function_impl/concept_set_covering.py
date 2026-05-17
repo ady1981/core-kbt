@@ -148,8 +148,8 @@ def ensure_concept_relations_nonsymmetry(concepts, concept_relations_map):
                 if is_direct_member_of(c1, c2, concept_relations_map) and is_direct_member_of(c2, c1, concept_relations_map) \
                         and not is_same(c1, c2, concept_relations_map):
                     truncated_concept_relations_map = with_only_keys(concept_relations_map, [c1, c2])
-                    log_str(f'invalid-concept_relations-symmetry: c1={c1}, c2={c2}, truncated_concept_relations_map=\n' + dump_json(truncated_concept_relations_map))
-                    raise RuntimeError('invalid-concept_relations-symmetry')
+                    log_str(f'invalid-concept-relations-symmetry: c1={c1}, c2={c2}, truncated_concept_relations_map=\n' + dump_json(truncated_concept_relations_map))
+                    raise RuntimeError('invalid-concept-relations-symmetry')
 
 
 async def evaluate(input_data):
@@ -182,7 +182,7 @@ async def evaluate(input_data):
         }
         return result
     except RuntimeError as e:
-        if str(e) == 'invalid-concept_relations-symmetry':
+        if str(e) == 'invalid-concept-relations-symmetry':
             return {'error': 'invalid-concept-relations-symmetry'}
         else:
             log_str(f'unknown-error: input_id={input_data.get("input_id")}')
