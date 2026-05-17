@@ -1,5 +1,5 @@
 from kbt_core.common import with_model_input_data, index_by, log_str, async_map, dump_json, read_string, \
-    format_markdown_code, select_item, n_range, vmap, list_intersection, with_only_keys, has_property
+    format_markdown_code, select_item, n_range, vmap, list_intersection, with_only_keys, has_transitive_property
 from kbt_core.process import execute_process
 from kbt_core.minimal_set_covering import calc_set_covering
 
@@ -113,10 +113,10 @@ def is_direct_member_of(leftside_concept, rightside_concept, concept_relations_m
 
 
 def is_member_of(leftside_concept, rightside_concept, concept_relations_map, concepts):
-    return has_property(leftside_concept,
-                        rightside_concept,
-                        lambda a, b: is_direct_member_of(a, b, concept_relations_map),
-                        set(concepts))
+    return has_transitive_property(leftside_concept,
+                                   rightside_concept,
+                                   lambda a, b: is_direct_member_of(a, b, concept_relations_map),
+                                   set(concepts))
 
 def is_same(leftside_concept, rightside_concept, concept_relations_map):
     ## - allow any "sameAs"

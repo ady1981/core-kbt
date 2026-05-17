@@ -400,15 +400,11 @@ def list_intersection(list1, list2):
   return list(set(list1).intersection(list2))
 
 
-def has_property(a, b, has_direct_property, rest_items: set):
-    if not rest_items:
-        return False
+def has_transitive_property(a, b, has_direct_property, rest_items: set):
     if has_direct_property(a, b):
         return True
     for c in rest_items - {a} - {b}:
-        if has_direct_property(a, c) and has_direct_property(c, b):
-            return True
-    for c in rest_items - {a} - {b}:
-        if has_property(a, b, has_direct_property, rest_items - {c}):
-            return True
+        if has_direct_property(a, c):
+            if has_transitive_property(c, b, has_direct_property, rest_items - {a} - {b} - {c}):
+                return True
     return False
