@@ -162,6 +162,7 @@ async def evaluate(input_data):
         (set_covering_ids, eliminated_ids) = calc_concept_set_covering(concepts, concept_relations_map)
         ## result
         result = {
+            'perspective': perspective,
             'covering_concepts': [{
                 'concept': concepts[c - 1],
                 'by_range_relations': concept_relations_map.get(concepts[c - 1], {})
