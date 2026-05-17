@@ -7,6 +7,7 @@ OUTPUT_CONTENT_LANGUAGE = 'English'
 INFORMATION_RETRIEVAL_STRATEGY = 'Use unbiased internal knowledge'
 OUTPUT_GENERATION_STRATEGY = '''
 Extra_instructions:
+- give maximal attention to the Perspective and analyze the Ontology within the Perspective  
 - write ONLY existing and correct relations ('relation' kind) for ONLY specified entities ('entity' kind)
 - write empty relations if no correct relations
 '''
