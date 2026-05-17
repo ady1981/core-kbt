@@ -22,7 +22,7 @@ async def calc_method1():
 
 
 async def calc_method2():
-    concepts = ['Animals', 'Plants', 'Human', 'Human being']
+    concepts = ['Animals', 'Plants', 'Human', 'Homo sapiens']
     perspective = {
         "basis_of_consideration": "Living organisms within biological systematics (taxonomy, phylogeny, morphology, physiology, ecology, etc.)",
         "perspective_observer_strategy": "Objective analysis of biological entities based on established scientific principles and empirical evidence, minimizing anthropocentric or subjective bias.",

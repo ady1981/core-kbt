@@ -1,11 +1,11 @@
-- name: samePurposeAs_schema
-  extends: relation_schema
-  description: Describes that the "domain" concept has the same purpose as "range" concept in this Perspective
-  isSymmetric: true
-  isTransitive: true
-
 - name: dependsOn_schema
   extends: relation_schema
-  description: Describes that the "domain" concept existentially depends on "range" concept in this Perspective (the "domain" concept exists in this Perspective only when the "range" concept exists)
+  description: Describes that the "domain" entity existentially depends on "range" entity in this Perspective (the "domain" exists in this Perspective only when the "range" exists)
   isSymmetric: false
+  isTransitive: true
+
+- name: samePurposeAs_schema
+  extends: relation_schema
+  description: Describes that the "domain" entity has the same purpose as "range" entity in this Perspective
+  isSymmetric: true
   isTransitive: true

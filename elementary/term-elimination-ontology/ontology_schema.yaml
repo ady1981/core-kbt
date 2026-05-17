@@ -132,7 +132,7 @@
     - ruleType: hasAttribute
       ruleParameters:
         attribute: is_correct
-        description: Is the 'domain' is an instance of the 'range'?
+        description: Is the 'domain' an instance of the 'range'?
 
 - name: sameIdentityAs_schema
   extends: relation_schema
@@ -143,4 +143,4 @@
     - ruleType: hasAttribute
       ruleParameters:
         attribute: is_correct
-        description: Is the 'domain' a synonym to the 'range'?
+        description: Do the 'domain' and 'range' both correspond to the same concept or instance?

@@ -7,10 +7,10 @@ OUTPUT_CONTENT_LANGUAGE = 'English'
 INFORMATION_RETRIEVAL_STRATEGY = 'Use unbiased internal knowledge'
 OUTPUT_GENERATION_STRATEGY = '''
 Extra_instructions:
-- write ONLY existing and correct relations for ONLY specified entities
+- write ONLY existing and correct relations ('relation' kind) for ONLY specified entities ('entity' kind)
 - write empty relations if no correct relations
 '''
-ISMEMBER_RELATIONS = ['subclassOf_schema', 'instanceOf_schema', 'partOf_schema']
+ISMEMBER_RELATIONS = ['subclassOf_schema', 'instanceOf_schema', 'partOf_schema'] ## 'dependsOn_schema', 'samePurposeAs_schema'
 
 
 async def evaluate_via_process(func_name, input_data):
@@ -46,7 +46,7 @@ async def calc_perspective_concept_relations2(model, concept_nindex, concept_nam
   schema: entity_schema
 ''' for c in concept_names]
     (a_concept, b_concepts) = select_item(concept_nindex - 1, concepts)
-    ontology_schema = read_string('elementary/term-elimination-ontology/ontology_schema.yaml')
+    ontology_schema = read_string('elementary/term-elimination-ontology/ontology_schema.yaml') ## + read_string('elementary/term-elimination-ontology/extra_ontology_schema.yaml') ## TODO
     meta_ontology = read_string('elementary/term-elimination-ontology/meta_ontology.yaml')
     (basis_of_consideration, perspective_observer_strategy, point_of_view) = (perspective['basis_of_consideration'], perspective['perspective_observer_strategy'], perspective['point_of_view'])
     perspective2 = f'''
