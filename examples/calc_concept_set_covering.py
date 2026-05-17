@@ -22,17 +22,27 @@ async def calc_method1():
 
 
 async def calc_method2():
-    concepts = ['Animals', 'Plants', 'Human', 'Homo sapiens']
+    member_of = {
+        'Пользовательский интерфейс': ['Пользовательский интерфейс', 'Интерфейс пользователя', 'Фронтенд'],
+        'Интерфейс пользователя': ['Интерфейс пользователя', 'Пользовательский интерфейс', 'Фронтенд'],
+        'Фронтенд': ['Фронтенд', 'Пользовательский интерфейс', 'Интерфейс пользователя'],
+        'Серверная часть': ['Серверная часть', 'Бэкенд'],
+        'Бэкенд': ['Бэкенд', 'Серверная часть'],
+        'База данных': ['База данных', 'Хранилище данных'],
+        'Хранилище данных': ['Хранилище данных', 'База данных']
+    }
+    concepts = ['Пользовательский интерфейс', 'Интерфейс пользователя', 'Фронтенд', 'Серверная часть', 'Бэкенд', 'База данных', 'Хранилище данных']
     perspective = {
-        "basis_of_consideration": "Living organisms within biological systematics (taxonomy, phylogeny, morphology, physiology, ecology, etc.)",
-        "perspective_observer_strategy": "Objective analysis of biological entities based on established scientific principles and empirical evidence, minimizing anthropocentric or subjective bias.",
-        "point_of_view": "Scientific/Systematic biological perspective, focusing on classification, relationships, and functional roles of organisms."
+        "basis_of_consideration": "Creating a glossary for an internal software development guide from a developer's perspective, focusing on subtype membership and ignoring functional relationships.",
+        "perspective_observer_strategy": "Identify full perspective representation by classifying terms based on their subtype hierarchies, excluding any functional or behavioral aspects.",
+        "point_of_view": "Developer-centric, emphasizing structural taxonomy over functional interactions."
     }
     perspective_concept_relations = await concept_set_covering.calc_perspective_concept_relations(None, concepts, perspective)
     concept_relations_map = concept_set_covering.calc_concept_relations_map(concepts, perspective_concept_relations)
     print('concept_relations_map:\n' + dump_json(concept_relations_map))
-    result = calc_concept_set_covering(concepts, concept_relations_map)
-    print(dump_json(result))
+    (set_covering_ids, eliminated_ids) = calc_concept_set_covering(concepts, concept_relations_map)
+    print('set_covering_ids:', set_covering_ids)
+    print('eliminated_ids:', eliminated_ids)
 
 
 async def main():
@@ -40,9 +50,9 @@ async def main():
     # concepts = ['Растения', 'Животные', 'Человек', 'Люди']
     # concepts = ['Киты', 'Дельфины', 'Китообразные', 'Рыбы', 'Приматы', 'Человек'] ## 'Млекопитающие'
 
-    observer_context_description = 'Каталог компьютерных комплектующих. Учитывать, что все компоненты поставляются в несобранном виде. Существенные признаки: принадлежность к подтипу, игнорировать функциональные отношения'
-    # concepts = 'CPU, motherboard'.split(', ')
-    concepts = 'CPU, RAM, hard drive, motherboard, video card, SSD, NVMe, Nvidia GeForce RTX 50'.split(', ')
+    # observer_context_description = 'Каталог компьютерных комплектующих. Учитывать, что все компоненты поставляются в несобранном виде. Существенные признаки: принадлежность к подтипу, игнорировать функциональные отношения'
+    # # concepts = 'CPU, motherboard'.split(', ')
+    # concepts = 'CPU, RAM, hard drive, motherboard, video card, SSD, NVMe, Nvidia GeForce RTX 50'.split(', ')
 
     # observer_context_description = 'Описание этапов разработки программного обеспечения для заказчика. Гранулярность рассмотрения - низкая'
     # concepts = 'Планирование, Анализ требований, Кодирование, Тестирование, Развертывание, Фаза инициации, Фаза исполнения, Фаза завершения, Приемочное тестирование'\
@@ -54,6 +64,32 @@ async def main():
 
     # observer_context_description = 'Административно-территориальное деление России. Существенные признаки - вхождение в более крупные единицы'
     # concepts = 'Москва, Центральный федеральный округ, Московская область, Город федерального значения, Санкт-Петербург, Ленинградская область, Северо-Западный федеральный округ'.split(', ')
+
+#     observer_context_description = 'Создание глоссария для внутреннего руководства по разработке программного обеспечения.'
+#     concepts = '''Пользовательский интерфейс
+# Интерфейс пользователя
+# Клиентская часть приложения
+# Фронтенд
+# Серверная часть
+# Бэкенд
+# База данных
+# Хранилище данных'''.split('\n')
+
+    observer_context_description = 'Мы готовим обзорную статью по теме "Использование машинного обучения для улучшения пользовательского опыта в электронной коммерции". Нам необходимо составить максимально лаконичный набор ключевых тем/идей для этой статьи.'
+    concepts = '''Машинное обучение
+Персонализация
+Электронная коммерция
+Рекомендательные системы
+Алгоритмы ранжирования товаров
+Искусственный интеллект
+Поведенческий анализ пользователей
+Увеличение конверсии
+Динамическое ценообразование на основе ML
+Прогнозирование оттока клиентов
+Индивидуальные предложения
+Оптимизация пользовательского пути
+Глубокое обучение
+Сегментация клиентов'''.split('\n')
 
     frame_of_reference = 'Unbiased logical framework' ## 'Common sense'
     input_data = {
@@ -68,5 +104,5 @@ async def main():
     write_json(r, f'temp/{AI_FUN_NAME}.{formatted_model_name}.response.json')
 
 
-# run(calc_method2())
-run(main())
+run(calc_method2())
+# run(main())

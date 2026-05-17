@@ -116,7 +116,7 @@ def is_member_of(leftside_concept, rightside_concept, concept_relations_map, con
     return has_property(leftside_concept,
                         rightside_concept,
                         lambda a, b: is_direct_member_of(a, b, concept_relations_map),
-                        set(concepts))
+                        set(concepts) - {leftside_concept})
 
 def is_same(leftside_concept, rightside_concept, concept_relations_map):
     ## - allow any "sameAs"
@@ -127,14 +127,19 @@ def is_same(leftside_concept, rightside_concept, concept_relations_map):
               "partOf_schema" in concept_relations_map.get(rightside_concept, {}).get(leftside_concept, {}).keys())
 
 
+def calc_member_element_sets(concepts, concept_relations_map):
+    concepts_n = len(concepts)
+    return [[subject_concept_idx
+             for subject_concept_idx in n_range(concepts_n)
+               if set_idx == subject_concept_idx or \
+                 is_same(concepts[subject_concept_idx - 1], concepts[set_idx - 1], concept_relations_map) or \
+                 is_member_of(concepts[subject_concept_idx - 1], concepts[set_idx - 1], concept_relations_map, concepts)]
+            for set_idx in n_range(concepts_n)]
+
+
 def calc_concept_set_covering(concepts, concept_relations_map):
     concepts_n = len(concepts)
-    member_element_sets = [[subject_concept_idx
-                            for subject_concept_idx in n_range(concepts_n)
-                            if set_idx == subject_concept_idx or \
-                            is_same(concepts[subject_concept_idx - 1], concepts[set_idx - 1], concept_relations_map) or \
-                            is_member_of(concepts[subject_concept_idx - 1], concepts[set_idx - 1], concept_relations_map, concepts)]
-                           for set_idx in n_range(concepts_n)]
+    member_element_sets = calc_member_element_sets(concepts, concept_relations_map)
     # print('member_element_sets:\n' + dump_json(member_element_sets)) ## TODO
     set_covering_ids = calc_set_covering(concepts_n, member_element_sets)
     eliminated_ids = [idx for idx in n_range(concepts_n) if not idx in set_covering_ids]
