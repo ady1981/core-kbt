@@ -113,7 +113,7 @@
     - ruleType: hasAttribute
       ruleParameters:
         attribute: wholeClass
-        description: The whole class entities. The same values as in the 'range' of this relation
+        description: The whole class entities. Check that the 'range' field have the same values
         JSON_Schema:
           type: array
           items:

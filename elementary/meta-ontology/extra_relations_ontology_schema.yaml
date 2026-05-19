@@ -1,9 +1,3 @@
-- name: superclassOf_schema
-  extends: relation_schema
-  description: Describes that subject entity is a superclass of entity
-  isTransitive: true
-  isSymmetric: false
-
 - name: structuralPartOf
   extends: partOfSchema
   description: This relation describes a relationship where the parts are essential constituents that make up the whole, and the whole cannot exist or function as intended without these specific parts
@@ -11,3 +5,35 @@
 - name: locatedIn
   extends: partOfSchema
   description: This relation describes a relationship where the part is physically or spatially located within the boundaries of the whole
+
+- name: disjointWith_schema
+  extends: relation_schema
+  description: The disjointWith relation defines that two classes are disjoint, meaning they have no overlapping instances
+  isSymmetric: true
+  isTransitive: true
+
+- name: unionOf_schema
+  extends: relation_schema
+  description: Specifies that the class is equivalent to the union of several other classes
+
+- name: disjointUnionOf_schema
+  extends: unionOf_schema
+  description: Specifies that the class is equivalent to the union of several other classes and these constituent classes are pairwise disjoint
+
+- name: byInstancesEquivalentTo_schema
+  extends: relation_schema
+  description: Describes that instances set of the "domain" is equivalent to instances set of "range"
+  isSymmetric: true
+  isTransitive: true
+
+- name: dependsOn_schema
+  extends: relation_schema
+  description: Describes that the "domain" entity existentially depends on "range" entity in this Perspective (the "domain" exists in this Perspective only when the "range" exists)
+  isSymmetric: false
+  isTransitive: true
+
+- name: samePurposeAs_schema
+  extends: relation_schema
+  description: Describes that the "domain" entity has the same purpose as "range" entity in this Perspective
+  isSymmetric: true
+  isTransitive: true
