@@ -16,7 +16,7 @@
 
 Полезные примеры интеграции core-kbt:
 - интеграция с Obsidian для развития знаний: https://github.com/ady1981/obsidian-templater-core-kbt
-- пример решения универсальной задачи обоснованного выбора лучшего из двух вариантов: см. ИИ-функцию [concept_aspect_comparison](kbt-core%2Fai_function_impl%2Fconcept_aspect_comparison.py) и статьи [concept-comparison-n8n-example.ru.md](docs%2Fconcept-comparison-n8n-example.ru.md) и [concept-comparison-colab-example.ru.md](docs%2Fconcept-comparison-colab-example.ru.md)
+- пример решения универсальной задачи обоснованного выбора лучшего из двух вариантов: см. ИИ-функцию [concept_aspect_comparison](kbt_core%2Fai_function_impl%2Fconcept_aspect_comparison.py) и статьи [concept-comparison-n8n-example.ru.md](docs%2Fconcept-comparison-n8n-example.ru.md) и [concept-comparison-colab-example.ru.md](docs%2Fconcept-comparison-colab-example.ru.md)
 - пример решения универсальной задачи удаления избыточных терминов из заданного списка без потери информации в рамках заданной перспективы: см. ИИ-функцию [concept_set_covering](kbt_core%2Fai_function_impl%2Fconcept_set_covering.py) и статью  [terms-reduction-colab-example.ru.md](docs%2Fterms-reduction-colab-example.ru.md)
 
 ### Краткое введение
