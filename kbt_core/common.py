@@ -408,3 +408,7 @@ def has_transitive_property(a, b, has_direct_property, rest_items: set):
             if has_transitive_property(c, b, has_direct_property, rest_items - {a} - {b} - {c}):
                 return True
     return False
+
+
+def encode_term(term):
+    return f"'{term}'"
