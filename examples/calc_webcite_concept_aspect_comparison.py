@@ -1,0 +1,39 @@
+import json
+import os
+from asyncio import run
+
+from dotenv import load_dotenv
+
+from ai_function import evaluate_function
+from common import dump_json, with_model_input_data, write_json
+
+load_dotenv()
+
+AI_FUN_NAME = 'webcite_concept_aspect_comparison'
+OPENAI_MODEL = os.environ["OPENAI_MODEL"]
+
+
+async def main():
+    observer_context_description = 'Владельцу авто нужно выбрать автомобиль с максимальной дальностью поездки на одной заправке бака бензина'
+    a_concept = 'evolute i-space 4x4'
+    b_concept = 'evolute i-space'
+
+    frame_of_reference = 'Unbiased comparison framework' ## 'Common sense'
+    output_content_language = 'English'
+    extra_information_retrieval_strategy = 'Only_unbiased_authoritative_sources: true'
+    input_data = {
+        'observer_context_description': observer_context_description,
+        'frame_of_reference': frame_of_reference,
+        'a_concept': a_concept,
+        'b_concept': b_concept,
+        'output_content_language': output_content_language,
+        'extra_information_retrieval_strategy': extra_information_retrieval_strategy
+    }
+    r = await evaluate_function(AI_FUN_NAME, with_model_input_data(input_data, OPENAI_MODEL))
+    print('=== Response:\n' + dump_json(r))
+    formatted_model_name = OPENAI_MODEL.strip().replace('/', '-').replace('.', '-')
+    # write_yaml(json_response, f'temp/{AI_FUN_NAME}.{formatted_model_name}.response.yaml')
+    write_json(r, f'temp/{AI_FUN_NAME}.{formatted_model_name}.response.json')
+
+
+run(main())

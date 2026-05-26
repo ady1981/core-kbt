@@ -1,31 +1,56 @@
-import os
-
+from asyncio import run
 from dotenv import load_dotenv
 
-from common import encode_term, calc_md5, write_yaml, dump_json
-from webcite_helper import verify
+from common import encode_term, calc_md5, write_yaml, dump_json, async_map, log_str
+from knowledge_helper import calc_perspective
+from process import execute_process
 
 load_dotenv()
 
 
-def main():
-    webcite_api_key = os.environ['WEBCITE_API_KEY']
-    aspect = 'Fuel efficiency'
-    aspect_feature = 'Fuel consumption'
-    superordinate_concept = 'evolute i-space'
-    a_concept = encode_term('evolute i-space 4x4')
-    b_concept = encode_term('evolute i-space')
-    perspective = f'''
+async def evaluate_via_process(process_type, input_data):
+    process_input = input_data
+    process_input['process_type'] = process_type
+    process_inputs = [process_input]
+    process_results = await async_map(execute_process, process_inputs)
+    try:
+        return process_results[0]['state']['response']
+    except KeyError as e:
+        log_str(f'Error: process_results:\n' + dump_json(process_results))
+        raise e
+
+'''
+# Claim context
+superordinate_concept: evolute i-space
+aspect: Объем топливного бака
+aspect_feature: Объем бака
+## Perspective details
 ## Frame of reference
 Unbiased objective comparison
 ## Observer strategy
-Based on car characteristics
+Стратегия наблюдателя-владельца автомобиля
 ## Point of view
-Customer selecting car with maximum range per tank
-'''
-    result = verify(webcite_api_key, a_concept, b_concept, superordinate_concept, aspect, aspect_feature, perspective)
-    print('=== Response:\n' + dump_json(result))
-    hash = calc_md5(result['other_notes'])
-    write_yaml(result, f'temp/webcite3.{hash}.response.yaml')
+Точка зрения владельца, выбирающего автомобиль
 
-main()
+
+# Claim
+"evolute i-space 4x4" is strictly better (not equal) than "evolute i-space" in this aspect_feature  
+
+'''
+
+
+async def main():
+    input_data = {
+        'aspect': 'Fuel efficiency',
+        'aspect_feature': 'Fuel consumption',
+        'superordinate_concept': 'evolute i-space',
+        'a_concept': encode_term('evolute i-space 4x4'),
+        'b_concept': encode_term('evolute i-space'),
+        # 'perspective': calc_perspective('Unbiased objective comparison', 'Based on car characteristics', 'Customer selecting car with maximum range per tank', 3)
+    }
+    response = await evaluate_via_process('webcite_better_verify', input_data)
+    print('=== Response:\n' + dump_json(response))
+    hash = calc_md5(response['other_notes'])
+    write_yaml(response, f'temp/webcite3.{hash}.response.yaml')
+
+run(main())
