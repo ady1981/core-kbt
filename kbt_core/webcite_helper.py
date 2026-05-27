@@ -1,6 +1,6 @@
 import requests
 
-from common import log_str, dump_json
+from kbt_core.common import log_str, dump_json
 
 
 def better_verify(webcite_api_key, a_concept, b_concept, superordinate_concept, aspect, aspect_feature, perspective):
