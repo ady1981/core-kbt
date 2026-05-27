@@ -44,7 +44,7 @@ superordinate_concept: {superordinate_concept}
         else:
             log_str('cannot verify: response=' + dump_json(json_response))
             result = {
-                'result': 'error',
+                'result': 'cannot_verify',
                 'raw': json_response
             }
             return result
