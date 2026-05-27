@@ -50,8 +50,8 @@ async def calc_comparison(a_concept, b_concept, superordinate_concept, aspect, a
     if response['result'] == 'supported':
         return 1
     else:
-        if response['result'] == 'error': ## then the feature values are probabely uncomparable
-            return 0
+        if response['result'] == 'error':
+            raise ValueError('cannot-verify')
         input_data2 = {
             'a_concept': encode_term(b_concept),
             'b_concept': encode_term(a_concept),
@@ -63,6 +63,8 @@ async def calc_comparison(a_concept, b_concept, superordinate_concept, aspect, a
         if response2['result'] == 'supported':
             return -1
         else:
+            if response['result'] == 'error':
+                raise ValueError('cannot-verify')
             return 0
 
 
