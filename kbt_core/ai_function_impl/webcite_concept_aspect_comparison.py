@@ -71,9 +71,11 @@ async def calc_comparison(a_concept, b_concept, superordinate_concept, aspect, a
 async def with_feature_comparison(aspect_dict, a_concept, b_concept, superordinate_concept, observer_strategy, point_of_view):
     aspect_name = aspect_dict['aspect_name']
     aspect_features = index_by(lambda c: c["feature_name"], aspect_dict['aspect_features'])
-    for aspect_feature in aspect_features:
-        aspect_features[aspect_feature]['comparison'] = await calc_comparison(a_concept, b_concept, superordinate_concept, aspect_name, aspect_feature, observer_strategy, point_of_view)
-    return with_key(aspect_dict, "aspect_features", list(aspect_features.values()))
+    for aspect_feature in aspect_features.keys():
+        comparison = await calc_comparison(a_concept, b_concept, superordinate_concept, aspect_name, aspect_feature, observer_strategy, point_of_view)
+        log_str(f'{aspect_name} / {aspect_feature}: comparison={comparison}')
+        aspect_features[aspect_feature]['comparison'] = comparison
+    return with_key(aspect_dict, 'aspect_features', list(aspect_features.values()))
 
 
 def calc_aspect_total_score(perspective_aspects):
