@@ -3,7 +3,7 @@ import os
 
 from common import log_str, calc_md5, calc_simple_md5
 from webcite_helper import better_verify
-from .common import load_process_input
+from kbt_core.process_impl.common import load_process_input
 
 PROCESS_TYPE = 'webcite_verify'
 PROCESS_VERSION = 1
