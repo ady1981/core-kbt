@@ -19,25 +19,6 @@ async def evaluate_via_process(process_type, input_data):
         log_str(f'Error: process_results:\n' + dump_json(process_results))
         raise e
 
-'''
-# Claim context
-superordinate_concept: evolute i-space
-aspect: Объем топливного бака
-aspect_feature: Объем бака
-## Perspective details
-## Frame of reference
-Unbiased objective comparison
-## Observer strategy
-Стратегия наблюдателя-владельца автомобиля
-## Point of view
-Точка зрения владельца, выбирающего автомобиль
-
-
-# Claim
-"evolute i-space 4x4" is strictly better (not equal) than "evolute i-space" in this aspect_feature  
-
-'''
-
 
 async def main():
     input_data = {
