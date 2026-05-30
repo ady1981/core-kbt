@@ -3,7 +3,7 @@ import importlib
 import os
 import traceback
 
-from .common import write_json, log_error, read_json, list_files, log_str
+from kbt_core.common import write_json, log_error, read_json, list_files, log_str
 
 STATUSES = ['initial', 'running', 'error', 'terminated']
 

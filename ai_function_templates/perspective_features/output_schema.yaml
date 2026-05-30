@@ -2,6 +2,8 @@ type: object
 properties:
   frame_of_reference_name:
     type: string
+  basis_of_consideration:
+    type: string
   perspective_observer_strategy_name:
     type: string
   point_of_view_name:

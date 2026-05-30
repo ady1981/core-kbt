@@ -1,6 +1,6 @@
 import json
 
-from .common import load_process_input
+from kbt_core.process_impl.common import load_process_input
 
 PROCESS_TYPE = 'test'
 PROCESS_VERSION = 1

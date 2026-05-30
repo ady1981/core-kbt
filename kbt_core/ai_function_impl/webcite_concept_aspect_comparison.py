@@ -1,0 +1,152 @@
+from functools import reduce
+
+from kbt_core.common import with_model_input_data, index_by, with_key, log_str, async_map, dump_json, get_float, \
+    encode_term
+from kbt_core.normalized_values import with_normalized_value
+from kbt_core.process import execute_process
+
+FRAME_OF_REFERENCE = 'Unbiased objective comparison'
+
+
+async def evaluate_via_process(process_type, input_data):
+    process_input = input_data
+    process_input['process_type'] = process_type
+    process_inputs = [process_input]
+    process_results = await async_map(execute_process, process_inputs)
+    try:
+        return process_results[0]['state']['response']
+    except KeyError as e:
+        log_str(f"Error: process_results:\n" + dump_json(process_results))
+        raise e
+
+
+async def calc_perspective_aspects(model, concept, observer_context_description, frame_of_reference, output_content_language, extra_information_retrieval_strategy):
+    information_retrieval_strategy = f'# Information retrieval strategy\n{extra_information_retrieval_strategy}'
+    perspective_features_resp = await evaluate_via_process('perspective_features_af', with_model_input_data(
+        with_extra_output_specification({
+            'concept': concept,
+            'observer_context_description': observer_context_description,
+            'frame_of_reference': frame_of_reference,
+            '_information_retrieval_strategy': information_retrieval_strategy
+        }, output_content_language), model))
+    if perspective_features_resp.get('other_notes'):
+        log_str(f'other_notes: {perspective_features_resp.get("other_notes", "")}')
+    basis_of_consideration = perspective_features_resp['basis_of_consideration']
+    perspective_observer_strategy = perspective_features_resp['perspective_observer_strategy_name']
+    point_of_view = perspective_features_resp['point_of_view_name']
+    perspective_aspects = perspective_features_resp['perspective_aspects']
+    return (basis_of_consideration, perspective_observer_strategy, point_of_view, perspective_aspects)
+
+
+async def calc_comparison(a_concept, b_concept, superordinate_concept, aspect, aspect_feature, observer_strategy, point_of_view): ## int (1, -1, 0)
+    input_data = {
+        'a_concept': encode_term(a_concept),
+        'b_concept': encode_term(b_concept),
+        'aspect': aspect,
+        'aspect_feature': aspect_feature,
+        'superordinate_concept': superordinate_concept,
+    }
+    response = await evaluate_via_process('webcite_better_verify', input_data)
+    if response['result'] == 'supported':
+        return 1
+    else:
+        if response['result'] == 'cannot_verify':
+            return 0
+        if response['result'] == 'error':
+            raise ValueError('unknown_error')
+        input_data2 = {
+            'a_concept': encode_term(b_concept),
+            'b_concept': encode_term(a_concept),
+            'aspect': aspect,
+            'aspect_feature': aspect_feature,
+            'superordinate_concept': superordinate_concept,
+        }
+        response2 = await evaluate_via_process('webcite_better_verify', input_data2)
+        if response2['result'] == 'supported':
+            return -1
+        else:
+            if response['result'] == 'cannot_verify':
+                return 0
+            if response['result'] == 'error':
+                raise ValueError('unknown_error')
+            return 0
+
+
+async def with_feature_comparison(aspect_dict, a_concept, b_concept, superordinate_concept, observer_strategy, point_of_view):
+    aspect_name = aspect_dict['aspect_name']
+    aspect_features = index_by(lambda c: c["feature_name"], aspect_dict['aspect_features'])
+    for aspect_feature in aspect_features.keys():
+        comparison = await calc_comparison(a_concept, b_concept, superordinate_concept, aspect_name, aspect_feature, observer_strategy, point_of_view)
+        log_str(f'{aspect_name} / {aspect_feature}: comparison={comparison}')
+        aspect_features[aspect_feature]['comparison'] = comparison
+    return with_key(aspect_dict, 'aspect_features', list(aspect_features.values()))
+
+
+def calc_aspect_total_score(perspective_aspects):
+    return reduce(lambda acc, c: acc + get_float(c, 'aspect_importance_score_to_other_aspects', 0), perspective_aspects, 0)
+
+
+def with_aspect_comparison(aspect, aspect_total_score):
+    aspect_features = aspect['aspect_features']
+    aspect_w = get_float(aspect, 'aspect_importance_score_to_other_aspects', 1.0) / aspect_total_score if aspect_total_score > 0 else 1.0
+    aspect['normalized_aspect_score'] = aspect_w
+    (_, aspect_features2) = with_normalized_value(aspect_features, 'comparison', 'normalized_', 'feature_importance_score_to_other_features', aspect_w)
+    aspect['normalized_comparison'] = sum([c['normalized_comparison'] for c in aspect_features2])
+    aspect['aspect_features'] = aspect_features2
+    return aspect
+
+
+def with_total_comparison(perspective_aspects):
+    aspect_total_score = calc_aspect_total_score(perspective_aspects)
+    perspective_aspects2 = [with_aspect_comparison(c, aspect_total_score) for c in perspective_aspects]
+    comparison_total = sum([c['normalized_comparison'] for c in perspective_aspects2])
+    return (comparison_total, perspective_aspects2)
+
+
+async def calc_superordinate_concept(model, a_concept, b_concept, observer_context_description):
+    concepts = f'- {a_concept}\n- {b_concept}'
+    context_knowledge_specification = f'### Context description\n{observer_context_description}'
+    superordinate_concept_identification_resp = await evaluate_via_process('superordinate_concept_identification_af', with_model_input_data(
+        {
+            'concepts': concepts,
+            'context_knowledge_specification': context_knowledge_specification
+        }, model))
+    if superordinate_concept_identification_resp.get('other_notes'):
+        log_str(f'other_notes: {superordinate_concept_identification_resp.get("other_notes")}')
+    return superordinate_concept_identification_resp['least_common_general_superordinate_concept']
+
+
+def with_extra_output_specification(input_data: dict, output_content_language: str):
+    input_data['_extra_output_specification'] = f'# Extra output specification\nOutput_content_language: {output_content_language}'
+    return input_data
+
+
+async def evaluate(input_data):
+    meta = input_data.get('meta', {})
+    model = meta.get('model', None)
+    (observer_context_description, a_concept, b_concept, frame_of_reference, output_content_language, extra_information_retrieval_strategy) = (
+        input_data['observer_context_description'],
+        input_data['a_concept'],
+        input_data['b_concept'],
+        input_data['frame_of_reference'],
+        input_data['output_content_language'],
+        input_data['extra_information_retrieval_strategy']
+    )
+    superordinate_concept = await calc_superordinate_concept(model, a_concept, b_concept, observer_context_description)
+    (basis_of_consideration, observer_strategy, point_of_view, perspective_aspects) = await calc_perspective_aspects(model,
+                                                                                                         superordinate_concept,
+                                                                                                         observer_context_description,
+                                                                                                         frame_of_reference,
+                                                                                                         output_content_language,
+                                                                                                         extra_information_retrieval_strategy)
+    perspective_aspects2 = [await with_feature_comparison(c, a_concept, b_concept, superordinate_concept, observer_strategy, point_of_view)
+                            for c in perspective_aspects]
+    (comparison_total, perspective_aspects3) = with_total_comparison(perspective_aspects2)
+    return {
+        'superordinate_concept': superordinate_concept,
+        'perspective_observer_strategy': observer_strategy,
+        'point_of_view': point_of_view,
+        'comparison_total': comparison_total,
+        'comparison_winner': a_concept if comparison_total > 0 else (b_concept if comparison_total < 0 else None),
+        'perspective_aspects': list(perspective_aspects3)
+    }

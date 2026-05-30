@@ -118,6 +118,10 @@ def calc_md5(value: str) -> str:
     return hashlib.md5(value.encode()).hexdigest()
 
 
+def calc_simple_md5(str_items):
+    return calc_md5('/'.join(str_items))
+
+
 def list_files(directory, wildcard):
     """Lists files in a directory matching a wildcard pattern using glob.
 
@@ -408,3 +412,7 @@ def has_transitive_property(a, b, has_direct_property, rest_items: set):
             if has_transitive_property(c, b, has_direct_property, rest_items - {a} - {b} - {c}):
                 return True
     return False
+
+
+def encode_term(term):
+    return f'"{term}"'
