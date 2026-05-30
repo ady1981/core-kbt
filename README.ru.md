@@ -53,7 +53,7 @@
 - универсальное представление LLM-промпта в структурированном виде показывает свою эффективность при итеративном улучшении качества ответов и ускорении скорости разработки новых эффективных промптов
 - настроена эффективная интеграция с Obsidian и реализованы универсальные ИИ-функций для развития знаний
 - сделан пример решения задачи обоснованного выбора лучшего из двух вариантов (см. ИИ-функцию concept_aspect_comparison)
-- сделаны примеры интеграции с n8n ([1](docs%2Fconcept-comparison-n8n-example.ru.md)) и colab ([1](docs%2Fconcept-comparison-colab-example.ru.md), [2](docs%2Fterms-reduction-colab-example.ru.md))
+- сделаны примеры интеграции с n8n ([1](docs%2Fconcept-comparison-n8n-example.ru.md)) и colab ([1](docs%2Fconcept-comparison-colab-example.ru.md), [2](docs%2Fterms-reduction-colab-example.ru.md), [3](examples/colab/with-support-concept-aspect-comparison-demo3.ipynb))
 
 ### Планы на будущее
 
