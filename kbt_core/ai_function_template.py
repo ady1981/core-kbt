@@ -8,11 +8,11 @@ from typing import Any, Dict
 import openai
 from dotenv import load_dotenv
 from mcp import ClientSession
-from mcp.client.sse import sse_client
+from mcp.client.streamable_http import streamablehttp_client
 from openai import OpenAI, AsyncOpenAI
 
 from kbt_core.common import deep_dict_compare, clear_code_markdown, read_string, render_template, read_yaml, log_str, \
-    dump_json, read_json, calc_md5
+    dump_json, read_json, calc_md5, create_trimmed_dict
 
 load_dotenv()
 
@@ -95,12 +95,10 @@ def convert_mcp_to_openai_tool(mcp_tool: Any) -> Dict[str, Any]:
 
 
 async def with_mcp_chat_completion(instruction: str, response_schema: str, mcp_server_name: str, tools_model=OPENAI_TOOLS_MODEL, **chat_completions_args): ## TODO: final_model
-    mcp_server_sse_url = MCP_SERVERS[mcp_server_name]['mcp_server_sse_url']
+    mcp_server_url = MCP_SERVERS[mcp_server_name]['mcp_server_url']
     mcp_headers = MCP_SERVERS[mcp_server_name].get('mcp_headers', {})
     openai_client = AsyncOpenAI()
-    # 1. Establish connection with the remote SSE MCP server
-    log_str(f"Connecting to remote MCP server at {mcp_server_sse_url}")
-    async with sse_client(url=mcp_server_sse_url, headers=mcp_headers) as (read_stream, write_stream):
+    async with streamablehttp_client(url=mcp_server_url, headers=mcp_headers) as (read_stream, write_stream, _):
         async with ClientSession(read_stream, write_stream) as mcp_session:
             # Initialize the session handshake
             await mcp_session.initialize()
@@ -108,37 +106,55 @@ async def with_mcp_chat_completion(instruction: str, response_schema: str, mcp_s
             # 2. Fetch available web search tools from the remote server
             mcp_tools_response = await mcp_session.list_tools()
             available_mcp_tools = mcp_tools_response.tools
-
-            # Map tools to OpenAI schema definitions
-            openai_tools = [convert_mcp_to_openai_tool(t) for t in available_mcp_tools]
-            tool_names = [t["function"]["name"] for t in openai_tools]
-            mcp_tool_map = {t.name: t for t in available_mcp_tools}
+            allowed_tool_names = MCP_SERVERS[mcp_server_name].get('tool_names', [])
+            forbidden_tool_names = MCP_SERVERS[mcp_server_name].get('forbidden_tool_names', [])
+            filtered_mcp_tools = None
             prompt = calc_prompt(instruction, response_schema)
             prompt_hash = calc_md5(prompt)
             messages = [{"role": "user", "content": prompt}]
-
             is_final_llm_request = False
             is_messages_limit_reached = False
             final_response_content = None
             while True:
                 try:
-                    log_str(f"Sending request to LLM: model={tools_model}, tool_names={tool_names}, len(messages)={len(messages)}")
+                    filtered_mcp_tools = available_mcp_tools
+                    if allowed_tool_names:
+                        filtered_mcp_tools = [t for t in filtered_mcp_tools if t.name in allowed_tool_names]
+                    filtered_mcp_tools = [t for t in filtered_mcp_tools if not t.name in forbidden_tool_names]
+                    openai_tools = [convert_mcp_to_openai_tool(t) for t in filtered_mcp_tools]
+                    openai_tool_names = [t["function"]["name"] for t in openai_tools]
+                    mcp_tool_map = {t.name: t for t in available_mcp_tools}
                     turn_idx = len(messages)
                     if len(messages) >= MESSAGES_LIMIT - 1:
                         is_messages_limit_reached = True
                         is_final_llm_request = True
-                    llm_response = await openai_client.chat.completions.create(
-                        **chat_completions_args,
-                        model=tools_model,
-                        messages=messages,
-                        tools=openai_tools,
-                        tool_choice="auto",
-                        response_format={"type": "json_object"}
-                    )
+                    if len(filtered_mcp_tools) == 0:
+                        is_final_llm_request = True  ## TODO: use another multi-hops tool calls condition?
+                    llm_response = None
+                    if is_final_llm_request:
+                        log_str(f"--- Sending final request to LLM: model={tools_model}, len(messages)={len(messages)}")
+                        llm_response = await openai_client.chat.completions.create(
+                            **chat_completions_args,
+                            model=tools_model,
+                            messages=messages,
+                            response_format={"type": "json_object"}
+                        )
+                    else:
+                        log_str(f"--- Sending request to LLM: model={tools_model}, tool_names={openai_tool_names}, len(messages)={len(messages)}")
+                        llm_response = await openai_client.chat.completions.create(
+                            **chat_completions_args,
+                            model=tools_model,
+                            messages=messages,
+                            tools=openai_tools,
+                            tool_choice="auto",
+                            response_format={"type": "json_object"}
+                        )
                     response_message = llm_response.choices[0].message
                     messages.append(response_message)
                     if is_final_llm_request:
                         final_response_content = response_message.content
+                        if response_message.tool_calls:
+                            log_str('warn: the final llm request return tool_calls instead of content')
                         break
                     else:
                         # Handle Tool Calls if the LLM decides to perform a web search
@@ -146,10 +162,14 @@ async def with_mcp_chat_completion(instruction: str, response_schema: str, mcp_s
                             tools_added = 0
                             for tool_call_idx, tool_call in enumerate(response_message.tool_calls):
                                 tool_name = tool_call.function.name
+                                if tool_name not in openai_tool_names:
+                                    log_str(f'error: invalid-tool, tool_name="{tool_name}", allowed_tool_names="{allowed_tool_names}"')
+                                    raise RuntimeError('invalid-tool')
+                                forbidden_tool_names.append(tool_name)
                                 # Safely parse JSON arguments string into a dictionary
                                 tool_args = json.loads(tool_call.function.arguments)
 
-                                log_str(f"LLM requested tool execution: tool_name='{tool_name}' with arguments {tool_args}")
+                                log_str(f"--- LLM requested tool execution: tool_name='{tool_name}' with arguments {tool_args}")
 
                                 if tool_name in mcp_tool_map:
                                     ###
@@ -182,7 +202,7 @@ async def with_mcp_chat_completion(instruction: str, response_schema: str, mcp_s
                                         'request':  tool_args,
                                         'response_text': content_text
                                     }
-                                    log_str('Tool result:\n' + dump_json(tool_result)) ## TODO: write to document storage cache
+                                    log_str('Tool result:\n' + dump_json(create_trimmed_dict(tool_result, ['response_text'], '...'))) ## TODO: write to document storage cache
 
                                     # Feed the tool execution results back to the LLM context
                                     messages.append({
@@ -202,22 +222,22 @@ async def with_mcp_chat_completion(instruction: str, response_schema: str, mcp_s
                         ##
                 except openai.BadRequestError as e:
                     if e.code == "context_length_exceeded":
-                        log_str(f"Context size limit hit: {e.message} -> try ")
+                        log_str(f"--- Context size limit hit: {e.message} -> try to drop last")
                         tools_added -= 1
                         messages.pop()
                         if tools_added < 0:
-                            log_str(f"Out of context: {e.message}")
-                            raise RuntimeError('context_length_exceeded')
+                            log_str(f"Error: context-length-exceeded, out of context: {e.message}")
+                            raise RuntimeError('context-length-exceeded')
                         is_final_llm_request = True
                         continue
                     else:
-                        log_str(f"Other Bad Request error: {e}")
+                        log_str(f"Error: other Bad Request error: {e}")
                         raise e
                 except openai.OpenAIError as e:
                     # Fallback catch for other OpenAI API anomalies (RateLimitError, AuthenticationError)
-                    log_str(f"OpenAI error occurred: {e}")
+                    log_str(f"Error: OpenAI error occurred: {e}")
                     raise e
-            log_str(f"LLM final response received")
+            log_str(f"--- LLM final response received")
             return final_response_content
 
 
@@ -237,7 +257,7 @@ def evaluate(func_name, input_data):
         return response['json']
     else:
         log_str(f'--- invalid response:\n' + dump_json(response))
-        raise RuntimeError('invalid response')
+        raise RuntimeError('invalid-response')
 
 
 async def async_evaluate2(func_name, input_data):
@@ -284,4 +304,4 @@ async def async_evaluate(func_name, input_data):
         return response['json']
     else:
         log_str(f'--- invalid response:\n' + dump_json(response))
-        raise RuntimeError('invalid response')
+        raise RuntimeError('invalid-response')

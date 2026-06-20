@@ -1,8 +1,12 @@
 import json
 import os
+import sys
 from asyncio import run
+from pathlib import Path
 
 from dotenv import load_dotenv
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / 'kbt_core'))
 
 import ai_function_template
 from ai_function import evaluate_function
@@ -17,7 +21,7 @@ OPENAI_MODEL = os.environ["OPENAI_MODEL"]
 
 
 async def main():
-    question = 'The current weather in Helsinki. Now is 20.06.2026 18:47 (MSK)'
+    question = 'What is weather in Moscow today?'
     input_data = {
         'meta': {'mcp': 'firecrawl'},
         'question': question,

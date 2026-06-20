@@ -17,6 +17,8 @@ from ruamel.yaml import YAML
 
 
 KBT_ENSURE_ASCII = False
+MAX_LOGGING_LEN = int(os.getenv('MAX_LOGGING_LEN', '512'))
+
 
 def read_string(filepath):
     with open(filepath, 'r') as file:
@@ -416,3 +418,10 @@ def has_transitive_property(a, b, has_direct_property, rest_items: set):
 
 def encode_term(term):
     return f'"{term}"'
+
+
+def create_trimmed_dict(adict, ks, trimmed_suffix=''):
+    adict2 = adict.copy()
+    for k in ks:
+        adict2[k] = adict2[k][0:MAX_LOGGING_LEN] + trimmed_suffix
+    return adict2
