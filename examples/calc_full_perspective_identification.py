@@ -1,7 +1,7 @@
 import json
 import os
 
-from ai_function_template import evaluate2
+from ai_function_template import simple_chat_completion
 from common import read_string, read_yaml, render_template, write_json
 
 AI_FUN_NAME = 'full_perspective_identification'
@@ -28,7 +28,7 @@ def main():
     instruction = calc_instruction()
     print(f'instruction:\n{instruction}')
     response_schema = read_yaml(f'ai_function_templates/{AI_FUN_NAME}/output_schema.yaml')
-    response = evaluate2(instruction, response_schema, model=model)
+    response = simple_chat_completion(instruction, response_schema, model=model)
     json_response = response['json']
     print('=== Response:\n' + json.dumps(json_response, indent=2, ensure_ascii=False))
     # write_yaml(json_response, f'temp/{AI_FUN_NAME}.{formatted_model_name}.response.yaml')

@@ -1,12 +1,17 @@
 import os
 import asyncio
+import sys
 from typing import Any, Dict, List
+
+import openai
 from openai import AsyncOpenAI
 
 from mcp import ClientSession
 from mcp.client.sse import sse_client
 from dotenv import load_dotenv
 import json
+
+from common import log_str
 
 load_dotenv()
 
@@ -24,6 +29,7 @@ MCP_AUTH_TOKEN = ""
 
 # Initialize the OpenAI-compatible client
 openai_client = AsyncOpenAI() ##base_url=OPENAI_BASE_URL, api_key=OPENAI_API_KEY
+
 
 def get_mcp_headers() -> Dict[str, str]:
     """Generates request headers, adding optional authorization if available."""
@@ -45,12 +51,10 @@ def convert_mcp_to_openai_tool(mcp_tool: Any) -> Dict[str, Any]:
     }
 
 
-async def workflow(user_prompt: str):
+async def with_mcp_chat_completion(user_prompt: str, mcp_server_sse_url: str, mcp_headers: dict):
     # 1. Establish connection with the remote SSE MCP server
-    headers = get_mcp_headers()
-
-    print(f"Connecting to remote MCP server at {MCP_SERVER_SSE_URL}...")
-    async with sse_client(url=MCP_SERVER_SSE_URL, headers=headers) as (read_stream, write_stream):
+    log_str(f"Connecting to remote MCP server at {mcp_server_sse_url}...")
+    async with sse_client(url=mcp_server_sse_url, headers=mcp_headers) as (read_stream, write_stream):
         async with ClientSession(read_stream, write_stream) as mcp_session:
             # Initialize the session handshake
             await mcp_session.initialize()
@@ -70,7 +74,7 @@ async def workflow(user_prompt: str):
             final_response_content = None
             while True:
                 try:
-                    print(f"Sending request to LLM: {OPENAI_MODEL}, tool_names={tool_names}, len(messages)={len(messages)}")
+                    log_str(f"Sending request to LLM: {OPENAI_MODEL}, tool_names={tool_names}, len(messages)={len(messages)}")
                     llm_response = await openai_client.chat.completions.create(
                         model=OPENAI_MODEL,
                         messages=messages,
@@ -91,7 +95,7 @@ async def workflow(user_prompt: str):
                                 # Safely parse JSON arguments string into a dictionary
                                 tool_args = json.loads(tool_call.function.arguments)
 
-                                print(f"LLM requested tool execution: tool_name='{tool_name}' with arguments {tool_args}")
+                                log_str(f"LLM requested tool execution: tool_name='{tool_name}' with arguments {tool_args}")
 
                                 if tool_name in mcp_tool_map:
                                     # Call the tool remotely via the MCP session connection
@@ -111,7 +115,7 @@ async def workflow(user_prompt: str):
                                     })
                                     tools_added += 1
                                 else:
-                                    print(f"Error: Tool {tool_name} requested by LLM was not found on MCP server.")
+                                    log_str(f"Error: Tool {tool_name} requested by LLM was not found on MCP server.")
                                     raise RuntimeError('not-found-tool')
                         else:
                             # Fallback if no web search was deemed necessary by the LLM
@@ -120,27 +124,28 @@ async def workflow(user_prompt: str):
                         ##
                 except openai.BadRequestError as e:
                     if e.code == "context_length_exceeded":
-                        print(f"Context size limit hit: {e.message} -> try ")
+                        log_str(f"Context size limit hit: {e.message} -> try ")
                         tools_added -= 1
                         messages.pop()
                         if tools_added < 0:
-                            print(f"Out of context: {e.message}")
+                            log_str(f"Out of context: {e.message}")
                             raise RuntimeError('out-of-context')
                         is_final_llm_request = True
                         continue
                     else:
-                        print(f"Other Bad Request error: {e}")
+                        log_str(f"Other Bad Request error: {e}")
                         raise e
                 except openai.OpenAIError as e:
                     # Fallback catch for other OpenAI API anomalies (RateLimitError, AuthenticationError)
-                    print(f"OpenAI error occurred: {e}")
+                    log_str(f"OpenAI error occurred: {e}")
                     raise e
-            print(f"LLM final response:\n" + final_response_content)
+            log_str(f"LLM final response:\n" + final_response_content)
 
 
 if __name__ == "__main__":
     # Test query requiring recent or specific web information
     # query = sys.argv[1]
+    query = 'What is weather is Moscow now?'
     # query = 'What is best agentic web search in 2026?'
     # query = 'In a context of Kubernetes. How to collect kubernetes events via vector utility?'
 #     query = '''Aspect: Долгосрочная поддерживаемость и стабильность
@@ -151,4 +156,4 @@ if __name__ == "__main__":
 # Possible answers: 1, 0, undefined
 # Answer only highly likelihood final answer and nothing else. Search on the Internet before final answer if you are unsure.
 # '''
-    asyncio.run(workflow(query))
+    asyncio.run(with_mcp_chat_completion(query, MCP_SERVER_SSE_URL, get_mcp_headers()))

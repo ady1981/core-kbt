@@ -1,5 +1,5 @@
 from kbt_core.process_impl.common import load_process_input, calc_model, MAX_LOGGING_LEN
-from kbt_core.ai_function_template import evaluate2
+from kbt_core.ai_function_template import simple_chat_completion
 from kbt_core.common import read_string, render_template, calc_md5, log_str, read_yaml, dump_json
 
 PROCESS_TYPE = 'full_perspective_identification_af'
@@ -29,7 +29,7 @@ async def execute(input_id):
     model = calc_model(process_input)
     log_str(f'--- instruction meta: {dump_json({"meta": {"model": model}})}')
     log_str(f'--- instruction:\n{instruction[0:MAX_LOGGING_LEN] + " ..."}\n')
-    response = evaluate2(instruction, response_schema, model=model)
+    response = simple_chat_completion(instruction, response_schema, model=model)
     json_response = response['json']
     log_str(f'end: input_id={input_id}')
     return {'response': json_response}

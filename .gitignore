@@ -4,3 +4,5 @@ temp/
 __pycache__/
 .vscode
 node_modules/
+mcp.json
+opencode.json

@@ -52,7 +52,7 @@ async def execute_function(function_name):
         if ai_func_type == PY_IMPL_FUN_TYPE:
             result = await ai_function.evaluate_function(function_name, input_data)
         elif ai_func_type == J2_FUN_TYPE:
-            result = ai_function_template.evaluate(function_name, input_data)
+            result = await ai_function_template.async_evaluate(function_name, input_data)
         else:
             result = None
         if result is not None:
