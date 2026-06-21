@@ -2,7 +2,7 @@ import json
 import os
 import sys
 
-from ai_function_template import evaluate2
+from ai_function_template import simple_chat_completion
 from common import read_string, read_yaml, render_template, write_json
 
 AI_FUN_NAME = 'list_best_tasks_for_llm_effectivess'
@@ -26,7 +26,7 @@ def main():
         instruction = calc_instruction()
         print(f'Instruction:\n{instruction}')
         response_schema = read_yaml(f'ai_function_templates/{AI_FUN_NAME}/output_schema.yaml')
-        response = evaluate2(instruction, response_schema, model=model)['json']
+        response = simple_chat_completion(instruction, response_schema, model=model)['json']
         print('Response:\n' + json.dumps(response, indent=2))
         write_json(response, f'temp/{AI_FUN_NAME}.{formatted_model_name}.response.json')
 

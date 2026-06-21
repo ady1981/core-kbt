@@ -1,6 +1,6 @@
 import json
 
-from kbt_core.ai_function_template import evaluate2
+from kbt_core.ai_function_template import simple_chat_completion
 from kbt_core.common import read_string, render_template, calc_md5, log_str, read_yaml
 from kbt_core.process_impl.common import load_process_input, calc_model
 
@@ -27,7 +27,7 @@ async def execute(input_id):
     log_str(f'start: input_id={input_id}')
     log_str('process:\n' + json.dumps(process_input))
     response_schema = read_yaml(f'ai_function_templates/{AI_FUN_NAME}/output_schema.yaml')
-    response = evaluate2(calc_instruction(process_input), response_schema, model=calc_model(process_input))
+    response = simple_chat_completion(calc_instruction(process_input), response_schema, model=calc_model(process_input))
     json_response = response['json']
     log_str(f'end: input_id={input_id}')
     return {'response': json_response}

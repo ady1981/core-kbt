@@ -3,7 +3,7 @@ import sys
 from asyncio import run
 
 from ai_function import evaluate_function
-from ai_function_template import evaluate2
+from ai_function_template import simple_chat_completion
 from common import read_string, read_yaml, render_template, write_json, log_str
 from json_schema_extension import calc_prompt_target_list_json_schema
 
@@ -24,7 +24,7 @@ def evaluate_aim_ai_function(model):
     instruction = render_template(template_string, data)
     log_str(f'Instruction:\n{instruction}')
     response_schema = read_yaml(f'ai_function_templates/{AIM_AI_FUN_NAME}/output_schema.yaml')
-    response = evaluate2(instruction, response_schema, model=model)['json']
+    response = simple_chat_completion(instruction, response_schema, model=model)['json']
     write_json(response, f'temp/{AIM_AI_FUN_NAME}.{formatted_model_name}.response.json')
     return response
 
@@ -48,7 +48,7 @@ def split_and_merge_items(model, updated_array):
     formatted_model_name = model.strip().replace("/", "-").replace(".", "-")
     log_str(f'instruction:\n{instruction}')
     response_schema = read_yaml(f'ai_function_templates/{ai_fun_name}/output_schema.yaml')
-    response = evaluate2(instruction, response_schema, model=model)
+    response = simple_chat_completion(instruction, response_schema, model=model)
     json_response = response['json']
     log_str('=== Response:\n' + json.dumps(json_response, indent=2))
     write_json(json_response, f'temp/{ai_fun_name}.{formatted_model_name}.response.json')
