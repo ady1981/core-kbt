@@ -63,13 +63,6 @@
 - сделан пример решения задачи обоснованного выбора лучшего из двух вариантов (см. ИИ-функцию concept_aspect_comparison)
 - сделаны примеры интеграции с n8n ([1](docs%2Fconcept-comparison-n8n-example.ru.md)), Оbsidian ([1](https://github.com/ady1981/obsidian-templater-core-kbt)) и Colab ([1](docs%2Fconcept-comparison-colab-example.ru.md), [2](docs%2Fterms-reduction-colab-example.ru.md), [3](examples/colab/with-support-concept-aspect-comparison-demo3.ipynb))
 
-### Планы на будущее
-
-- больше примеров интеграции: вызов ИИ-функций из Jupyter-ноутбуков, интеграция с spreadsheets и умными-таблицами
-- развитие мета-знаний и логико-аспектный подход к LLM-промпту
-- разработка доменных знаний и мета-знаний для LLM-промпта
-- разработка архитектуры агентов для развития и оптимизации знаний
-
 ## Начало работы
 
 1. Клонируем репо:
@@ -122,79 +115,18 @@ curl -X PUT "http://127.0.0.1:5001/ai-func/generate" \
 }
 ```
 
-## Развитие идеи
+## Как использовать MCP сервер в LLM запросах
 
-### Универсальный теймплейт для промпта
-
-Понятно, что центральной темой для эффективного использования LLM является промпт-инжиниринг, т.е. подходы к построению эффективных запросов для получения нужных ответов.
-Как известно, LLM всегда решает только одну задачу - generatively-continue-prompt. Можно записать общее представление с выделением различных частей для промпта так:
-```yaml
-LLM_prompt:  
-  prompt_structure_and_notation_self_specification: []  
-  target_specification:
-  - task_specification  
-  - task_description  
-  - target_semantic_specification  
-  - target_semantic_description    
-  information_retrieval_strategy:  
-  - context_knowledge_specification:  
-    - context_knowledge_topic  
-    - context_knowledge_source:  
-        - properties  
-        - content  
-  - knowledge_sources_selection_strategy  
-  - context_preparation_strategy  
-  - contextual_alignment_strategy  
-  - contextual_memory_strategy
-  - ...  
-  output_generation_strategy:  
-  - execution_plan_specification  
-  - task_decomposition_specification  
-  - knowledge_consolidation_specification  
-  - evaluation_metrics  
-  - iteration_and_refinement_strategy  
-  - examples  
-  - safety_and_ethics_specification  
-  - post_generation_verification_specification  
-  - ...  
-  output_specification:  
-  - structure_and_formatting_specification  
-  - output_constrains_specification  
-  - output_content_strategy  
-  - ...
-  ```
-
-Смысл этих частей промпта более-менее ясен из названия. Дополнительно отметим следующее:
-* любая specification - задает спецификацию, т.е. однозначно понятные требования
-* любая strategy - задает набор политик, как лучше достичь желаемого результата
-* если task_specification задать сложно, то можно задать task_description. В дальнейшем результат генерации с таким промптом можно сравнить с результатов генерации для промпта с заданными соответствующим task_specification
-* target_specification - задает спецификацию "смысла" запроса и результата
-* information_retrieval_strategy - задает как найти информацию во внутренней базе, для решения запроса
-* output_generation_strategy - задает стратегию, как генерировать ответ, чтобы прийти к нужному результату.
-
-Приведем пример для промпта в этом представлении:
-```yaml
-LLM_prompt:
-  target_specification:
-  - task_specification: Abstractive summarize
-  - target_semantic_specification: Concise  
-  information_retrieval_strategy:
-  - context_knowledge_specification:
-    - context_knowledge_source: |
-      {{TO_SUMMARIZE_TEXT}}
-  - knowledge_sources_selection_strategy: Use only the provided input text.
-  - contextual_alignment_strategy: Ensure summary reflects the core meaning of the input.
-  output_generation_strategy:
-  - focus_on: the central theme
-  - execution_plan_specification: Read input, identify key sentences/concepts, synthesize into a short paragraph.
-  - task_decomposition_specification: Single step.
-  - knowledge_consolidation_specification: Extract and combine main ideas.
-  - evaluation_metrics: Conciseness, Fidelity to source.
-  - safety_and_ethics_specification: Maintain factual accuracy.
-  - post_generation_verification_specification: Check if summary is significantly shorter than the original.
-  output_specification:
-  - structure_and_formatting_specification: Plain text paragraph.
-  - output_constrains_specification: Maximum 3 sentences.
-
+LLM умеют принимать решение, достаточно ли данных в текущем контексте или требуется загрузить дополнительные данные из предоставленных инструментов (tools). Текущим стандартом для подключения tools к модели являются стандарт MCP. 
+Для подключения MCP инструментов в запрос AI-функции требуется:
+1. Создать файл mcp.json c именами MCP-серверов (например с сервером "firecrawl") на основе примера [mcp.example.json](mcp.example.json). Отметим, что в данный момент поддерживаются только MCP-сервера, поддерживающие протокол streamable-http.  
+2. Прописать путь к mcp.json файлу в env переменной `MCP_SERVERS_CONFIG_FILE` (в .env)
+3. Дополнительно к модели `OPENAI_MODEL`, прописать название модели, которая будет использоваться для запросов для формирования запроса к инструментам: в переменной `OPENAI_TOOLS_MODEL`.
+2. Перезапустить `kbt-core/ai_function_server.py`
+3. В запросах в AI-функции прописать имена настроенного в mcp.json сервера: 
+```json
+{
+  "meta": {"mcp": "firecrawl"}
+}
 ```
-Отметим, что существование эффективного универсального теймплейта для LLM промпта означает, что можно сделать одну условно универсальную AI-функцию, через которую можно задать для LLM любую задачу. Причем настраивать такой LLM промпт можно по некоторой универсальной системе аспектов. Однако, для большего удобства и повышения эффективности LLM промптов для выделенных задач имеет смысл создавать отдельные AI-функции, в которых можно более конкретно определять входные поля и, что еще более важно, в выходной JSON-Schema определять более конкретные выходные поля (в том числе для того, чтобы "заставить" модель "подумать" над генерируемыми значениями).
+4. При выполнении запросов, `OPENAI_TOOLS_MODEL` модель при необходимости выберет инструменты, сформирует запросы к ним. Эти запросы выполнятся MCP-клиентом и общий результат вставится в контекст запроса и `OPENAI_TOOLS_MODEL` модель ответит на исходный запрос на последнем шаге. 
