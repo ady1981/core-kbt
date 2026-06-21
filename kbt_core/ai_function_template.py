@@ -12,7 +12,7 @@ from mcp.client.streamable_http import streamablehttp_client
 from openai import OpenAI, AsyncOpenAI
 
 from kbt_core.common import deep_dict_compare, clear_code_markdown, read_string, render_template, read_yaml, log_str, \
-    dump_json, read_json, calc_md5, create_trimmed_dict
+    dump_json, read_json, calc_md5, create_trimmed_dict, calc_json_hash
 
 load_dotenv()
 
@@ -195,9 +195,9 @@ async def with_mcp_chat_completion(instruction: str, response_schema: str, mcp_s
                                         'tool_name': tool_name,
                                         'meta': {
                                             'initial_prompt_hash': prompt_hash,
+                                            'request_hash': calc_json_hash(tool_args),
                                             'turn_idx': turn_idx,
-                                            'tool_call_idx': tool_call_idx + 1,
-                                            'tool_id': tool_call.id
+                                            'tool_call_idx': tool_call_idx + 1
                                         },
                                         'request':  tool_args,
                                         'response_text': content_text

@@ -425,3 +425,12 @@ def create_trimmed_dict(adict, ks, trimmed_suffix=''):
     for k in ks:
         adict2[k] = adict2[k][0:MAX_LOGGING_LEN] + trimmed_suffix
     return adict2
+
+
+def calc_json_hash(json_data: dict) -> str:
+    # 1. Serialize dict to string with sorted keys and no optional whitespace
+    json_string = json.dumps(json_data, sort_keys=True, separators=(',', ':'))
+    # 2. Encode the string into bytes (required by hashlib)
+    json_bytes = json_string.encode('utf-8')
+    # 3. Calculate and return the SHA-256 hex digest
+    return hashlib.sha256(json_bytes).hexdigest()
