@@ -1,1 +1,1 @@
-uvx duckduckgo-mcp-server --transport sse
+uvx duckduckgo-mcp-server --transport streamable-http
