@@ -197,7 +197,8 @@ async def with_mcp_chat_completion(instruction: str, response_schema: str, mcp_s
                                             'initial_prompt_hash': prompt_hash,
                                             'request_hash': calc_json_hash(tool_args),
                                             'turn_idx': turn_idx,
-                                            'tool_call_idx': tool_call_idx + 1
+                                            'tool_call_idx': tool_call_idx + 1,
+                                            'tool_call_id': tool_call.id
                                         },
                                         'request':  tool_args,
                                         'response_text': content_text
