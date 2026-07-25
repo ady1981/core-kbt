@@ -1,0 +1,15 @@
+$schema: "http://json-schema.org/draft-07/schema#}"
+type: object
+properties:
+  answer:
+    type: string
+    description: "The direct answer to the question"
+  answer_support:
+    type: array
+    description: "The exact quote from the source document that supports the answer"
+    items:
+      type: string
+required:
+  - answer
+  - answer_support
+additionalProperties: false
