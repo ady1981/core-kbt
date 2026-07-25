@@ -8,6 +8,7 @@ from urllib.parse import urlparse
 import yaml
 from langchain_openai import ChatOpenAI
 
+from kbt_core.common import log_error
 from kbt_core.ai_function_impl.research_agent.agent.qa_agent import calc_answer
 from kbt_core.ai_function_impl.research_agent.raw_storage import write_document
 from kbt_core.ai_function_impl.research_agent.tavily_helper import web_search
@@ -21,13 +22,13 @@ def with_frontmatter(md_document: str, frontmatter_props: dict) -> str:
 
 
 def clear_prefix(s):
-    return re.sub(r'```(.*)\n', '', s)
+    return re.sub(r'```(\S*)\n', '', s)
 
 def clear_suffix(s):
     return s.removesuffix('```')
 
 
-def calc_result(qa_model, web_search_limit_n, topic_keyword, qa_query):
+def calc_result(qa_model, web_search_limit_n, topic_keyword, qa_query, raw_base_dir):
     limit_n = int(os.environ.get('TAVILY_LIMIT_N', '1'))
     results = web_search(qa_query, web_search_limit_n)
     qa_model = ChatOpenAI(
@@ -52,7 +53,7 @@ def calc_result(qa_model, web_search_limit_n, topic_keyword, qa_query):
             'site_context_path': site_context_path,
             'content_sha256hash': content_sha256hash
         })
-        content_filepath = write_document(topic_keyword, site_context_url, version, content_sha256hash, content2)
+        content_filepath = write_document(raw_base_dir, topic_keyword, site_context_url, version, content_sha256hash, content2)
         print(f"Found content saved: {content_filepath}", file=sys.stderr)
 
         total_result = calc_answer(content, qa_query, qa_model, MAX_ITERATIONS)
@@ -62,13 +63,17 @@ def calc_result(qa_model, web_search_limit_n, topic_keyword, qa_query):
         result_content = final_result['details'].get('last_message', {}).get('content')
         result_content = clear_prefix(result_content)
         result_content = clear_suffix(result_content)
-        result_content2 = json.loads(result_content)
-        if result_content2.get('answer') == 'No_answer_found':
-            continue
-        result_content2['answer_source'] = content_filepath
-        answer = result_content2
-        print(json.dumps(answer, indent=2))
-        return answer
+        try:
+            result_content2 = json.loads(result_content)
+            if result_content2.get('answer') == 'No_answer_found':
+                continue
+            result_content2['answer_source'] = content_filepath
+            answer = result_content2
+            print(json.dumps(answer, indent=2))
+            return answer
+        except Exception as e:
+            log_error('cannot-parse: content=\n' + result_content)
+            raise e
 
     answer = {
         'status': 'error',
@@ -85,5 +90,5 @@ def calc_result(qa_model, web_search_limit_n, topic_keyword, qa_query):
 async def evaluate(input_data):
     meta = input_data.get('meta', {})
     qa_model = meta.get('qa_model', meta.get('model', None))
-    (topic_keyword, qa_query, web_search_limit_n) = (input_data['topic_keyword'], input_data['qa_query'], input_data['web_search_limit_n'])
-    return calc_result(qa_model, web_search_limit_n, topic_keyword, qa_query)
+    (raw_base_dir, topic_keyword, qa_query, web_search_limit_n) = (input_data['raw_base_dir'], input_data['topic_keyword'], input_data['qa_query'], input_data['web_search_limit_n'])
+    return calc_result(qa_model, web_search_limit_n, topic_keyword, qa_query, raw_base_dir)

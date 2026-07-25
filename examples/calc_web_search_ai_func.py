@@ -1,3 +1,4 @@
+#poetry run python examples/calc_web_search_ai_func.py
 import os
 from asyncio import run
 
@@ -18,9 +19,10 @@ OPENAI_MODEL = os.environ["OPENAI_MODEL"]
 
 async def main():
     input_data = {
-        'topic_keyword': 'machine learning',
-        'qa_query': 'What are applications of machine learning in healthcare?',
-        'web_search_limit_n': 2
+        'topic_keyword': 'deepagents(SDK)',
+        'qa_query': 'What is subagent?',
+        'web_search_limit_n': 2,
+        'raw_base_dir': '../llm-wiki-kbt/raw'
     }
     r = await evaluate_function(AI_FUN_NAME, with_model_input_data(input_data, OPENAI_MODEL))
     print('=== Response:\n' + dump_json(r))
