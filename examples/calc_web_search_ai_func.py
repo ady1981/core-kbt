@@ -1,9 +1,13 @@
 import os
 from asyncio import run
 
-import load_dotenv
+from dotenv import load_dotenv
 
-from common import dump_json, with_model_input_data, write_json
+import sys
+# sys.path.insert(0, '.')
+
+from kbt_core.ai_function import evaluate_function
+from kbt_core.common import dump_json, with_model_input_data, write_json
 
 load_dotenv()
 
@@ -14,6 +18,9 @@ OPENAI_MODEL = os.environ["OPENAI_MODEL"]
 
 async def main():
     input_data = {
+        'topic_keyword': 'machine learning',
+        'qa_query': 'What are applications of machine learning in healthcare?',
+        'web_search_limit_n': 2
     }
     r = await evaluate_function(AI_FUN_NAME, with_model_input_data(input_data, OPENAI_MODEL))
     print('=== Response:\n' + dump_json(r))

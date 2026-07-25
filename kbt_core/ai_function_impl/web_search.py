@@ -1,17 +1,16 @@
 import hashlib
 import json
 import os
-import subprocess
+import re
 import sys
+from urllib.parse import urlparse
 
 import yaml
 from langchain_openai import ChatOpenAI
 
-from research_agent.agent.qa_agent import calc_answer
-from research_agent.raw_storage import write_document
-from research_agent.tavily_helper import web_search
-from urllib.parse import urlparse
-import re
+from kbt_core.ai_function_impl.research_agent.agent.qa_agent import calc_answer
+from kbt_core.ai_function_impl.research_agent.raw_storage import write_document
+from kbt_core.ai_function_impl.research_agent.tavily_helper import web_search
 
 QA_OPENAI_MODEL = os.environ.get('QA_OPENAI_MODEL', os.environ['OPENAI_MODEL'])
 MAX_ITERATIONS = int(os.environ.get('QA_MAX_ITERATIONS', '2'))
@@ -85,6 +84,6 @@ def calc_result(qa_model, web_search_limit_n, topic_keyword, qa_query):
 
 async def evaluate(input_data):
     meta = input_data.get('meta', {})
-    qa_model = meta.get('qa_model', None)
+    qa_model = meta.get('qa_model', meta.get('model', None))
     (topic_keyword, qa_query, web_search_limit_n) = (input_data['topic_keyword'], input_data['qa_query'], input_data['web_search_limit_n'])
     return calc_result(qa_model, web_search_limit_n, topic_keyword, qa_query)
