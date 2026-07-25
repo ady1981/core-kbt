@@ -3,6 +3,7 @@ import os
 import re
 import sys
 import traceback
+from datetime import timedelta
 from typing import Any, Dict
 
 import openai
@@ -24,6 +25,7 @@ client = OpenAI()
 OPENAI_BASE_URL = os.getenv('OPENAI_BASE_URL')
 MODEL = os.getenv('OPENAI_MODEL')
 DEFAULT_TIMEOUT = float(os.getenv('DEFAULT_TIMEOUT', '300.0'))
+MCP_CLIENT_TIMEOUT = int(os.getenv('MCP_CLIENT_TIMEOUT', '60'))
 MAX_LOGGING_LEN = int(os.getenv('MAX_LOGGING_LEN', '1000'))
 
 
@@ -174,7 +176,7 @@ async def with_mcp_chat_completion(instruction: str, response_schema: str, mcp_s
                                 if tool_name in mcp_tool_map:
                                     ###
                                     # Call the tool remotely via the MCP session connection
-                                    mcp_result = await mcp_session.call_tool(name=tool_name, arguments=tool_args)
+                                    mcp_result = await mcp_session.call_tool(name=tool_name, arguments=tool_args, read_timeout_seconds=timedelta(MCP_CLIENT_TIMEOUT))
                                     ###
                                     if mcp_result.isError:
                                         print(f"mcp-server-error: Tool returned an MCP error: {mcp_result.content}")

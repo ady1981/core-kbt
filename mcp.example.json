@@ -1,10 +1,11 @@
 {
     "firecrawl_search" : {
         "mcp_server_url": "https://mcp.firecrawl.dev/v2/mcp",
-        "tool_names": ["firecrawl_search"]
-    },
-    "firecrawl_scrape" : {
-        "mcp_server_url": "https://mcp.firecrawl.dev/v2/mcp",
-        "tool_names": ["firecrawl_scrape"]
+        "mcp_headers": {
+            "x-api-key": "<API_KEY>"
+        },
+        "tool_names": ["firecrawl_search"],
+        "forbidden_tool_names": [],
+        "no_results_regex": ["^No\\s+results"]
     }
 }

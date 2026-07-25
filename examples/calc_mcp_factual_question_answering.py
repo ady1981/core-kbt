@@ -23,11 +23,11 @@ OPENAI_MODEL = os.environ["OPENAI_MODEL"]
 async def main():
     question = 'What is weather in Moscow today?'
     input_data = {
-        'meta': {'mcp': 'firecrawl'},
+        'meta': {'mcp': 'exa_web_search'},
         'question': question,
         'context_knowledge_specification': 'Weather',
-        '_extra_information_retrieval_strategy': '## Strategy\nSearch the data on the Internet',
-        '_output_generation_strategy': '# Generation strategy\n1. Don\'t use estimates.\n2. Use search tools to retrieve the data'
+        '_extra_information_retrieval_strategy': '## Strategy\nSearch the data on the Internet.',
+        '_output_generation_strategy': '# Generation strategy\n1. Don\'t use predictions.\n2. Use only verifiable facts.'
     }
     r = await ai_function_template.async_evaluate(AI_FUN_NAME, input_data)
     print('=== Response:\n' + dump_json(r))
