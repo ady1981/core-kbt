@@ -6,7 +6,7 @@ from deepagents import RubricMiddleware, create_deep_agent
 from langchain_core.messages import HumanMessage
 from langgraph.checkpoint.memory import InMemorySaver
 
-from research_agent.common import create_rubric_result
+from ..common import create_rubric_result
 
 
 def invoke_qa_agent(source_content, qa_query, response_json_schema, model, max_iterations, checkpointer):
@@ -61,7 +61,7 @@ def invoke_qa_agent(source_content, qa_query, response_json_schema, model, max_i
 
 
 def calc_answer(source_content, qa_query, model, max_iterations):
-    schema_path = Path(__file__).parent.parent / 'json_schema' / 'qa_result_response_schema.yaml'
+    schema_path = Path(__file__).parent.parent.parent / 'json_schema' / 'qa_result_response_schema.yaml'
     response_json_schema = yaml.safe_load(schema_path.read_text())
     checkpointer = InMemorySaver()
     agent_result, state = invoke_qa_agent(source_content, qa_query, response_json_schema, model, max_iterations, checkpointer)

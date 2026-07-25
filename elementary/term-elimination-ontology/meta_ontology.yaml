@@ -1,4 +1,0 @@
-- name: entity
-  kind: entity
-  schema: entity_schema
-  definition: An axiomatic root class that encompasses all real and imaginary entities

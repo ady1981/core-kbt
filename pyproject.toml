@@ -6,12 +6,12 @@ authors = [
     { name = "andrey.siver", email = "andrey.siver@gmail.com" }
 ]
 readme = "README.md"
-requires-python = "^3.10"
+requires-python = ">=3.11,<4.0"
 dependencies = [
     "jinja2 (>=3.1.6,<4.0.0)",
     "flask[async] (>=3.1.1,<4.0.0)",
     "requests (>=2.32.4,<3.0.0)",
-    "openai (>=1.86.0,<2.0.0)",
+    "openai (>=2.26.0,<3.0.0)",
     "python-dotenv (>=1.1.0,<2.0.0)",
     "rdflib (>=7.5.0,<8.0.0)",
     "ruamel.yaml (>=0.19.0,<0.20.0)",
@@ -32,15 +32,17 @@ dependencies = [
     "ipykernel>=7.3.0"
 ]
 
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
 [tool.pytest]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_functions = ["test_*"]
 addopts = "-v --tb=short"
-
-[tool.poetry.group.dev.dependencies]
-pytest = "^7.4.0"
-
-[build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
-build-backend = "poetry.core.masonry.api"

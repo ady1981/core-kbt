@@ -28,7 +28,7 @@ def clear_suffix(s):
     return s.removesuffix('```')
 
 
-def calc_answer(qa_model, web_search_limit_n, topic_keyword, qa_query):
+def calc_result(qa_model, web_search_limit_n, topic_keyword, qa_query):
     limit_n = int(os.environ.get('TAVILY_LIMIT_N', '1'))
     results = web_search(qa_query, web_search_limit_n)
     qa_model = ChatOpenAI(
@@ -87,4 +87,4 @@ async def evaluate(input_data):
     meta = input_data.get('meta', {})
     qa_model = meta.get('qa_model', None)
     (topic_keyword, qa_query, web_search_limit_n) = (input_data['topic_keyword'], input_data['qa_query'], input_data['web_search_limit_n'])
-    return calc_answer(qa_model, web_search_limit_n, topic_keyword, qa_query)
+    return calc_result(qa_model, web_search_limit_n, topic_keyword, qa_query)
